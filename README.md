@@ -33,6 +33,11 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
                    ../../AppWarpX/utilities.cpp
 ```
 
+Also add the following at the end of your Android.mk file for curl
+
+```
+$(call import-module,cocos2dx/platform/third_party/android/prebuilt/libcurl)
+```
 * Build the native code
 
 * Add the following to your manifest file
