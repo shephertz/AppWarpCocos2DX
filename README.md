@@ -1,8 +1,7 @@
-AppWarpCocos2DX
-===============
 
-Cocos2DX SDK for AppWarp
+##Cocos2DX SDK for AppWarp
 
+Visit [AppWarp Cocos2DX home page](https://github.com/shephertz/AppWarpDeveloper/wiki/Cocos2DX-Home) to learn about AppWarp features and documentation.
 ##Instructions for iOS
 
 * Add the AppWarpX folder to your xcode project's sources.
