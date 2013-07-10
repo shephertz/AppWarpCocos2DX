@@ -43,12 +43,13 @@
 #include "utilities.h"
 #include "requests.h"
 #include "listener.h"
+#include "cocos2d.h"
 
 namespace AppWarp
 {
 	extern int AppWarpSessionID;
 
-	class Client
+	class Client : public cocos2d::CCNode
 	{
 	public:
 		~Client();
@@ -67,7 +68,6 @@ namespace AppWarp
 		
 		void connect(std::string);
 		void disconnect();
-		
 		void joinLobby();
 		void leaveLobby();
 		void subscribeLobby();
@@ -94,11 +94,11 @@ namespace AppWarp
 		void joinRoomWithProperties(std::map<std::string,std::string>);
 		void getRoomWithNUser(int);
 		void getRoomWithProperties(std::map<std::string,std::string>);
-		
-		void Update();
+
 
 		void socketConnectionCallback(int);
-		void socketNewMsgCallback(char[], int len);
+        void socketNewMsgCallback(char[], int len);        
+        virtual void update(float dt);
         
     private:
 		std::string APIKEY;

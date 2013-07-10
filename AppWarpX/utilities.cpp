@@ -33,7 +33,7 @@ namespace AppWarp
 			return res;
 		}
 
-		int bytesToInteger(char *data, int offset)
+		int bytesToInteger(char data[], int offset)
 		{
 			int value = 0;
 			for(int i=0; i<4; ++i)
@@ -44,7 +44,7 @@ namespace AppWarp
 			return value;
 		}
 
-		std::string getJSONString(char* name,byte *data,int len)
+		std::string getJSONString(const char* name,byte *data,int len)
 		{
 			std::string user;
 
@@ -72,7 +72,7 @@ namespace AppWarp
 			return user;
 		}
 
-		int getJSONInt(char name[],byte *data,int len)
+		int getJSONInt(const char* name,byte *data,int len)
 		{
 			int num = -1;
 
@@ -100,7 +100,7 @@ namespace AppWarp
 			return num;
 		}
 
-		bool getJSONBool(char name[],byte *data,int len)
+		bool getJSONBool(const char* name,byte *data,int len)
 		{
 			bool ret = false;
 

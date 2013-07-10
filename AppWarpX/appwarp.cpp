@@ -25,7 +25,6 @@
 #include "appwarp.h"
 #include "socket.h"
 #include "curl/curl.h"
-
 #define APPWARPSERVERPORT 12346
 #define LOOKUPHOST "http://control.appwarp.shephertz.com/lookup"
 
@@ -59,18 +58,6 @@ namespace AppWarp
             delete _socket;
         }
 	}
-
-    void Client::Update(){
-        if(_socket != NULL && (_state == ConnectionState::connected || _state == ConnectionState::stream_connected)){
-            _socket->checkMessages();
-        }
-        else if(_state == ConnectionState::stream_failed){
-            _state = ConnectionState::disconnected;
-            if(_connectionReqListener != NULL){
-                _connectionReqListener->onConnectDone(ResultCode::connection_error);
-            }
-        }
-    }
     
 	void Client::terminate()
 	{
@@ -81,11 +68,15 @@ namespace AppWarp
 
 	void Client::initialize(std::string AKEY, std::string SKEY)
 	{
-		if(_instance == NULL){
-			_instance = new Client();
+		if(_instance != NULL){
+            return;
 		}
+        _instance = new Client();
 		_instance->APIKEY = AKEY;
 		_instance->SECRETKEY = SKEY;
+        _instance->m_bRunning = true;
+        _instance->scheduleUpdate();
+        
 	}
 
 	Client* Client::getInstance()
@@ -183,6 +174,9 @@ namespace AppWarp
         CURLcode res;
         long http_code = 0;
         curlHandle = curl_easy_init ( ) ;
+        if(!curlHandle){
+            return 500;
+        }
         curl_easy_setopt(curlHandle, CURLOPT_WRITEFUNCTION, hostLookupCallback);
         curl_easy_setopt(curlHandle, CURLOPT_WRITEDATA, (void *)this);
         curl_easy_setopt(curlHandle, CURLOPT_FOLLOWLOCATION, 1 );
@@ -235,6 +229,18 @@ namespace AppWarp
 		delete[] data;
 	}
 
+    void Client::update(float dt){
+        if(_socket != NULL && (_state == ConnectionState::connected || _state == ConnectionState::stream_connected)){
+            _socket->checkMessages();
+        }
+        else if(_state == ConnectionState::stream_failed){
+            _state = ConnectionState::disconnected;
+            if(_connectionReqListener != NULL){
+                _connectionReqListener->onConnectDone(ResultCode::connection_error);
+            }
+        }
+    }
+    
 	void Client::socketNewMsgCallback(char data[], int len)
 	{
 		int numRead = len;
