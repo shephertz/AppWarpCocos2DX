@@ -15,7 +15,11 @@ Visit [AppWarp Cocos2DX home page](https://github.com/shephertz/AppWarpDeveloper
 
 ##Instructions for Android
 
-* Add the AppWarpX folder next to your Classes folder. 
+* Download the contents of this repo
+
+* Extract and add the AppWarpX folder next to your Classes folder. The directory structure should look like this
+
+![AppWarp Cocos2dx iOS](https://dl.dropboxusercontent.com/u/61084350/android_cocos2dx.png)
 
 * Edit proj.android\jni\Android.mk file
 
