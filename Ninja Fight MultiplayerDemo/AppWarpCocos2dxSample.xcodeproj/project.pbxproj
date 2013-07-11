@@ -1,0 +1,3 @@
+		D7C64969178E7C0100A43251 /* CloseNormal.png in Resources */ = {isa = PBXBuildFile; fileRef = D7C64968178E7C0100A43251 /* CloseNormal.png */; };
+		D7C6496B178E7C0100A43251 /* CloseSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = D7C6496A178E7C0100A43251 /* CloseSelected.png */; };
+		D7C6496D178E7C0100A43251 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = D7C6496C178E7C0100A43251 /* Default.png */; };
