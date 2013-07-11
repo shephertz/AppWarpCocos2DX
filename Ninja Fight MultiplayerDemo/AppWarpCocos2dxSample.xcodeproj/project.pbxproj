@@ -281,8 +281,8 @@
 		D7C64CFC178E918200A43251 /* Bullet-red.png in Resources */ = {isa = PBXBuildFile; fileRef = D7C64CF8178E918200A43251 /* Bullet-red.png */; };
 		D7C64CFD178E918200A43251 /* Enemy.png in Resources */ = {isa = PBXBuildFile; fileRef = D7C64CF9178E918200A43251 /* Enemy.png */; };
 		D7C64CFE178E918200A43251 /* Player.png in Resources */ = {isa = PBXBuildFile; fileRef = D7C64CFA178E918200A43251 /* Player.png */; };
-		D7C64D01178E941200A43251 /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D7C64CFF178E941200A43251 /* Player.cpp */; };
-		D7C64D04178EBE9B00A43251 /* StartGameLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D7C64D02178EBE9A00A43251 /* StartGameLayer.cpp */; };
+		D7C64D09178EF13E00A43251 /* StartGameLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D7C64D05178EF13E00A43251 /* StartGameLayer.cpp */; };
+		D7C64D0A178EF13E00A43251 /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D7C64D08178EF13E00A43251 /* Player.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -875,10 +875,10 @@
 		D7C64CF8178E918200A43251 /* Bullet-red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Bullet-red.png"; sourceTree = "<group>"; };
 		D7C64CF9178E918200A43251 /* Enemy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Enemy.png; sourceTree = "<group>"; };
 		D7C64CFA178E918200A43251 /* Player.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Player.png; sourceTree = "<group>"; };
-		D7C64CFF178E941200A43251 /* Player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Player.cpp; sourceTree = "<group>"; };
-		D7C64D00178E941200A43251 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
-		D7C64D02178EBE9A00A43251 /* StartGameLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StartGameLayer.cpp; sourceTree = "<group>"; };
-		D7C64D03178EBE9B00A43251 /* StartGameLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StartGameLayer.h; sourceTree = "<group>"; };
+		D7C64D05178EF13E00A43251 /* StartGameLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = StartGameLayer.cpp; path = Classes/StartGameLayer.cpp; sourceTree = "<group>"; };
+		D7C64D06178EF13E00A43251 /* StartGameLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StartGameLayer.h; path = Classes/StartGameLayer.h; sourceTree = "<group>"; };
+		D7C64D07178EF13E00A43251 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Player.h; path = Classes/Player.h; sourceTree = "<group>"; };
+		D7C64D08178EF13E00A43251 /* Player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Player.cpp; path = Classes/Player.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2031,12 +2031,12 @@
 			children = (
 				D7C64CC9178E7C0C00A43251 /* AppDelegate.h */,
 				D7C64CCA178E7C0C00A43251 /* AppDelegate.cpp */,
-				D7C64D02178EBE9A00A43251 /* StartGameLayer.cpp */,
-				D7C64D03178EBE9B00A43251 /* StartGameLayer.h */,
 				D7C64CCC178E7C0C00A43251 /* HelloWorldScene.h */,
 				D7C64CCD178E7C0C00A43251 /* HelloWorldScene.cpp */,
-				D7C64CFF178E941200A43251 /* Player.cpp */,
-				D7C64D00178E941200A43251 /* Player.h */,
+				D7C64D05178EF13E00A43251 /* StartGameLayer.cpp */,
+				D7C64D06178EF13E00A43251 /* StartGameLayer.h */,
+				D7C64D07178EF13E00A43251 /* Player.h */,
+				D7C64D08178EF13E00A43251 /* Player.cpp */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -2393,8 +2393,8 @@
 				D7C64CF1178E7C5000A43251 /* socket.cpp in Sources */,
 				D7C64CF2178E7C5000A43251 /* urlencode.cpp in Sources */,
 				D7C64CF3178E7C5000A43251 /* utilities.cpp in Sources */,
-				D7C64D01178E941200A43251 /* Player.cpp in Sources */,
-				D7C64D04178EBE9B00A43251 /* StartGameLayer.cpp in Sources */,
+				D7C64D09178EF13E00A43251 /* StartGameLayer.cpp in Sources */,
+				D7C64D0A178EF13E00A43251 /* Player.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2532,6 +2532,7 @@
 				D7C64CD3178E7C0C00A43251 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
