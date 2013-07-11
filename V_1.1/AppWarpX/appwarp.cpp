@@ -272,6 +272,15 @@ namespace AppWarp
 
 	void Client::joinLobby()
 	{
+        if(_state != ConnectionState::connected){
+            if(_lobbyListener != NULL)
+			{
+				lobby _lobby;
+				_lobby.result = ResultCode::connection_error;
+				_lobbyListener->onJoinLobbyDone(_lobby);
+			}
+            return;
+        }
 		int byteLen;
 		byte *lobbyReq = buildLobbyRequest(RequestType::join_lobby, byteLen);
 		char *data = new char[byteLen];
@@ -288,6 +297,15 @@ namespace AppWarp
 
 	void Client::leaveLobby()
 	{
+        if(_state != ConnectionState::connected){
+            if(_lobbyListener != NULL)
+			{
+				lobby _lobby;
+				_lobby.result = ResultCode::connection_error;
+				_lobbyListener->onLeaveLobbyDone(_lobby);
+			}
+            return;
+        }
 		int byteLen;
 		byte *lobbyReq = buildLobbyRequest(RequestType::leave_lobby, byteLen);
 		char *data = new char[byteLen];
@@ -304,6 +322,15 @@ namespace AppWarp
 
 	void Client::subscribeLobby()
 	{
+        if(_state != ConnectionState::connected){
+            if(_lobbyListener != NULL)
+			{
+				lobby _lobby;
+				_lobby.result = ResultCode::connection_error;
+				_lobbyListener->onSubscribeLobbyDone(_lobby);
+			}
+            return;
+        }
 		int byteLen;
 		byte *lobbyReq = buildLobbyRequest(RequestType::subscribe_lobby, byteLen);
 		char *data = new char[byteLen];
@@ -320,6 +347,15 @@ namespace AppWarp
 
 	void Client::unsubscribeLobby()
 	{
+        if(_state != ConnectionState::connected){
+            if(_lobbyListener != NULL)
+			{
+				lobby _lobby;
+				_lobby.result = ResultCode::connection_error;
+				_lobbyListener->onUnsubscribeLobbyDone(_lobby);
+			}
+            return;
+        }
 		int byteLen;
 		byte *lobbyReq = buildLobbyRequest(RequestType::unsubscribe_lobby, byteLen);
 		char *data = new char[byteLen];
@@ -336,6 +372,15 @@ namespace AppWarp
 
 	void Client::joinRoom(std::string roomId)
 	{
+        if(_state != ConnectionState::connected){
+			if(_roomlistener != NULL)
+			{
+				room _room;
+				_room.result = ResultCode::connection_error;
+				_roomlistener->onJoinRoomDone(_room);
+			}
+            return;
+        }
 		int byteLen;
 		byte *roomReq = buildRoomRequest(RequestType::join_room, roomId, byteLen);
 		char *data = new char[byteLen];
@@ -352,6 +397,15 @@ namespace AppWarp
 
 	void Client::leaveRoom(std::string roomId)
 	{
+        if(_state != ConnectionState::connected){
+			if(_roomlistener != NULL)
+			{
+				room _room;
+				_room.result = ResultCode::connection_error;
+				_roomlistener->onLeaveRoomDone(_room);
+			}
+            return;
+        }
 		int byteLen;
 		byte *roomReq = buildRoomRequest(RequestType::leave_room, roomId, byteLen);
 		char *data = new char[byteLen];
@@ -368,6 +422,15 @@ namespace AppWarp
 
 	void Client::subscribeRoom(std::string roomId)
 	{
+        if(_state != ConnectionState::connected){
+			if(_roomlistener != NULL)
+			{
+				room _room;
+				_room.result = ResultCode::connection_error;
+				_roomlistener->onSubscribeRoomDone(_room);
+			}
+            return;
+        }
 		int byteLen;
 		byte *roomReq = buildRoomRequest(RequestType::subscribe_room, roomId, byteLen);
 		char *data = new char[byteLen];
@@ -384,6 +447,15 @@ namespace AppWarp
 
 	void Client::unsubscribeRoom(std::string roomId)
 	{
+        if(_state != ConnectionState::connected){
+			if(_roomlistener != NULL)
+			{
+				room _room;
+				_room.result = ResultCode::connection_error;
+				_roomlistener->onUnsubscribeRoomDone(_room);
+			}
+            return;
+        }
 		int byteLen;
 		byte *roomReq = buildRoomRequest(RequestType::unsubscribe_room, roomId, byteLen);
 		char *data = new char[byteLen];
@@ -400,6 +472,15 @@ namespace AppWarp
 
 	void Client::deleteRoom(std::string roomId)
 	{
+        if(_state != ConnectionState::connected){
+			if(_zonelistener != NULL)
+			{
+				room _room;
+				_room.result = ResultCode::connection_error;
+				_zonelistener->onDeleteRoomDone(_room);
+			}
+            return;
+        }
 		int byteLen;
 		byte *roomReq = buildRoomRequest(RequestType::delete_room, roomId, byteLen);
 		char *data = new char[byteLen];
@@ -416,6 +497,15 @@ namespace AppWarp
 
 	void Client::createRoom(std::string name, std::string owner, int max, std::map<std::string,std::string> properties)
 	{
+        if(_state != ConnectionState::connected){
+			if(_zonelistener != NULL)
+			{
+				room _room;
+				_room.result = ResultCode::connection_error;
+				_zonelistener->onCreateRoomDone(_room);
+			}
+            return;
+        }
 		std::map<std::string,std::string>::iterator it;
 		cJSON *propJSON;
 		propJSON = cJSON_CreateObject();
@@ -451,6 +541,15 @@ namespace AppWarp
 
 	void Client::createRoom(std::string name, std::string owner, int max)
 	{
+        if(_state != ConnectionState::connected){
+			if(_zonelistener != NULL)
+			{
+				room _room;
+				_room.result = ResultCode::connection_error;
+				_zonelistener->onCreateRoomDone(_room);
+			}
+            return;
+        }
 		int byteLen;
 		byte *roomReq = buildCreateRoomRequest(name,owner,max, byteLen);
 		char *data = new char[byteLen];
@@ -467,6 +566,15 @@ namespace AppWarp
 
 	void Client::getLiveRoomInfo(std::string roomId)
 	{
+        if(_state != ConnectionState::connected){
+			if(_roomlistener != NULL)
+			{
+				liveroom _room;
+				_room.result = ResultCode::connection_error;
+				_roomlistener->onGetLiveRoomInfoDone(_room);
+			}
+            return;
+        }
 		int byteLen;
 		byte *roomReq = buildRoomRequest(RequestType::get_room_info, roomId, byteLen);
 		char *data = new char[byteLen];
@@ -483,6 +591,15 @@ namespace AppWarp
 
 	void Client::getLiveLobbyInfo()
 	{
+        if(_state != ConnectionState::connected){
+            if(_lobbyListener != NULL)
+            {
+                livelobby _lobby;
+                _lobby.result = ResultCode::connection_error;
+                _lobbyListener->onGetLiveLobbyInfoDone(_lobby);
+            }
+            return;
+        }
 		int byteLen;
 		byte *lobbyReq = buildLobbyRequest(RequestType::get_lobby_info, byteLen);
 		char *data = new char[byteLen];
@@ -499,6 +616,15 @@ namespace AppWarp
 
 	void Client::getLiveUserInfo(std::string user)
 	{
+        if(_state != ConnectionState::connected){
+            if(_zonelistener != NULL)
+			{
+				liveuser _user;
+				_user.result = ResultCode::connection_error;
+				_zonelistener->onGetLiveUserInfoDone(_user);
+			}
+            return;
+        }
 		int byteLen;
 		byte *req;
 
@@ -527,6 +653,13 @@ namespace AppWarp
 
 	void Client::sendChat(std::string str)
 	{
+        if(_state != ConnectionState::connected){
+            if(_chatlistener != NULL)
+			{
+				_chatlistener->onSendChatDone(ResultCode::connection_error);
+			}
+            return;
+        }
 		if(str.length() >= 512)
 		{
 			if(_chatlistener != NULL)
@@ -560,8 +693,58 @@ namespace AppWarp
 		free(cRet);
 	}
 
+    void Client::sendPrivateChat(std::string toUser, std::string message)
+	{
+        if(_state != ConnectionState::connected){
+            if(_chatlistener != NULL)
+			{
+				_chatlistener->onSendPrivateChatDone(ResultCode::connection_error);
+			}
+            return;
+        }
+		if(message.length() >= 512)
+		{
+			if(_chatlistener != NULL)
+				_chatlistener->onSendPrivateChatDone(ResultCode::bad_request);
+            
+			return;
+		}
+        
+		std::string payload;
+		int len;
+        
+		cJSON *payloadJSON;
+		payloadJSON = cJSON_CreateObject();
+        cJSON_AddStringToObject(payloadJSON, "to" ,toUser.c_str());
+		cJSON_AddStringToObject(payloadJSON, "chat" ,message.c_str());
+		char *cRet = cJSON_PrintUnformatted(payloadJSON);
+		payload = cRet;
+        
+		byte * req = buildWarpRequest(RequestType::private_chat, payload, len);
+        
+		char *data = new char[len];
+		for(int i=0; i< len; ++i)
+		{
+			data[i] = req[i];
+		}
+        
+		_socket->sockSend(data, len);
+        
+		delete[] data;
+		delete[] req;
+		cJSON_Delete(payloadJSON);
+		free(cRet);
+	}
+    
 	void Client::sendUpdate(byte *update,int data_len)
 	{
+        if(_state != ConnectionState::connected){
+            if(_updatelistener != NULL)
+			{
+				_updatelistener->onSendUpdateDone(ResultCode::connection_error);
+			}
+            return;
+        }
 		if(data_len >= 512)
 		{
 			if(_updatelistener != NULL)
@@ -587,6 +770,15 @@ namespace AppWarp
 
 	void Client::setCustomUserData(std::string userName, std::string customData)
 	{
+        if(_state != ConnectionState::connected){
+            if(_zonelistener != NULL)
+			{
+				liveuser _user;
+				_user.result = ResultCode::connection_error;
+				_zonelistener->onSetCustomUserInfoDone(_user);
+			}
+            return;
+        }
 		int byteLen;
 		byte *req;
 
@@ -616,6 +808,15 @@ namespace AppWarp
 
 	void Client::setCustomRoomData(std::string roomId, std::string customData)
 	{
+        if(_state != ConnectionState::connected){
+            if(_roomlistener != NULL)
+			{
+				liveroom _room;
+				_room.result = ResultCode::connection_error;
+				_roomlistener->onSetCustomRoomDataDone(_room);
+			}
+            return;
+        }
 		int byteLen;
 		byte *req;
 
@@ -645,6 +846,15 @@ namespace AppWarp
 
 	void Client::getAllRooms()
 	{
+        if(_state != ConnectionState::connected){
+            if(_zonelistener != NULL)
+			{
+				liveresult _res;
+				_res.result = ResultCode::connection_error;
+				_zonelistener->onGetAllRoomsDone(_res);
+			}
+            return;
+        }
 		int len;
 		byte * req = buildWarpRequest(RequestType::get_rooms, "", len);
 
@@ -662,6 +872,15 @@ namespace AppWarp
 
 	void Client::getOnlineUsers()
 	{
+        if(_state != ConnectionState::connected){
+            if(_zonelistener != NULL)
+			{
+				liveresult _res;
+				_res.result = ResultCode::connection_error;
+				_zonelistener->onGetOnlineUsersDone(_res);
+			}
+            return;
+        }
 		int len;
 		byte * req = buildWarpRequest(RequestType::get_users, "", len);
 
@@ -677,8 +896,111 @@ namespace AppWarp
 		delete[] req;
 	}
 
+    void Client::lockProperties(std::map<std::string, std::string> properties)
+    {
+        if(_state != ConnectionState::connected){
+            if(_roomlistener != NULL)
+			{
+				_roomlistener->onLockPropertiesDone(ResultCode::connection_error);
+			}
+            return;
+        }
+        int byteLen;
+		byte *req;
+        
+		std::map<std::string,std::string>::iterator it;
+        
+		std::string payload;
+		cJSON *propJSON;
+		cJSON *payloadJSON;
+		payloadJSON = cJSON_CreateObject();
+		propJSON = cJSON_CreateObject();
+		for(it = properties.begin(); it != properties.end(); ++it)
+		{
+			cJSON_AddStringToObject(propJSON, it->first.c_str(),it->second.c_str());
+		}
+        
+		cJSON_AddStringToObject(payloadJSON, "lockProperties", cJSON_PrintUnformatted(propJSON));
+        
+		char *cRet = cJSON_PrintUnformatted(payloadJSON);
+		payload = cRet;
+        
+		req = buildWarpRequest(RequestType::lock_properties, payload, byteLen);
+        
+		char *data = new char[byteLen];
+		for(int i=0; i< byteLen; ++i)
+		{
+			data[i] = req[i];
+		}
+        
+		_socket->sockSend(data, byteLen);
+        
+		delete[] data;
+		delete[] req;
+		cJSON_Delete(propJSON);
+		cJSON_Delete(payloadJSON);
+		free(cRet);
+    }
+    
+    void Client::unlockProperties(std::vector<std::string> properties)
+    {
+        if(_state != ConnectionState::connected){
+            if(_roomlistener != NULL)
+			{
+				_roomlistener->onUnlockPropertiesDone(ResultCode::connection_error);
+			}
+            return;
+        }
+        int byteLen;
+		byte *req;
+        
+		
+		std::string payload;
+		
+		cJSON *payloadJSON;
+		payloadJSON = cJSON_CreateObject();
+        
+		std::string unlockArrayStr = "";
+		for(unsigned int i=0; i<properties.size(); ++i)
+		{
+			if(i < properties.size()-1)
+				unlockArrayStr += properties[i] + ";";
+			else
+				unlockArrayStr += properties[i];
+		}
+        
+		cJSON_AddStringToObject(payloadJSON,"unlockProperties",unlockArrayStr.c_str());
+        
+		char *cRet = cJSON_PrintUnformatted(payloadJSON);
+		payload = cRet;
+        
+		req = buildWarpRequest(RequestType::unlock_properties, payload, byteLen);
+        
+		char *data = new char[byteLen];
+		for(int i=0; i< byteLen; ++i)
+		{
+			data[i] = req[i];
+		}
+        
+		_socket->sockSend(data, byteLen);
+        
+		delete[] data;
+		delete[] req;
+		cJSON_Delete(payloadJSON);
+		free(cRet);
+    }
+    
 	void Client::updateRoomProperties(std::string roomID, std::map<std::string,std::string> properties,std::vector<std::string> removeArray)
 	{
+        if(_state != ConnectionState::connected){
+            if(_roomlistener != NULL)
+			{
+				liveroom _room;
+				_room.result = ResultCode::connection_error;
+				_roomlistener->onUpdatePropertyDone(_room);
+			}
+            return;
+        }
 		int byteLen;
 		byte *req;
 
@@ -710,7 +1032,6 @@ namespace AppWarp
 
 		char *cRet = cJSON_PrintUnformatted(payloadJSON);
 		payload = cRet;
-		//IwDebugTraceLinePrintf("%s",payload);
 
 		req = buildWarpRequest(RequestType::update_room_property, payload, byteLen);
 
@@ -728,84 +1049,97 @@ namespace AppWarp
 		cJSON_Delete(payloadJSON);
 		free(cRet);
 	}
-
-	void Client::updateRoomProperties(std::string roomID, std::map<std::string,std::string> properties)
-	{
+    
+    void Client::getRoomsInUserRange(int minJoinedUsers, int maxJoinedUsers)
+    {
+        if(_state != ConnectionState::connected){
+            if(_zonelistener != NULL)
+			{
+				matchedroom _room;
+				_room.result = ResultCode::connection_error;
+				_zonelistener->onGetMatchedRoomsDone(_room);
+			}
+            return;
+        }
 		int byteLen;
 		byte *req;
-
-		std::map<std::string,std::string>::iterator it;
-
+        
 		std::string payload;
-		cJSON *propJSON;
 		cJSON *payloadJSON;
 		payloadJSON = cJSON_CreateObject();
-		propJSON = cJSON_CreateObject();
-		for(it = properties.begin(); it != properties.end(); ++it)
-		{
-			cJSON_AddStringToObject(propJSON, it->first.c_str(),it->second.c_str());
-		}
-
-		cJSON_AddStringToObject(payloadJSON, "id", roomID.c_str());
-		cJSON_AddStringToObject(payloadJSON, "addOrUpdate", cJSON_PrintUnformatted(propJSON));
-
-		std::string removeArrayStr = "";
-
-		cJSON_AddStringToObject(payloadJSON,"remove",removeArrayStr.c_str());
-
-		char *cRet = cJSON_PrintUnformatted(payloadJSON);
+		cJSON_AddNumberToObject(payloadJSON, "minUsers", minJoinedUsers);
+		cJSON_AddNumberToObject(payloadJSON, "maxUsers", maxJoinedUsers);
+		char *cRet =  cJSON_PrintUnformatted(payloadJSON);
 		payload = cRet;
-		//IwDebugTraceLinePrintf("%s",payload);
-
-		req = buildWarpRequest(RequestType::update_room_property, payload, byteLen);
-
+        
+		req = buildWarpRequest(RequestType::get_room_range, payload, byteLen);
+        
 		char *data = new char[byteLen];
 		for(int i=0; i< byteLen; ++i)
 		{
 			data[i] = req[i];
 		}
-
+        
 		_socket->sockSend(data, byteLen);
-
+        
 		delete[] data;
 		delete[] req;
-		cJSON_Delete(propJSON);
 		cJSON_Delete(payloadJSON);
 		free(cRet);
-	}
-
+    }
+    
+    void Client::joinRoomInUserRange(int minJoinedUsers, int maxJoinedUsers, bool maxPreferred)
+    {
+        if(_state != ConnectionState::connected){
+            if(_roomlistener != NULL)
+			{
+				room _room;
+				_room.result = ResultCode::connection_error;
+				_roomlistener->onJoinRoomDone(_room);
+			}
+            return;
+        }
+        int byteLen;
+		byte *req;
+        
+		std::string payload;
+		cJSON *payloadJSON;
+		payloadJSON = cJSON_CreateObject();
+		cJSON_AddNumberToObject(payloadJSON, "minUsers", minJoinedUsers);
+		cJSON_AddNumberToObject(payloadJSON, "maxUsers", maxJoinedUsers);
+        maxPreferred ? cJSON_AddTrueToObject(payloadJSON, "maxPreferred") : cJSON_AddFalseToObject(payloadJSON, "maxPreferred");
+		char *cRet =  cJSON_PrintUnformatted(payloadJSON);
+		payload = cRet;
+        
+		req = buildWarpRequest(RequestType::join_room_range, payload, byteLen);
+        
+		char *data = new char[byteLen];
+		for(int i=0; i< byteLen; ++i)
+		{
+			data[i] = req[i];
+		}
+        
+		_socket->sockSend(data, byteLen);
+        
+		delete[] data;
+		delete[] req;
+		cJSON_Delete(payloadJSON);
+		free(cRet);
+    }
+    
 	extern std::string ItoA(int num);
-
-	void Client::joinRoomWithNUser(int userCount)
-	{
-		int byteLen;
-		byte *req;
-
-		std::string payload;
-		cJSON *payloadJSON;
-		payloadJSON = cJSON_CreateObject();
-		cJSON_AddStringToObject(payloadJSON, "userCount",ItoA(userCount).c_str());
-		char *cRet = cJSON_PrintUnformatted(payloadJSON);
-		payload = cRet;
-
-		req = buildWarpRequest(RequestType::join_room_n_user, payload, byteLen);
-
-		char *data = new char[byteLen];
-		for(int i=0; i< byteLen; ++i)
-		{
-			data[i] = req[i];
-		}
-
-		_socket->sockSend(data, byteLen);
-
-		delete[] data;
-		delete[] req;
-		cJSON_Delete(payloadJSON);
-		free(cRet);
-	}
 
 	void Client::joinRoomWithProperties(std::map<std::string,std::string> properties)
 	{
+        if(_state != ConnectionState::connected){
+            if(_roomlistener != NULL)
+			{
+				room _room;
+				_room.result = ResultCode::connection_error;
+				_roomlistener->onJoinRoomDone(_room);
+			}
+            return;
+        }
 		int byteLen;
 		byte *req;
 
@@ -842,37 +1176,17 @@ namespace AppWarp
 		free(cRet);
 	}
 
-	void Client::getRoomWithNUser(int userCount)
-	{
-		int byteLen;
-		byte *req;
-
-		std::string payload;
-		cJSON *payloadJSON;
-		payloadJSON = cJSON_CreateObject();
-		cJSON_AddStringToObject(payloadJSON, "userCount",ItoA(userCount).c_str());
-
-		char *cRet = cJSON_PrintUnformatted(payloadJSON);
-		payload = cRet;
-
-		req = buildWarpRequest(RequestType::get_room_with_n_user, payload, byteLen);
-
-		char *data = new char[byteLen];
-		for(int i=0; i< byteLen; ++i)
-		{
-			data[i] = req[i];
-		}
-
-		_socket->sockSend(data, byteLen);
-
-		delete[] data;
-		delete[] req;
-		cJSON_Delete(payloadJSON);
-		free(cRet);
-	}
-
 	void Client::getRoomWithProperties(std::map<std::string,std::string> properties)
 	{
+        if(_state != ConnectionState::connected){
+            if(_zonelistener != NULL)
+			{
+				matchedroom _room;
+				_room.result = ResultCode::connection_error;
+				_zonelistener->onGetMatchedRoomsDone(_room);
+			}
+            return;
+        }
 		int byteLen;
 		byte *req;
 
@@ -904,7 +1218,7 @@ namespace AppWarp
 
 		delete[] data;
 		delete[] req;
-		//cJSON_Delete(propJSON);
+		cJSON_Delete(propJSON);
 		cJSON_Delete(payloadJSON);
 		free(cRet);
 	}

@@ -55,8 +55,9 @@ namespace AppWarp
 		virtual void onUserLeftLobby(AppWarp::lobby ldata, std::string user) {}
 		virtual void onUserJoinedLobby(AppWarp::lobby ldata, std::string user) {}
 		virtual void onChatReceived(AppWarp::chat chatevent) {}
+        virtual void onPrivateChatReceived(std::string sender, std::string message) {}
 		virtual void onUpdatePeersReceived(AppWarp::byte update[], int len) {}
-		virtual void onUserChangeRoomProperty(AppWarp::room rData, std::string user,std::map<std::string, std::string> properties){}
+		virtual void onUserChangeRoomProperty(AppWarp::room rData, std::string user,std::map<std::string, std::string> properties, std::map<std::string, std::string>lockTable){}
 	};
 
 	class RoomRequestListener
@@ -69,6 +70,8 @@ namespace AppWarp
 		virtual void onGetLiveRoomInfoDone(AppWarp::liveroom revent){}
 		virtual void onSetCustomRoomDataDone (AppWarp::liveroom revent){}
 		virtual void onUpdatePropertyDone(AppWarp::liveroom revent){}
+        virtual void onLockPropertiesDone(int result){}
+        virtual void onUnlockPropertiesDone(int result){}
 	};
 
 	class ZoneRequestListener
@@ -87,6 +90,7 @@ namespace AppWarp
 	{
 	public:
 		virtual void onSendChatDone(int res){}
+        virtual void onSendPrivateChatDone(int res){}
 	};
 
 	class UpdateRequestListener
