@@ -3,7 +3,9 @@
 Visit [AppWarp Cocos2DX home page](https://github.com/shephertz/AppWarpDeveloper/wiki/Cocos2DX-Home) to learn about AppWarp features and documentation.
 ##Instructions for iOS
 
-* Add the AppWarpX folder to your xcode project's sources.
+* Download the contents of this repo
+
+* Extract the contents and add (drag n drop) the AppWarpX folder to your xcode project.
 
 * Your XCode structure should look something like this
 
