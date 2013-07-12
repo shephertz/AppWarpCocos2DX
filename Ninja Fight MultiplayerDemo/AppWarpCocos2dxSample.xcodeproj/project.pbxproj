@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D720A17F178FCBB900E5E04A /* Player.png in Resources */ = {isa = PBXBuildFile; fileRef = D720A17B178FCBB900E5E04A /* Player.png */; };
+		D720A180178FCBB900E5E04A /* Bullet-blue.png in Resources */ = {isa = PBXBuildFile; fileRef = D720A17C178FCBB900E5E04A /* Bullet-blue.png */; };
+		D720A181178FCBB900E5E04A /* Bullet-red.png in Resources */ = {isa = PBXBuildFile; fileRef = D720A17D178FCBB900E5E04A /* Bullet-red.png */; };
+		D720A182178FCBB900E5E04A /* Enemy.png in Resources */ = {isa = PBXBuildFile; fileRef = D720A17E178FCBB900E5E04A /* Enemy.png */; };
 		D7C64957178E7C0100A43251 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7C64956178E7C0100A43251 /* QuartzCore.framework */; };
 		D7C64959178E7C0100A43251 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7C64958178E7C0100A43251 /* OpenGLES.framework */; };
 		D7C6495B178E7C0100A43251 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7C6495A178E7C0100A43251 /* OpenAL.framework */; };
@@ -277,15 +281,15 @@
 		D7C64CF2178E7C5000A43251 /* urlencode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D7C64CE6178E7C5000A43251 /* urlencode.cpp */; };
 		D7C64CF3178E7C5000A43251 /* utilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D7C64CE8178E7C5000A43251 /* utilities.cpp */; };
 		D7C64CF5178E7C9600A43251 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D7C64CF4178E7C9600A43251 /* Default-568h@2x.png */; };
-		D7C64CFB178E918200A43251 /* Bullet-blue.png in Resources */ = {isa = PBXBuildFile; fileRef = D7C64CF7178E918200A43251 /* Bullet-blue.png */; };
-		D7C64CFC178E918200A43251 /* Bullet-red.png in Resources */ = {isa = PBXBuildFile; fileRef = D7C64CF8178E918200A43251 /* Bullet-red.png */; };
-		D7C64CFD178E918200A43251 /* Enemy.png in Resources */ = {isa = PBXBuildFile; fileRef = D7C64CF9178E918200A43251 /* Enemy.png */; };
-		D7C64CFE178E918200A43251 /* Player.png in Resources */ = {isa = PBXBuildFile; fileRef = D7C64CFA178E918200A43251 /* Player.png */; };
 		D7C64D09178EF13E00A43251 /* StartGameLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D7C64D05178EF13E00A43251 /* StartGameLayer.cpp */; };
 		D7C64D0A178EF13E00A43251 /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D7C64D08178EF13E00A43251 /* Player.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D720A17B178FCBB900E5E04A /* Player.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Player.png; path = Resources/Player.png; sourceTree = "<group>"; };
+		D720A17C178FCBB900E5E04A /* Bullet-blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Bullet-blue.png"; path = "Resources/Bullet-blue.png"; sourceTree = "<group>"; };
+		D720A17D178FCBB900E5E04A /* Bullet-red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Bullet-red.png"; path = "Resources/Bullet-red.png"; sourceTree = "<group>"; };
+		D720A17E178FCBB900E5E04A /* Enemy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Enemy.png; path = Resources/Enemy.png; sourceTree = "<group>"; };
 		D7C64953178E7C0100A43251 /* AppWarpCocos2dxSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AppWarpCocos2dxSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7C64956178E7C0100A43251 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		D7C64958178E7C0100A43251 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -871,10 +875,6 @@
 		D7C64CE8178E7C5000A43251 /* utilities.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = utilities.cpp; sourceTree = "<group>"; };
 		D7C64CE9178E7C5000A43251 /* utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = utilities.h; sourceTree = "<group>"; };
 		D7C64CF4178E7C9600A43251 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		D7C64CF7178E918200A43251 /* Bullet-blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Bullet-blue.png"; sourceTree = "<group>"; };
-		D7C64CF8178E918200A43251 /* Bullet-red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Bullet-red.png"; sourceTree = "<group>"; };
-		D7C64CF9178E918200A43251 /* Enemy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Enemy.png; sourceTree = "<group>"; };
-		D7C64CFA178E918200A43251 /* Player.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Player.png; sourceTree = "<group>"; };
 		D7C64D05178EF13E00A43251 /* StartGameLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = StartGameLayer.cpp; path = Classes/StartGameLayer.cpp; sourceTree = "<group>"; };
 		D7C64D06178EF13E00A43251 /* StartGameLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StartGameLayer.h; path = Classes/StartGameLayer.h; sourceTree = "<group>"; };
 		D7C64D07178EF13E00A43251 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Player.h; path = Classes/Player.h; sourceTree = "<group>"; };
@@ -951,10 +951,10 @@
 		D7C64967178E7C0100A43251 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				D7C64CF7178E918200A43251 /* Bullet-blue.png */,
-				D7C64CF8178E918200A43251 /* Bullet-red.png */,
-				D7C64CF9178E918200A43251 /* Enemy.png */,
-				D7C64CFA178E918200A43251 /* Player.png */,
+				D720A17B178FCBB900E5E04A /* Player.png */,
+				D720A17C178FCBB900E5E04A /* Bullet-blue.png */,
+				D720A17D178FCBB900E5E04A /* Bullet-red.png */,
+				D720A17E178FCBB900E5E04A /* Enemy.png */,
 				D7C64968178E7C0100A43251 /* CloseNormal.png */,
 				D7C6496A178E7C0100A43251 /* CloseSelected.png */,
 				D7C6496C178E7C0100A43251 /* Default.png */,
@@ -2133,10 +2133,10 @@
 				D7C64A19178E7C0300A43251 /* ChangeLog in Resources */,
 				D7C64B83178E7C0900A43251 /* project.pbxproj in Resources */,
 				D7C64CF5178E7C9600A43251 /* Default-568h@2x.png in Resources */,
-				D7C64CFB178E918200A43251 /* Bullet-blue.png in Resources */,
-				D7C64CFC178E918200A43251 /* Bullet-red.png in Resources */,
-				D7C64CFD178E918200A43251 /* Enemy.png in Resources */,
-				D7C64CFE178E918200A43251 /* Player.png in Resources */,
+				D720A17F178FCBB900E5E04A /* Player.png in Resources */,
+				D720A180178FCBB900E5E04A /* Bullet-blue.png in Resources */,
+				D720A181178FCBB900E5E04A /* Bullet-red.png in Resources */,
+				D720A182178FCBB900E5E04A /* Enemy.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
