@@ -1,6 +1,12 @@
 ##Cocos2DX SDK for AppWarp
 
 Visit [AppWarp Cocos2DX home page](https://github.com/shephertz/AppWarpDeveloper/wiki/Cocos2DX-Home) to learn about AppWarp features and documentation.
+
+**IMPORTANT**
+The instructions below assume you have already Cocos2DX environment already setup for iOS and Android development. To help set up your development for Cocos2DX, you can read this [Cocos2DX getting started guide](http://www.raywenderlich.com/33750/cocos2d-x-tutorial-for-ios-and-android-getting-started).
+
+The steps below describe the integration points of AppWarpX in your Cococs2DX application. 
+
 ##Instructions for iOS
 
 * Download the contents of this repo
