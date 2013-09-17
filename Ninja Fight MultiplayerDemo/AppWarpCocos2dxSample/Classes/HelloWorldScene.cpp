@@ -78,7 +78,7 @@ void HelloWorld::startGame()
     enemy->isEnemy = true;
     enemy->setOpacity(100);
     addChild(enemy);
-    
+    isConnected = true;
     scheduleUpdate();
 
 }
@@ -213,6 +213,10 @@ void HelloWorld::updateEnemyStatus(CCPoint destination,float actualDuration)
 
 void HelloWorld::ccTouchesEnded(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent)
 {
+    if (!isConnected)
+    {
+        return;
+    }
     CCSetIterator it = pTouches->begin();
     CCTouch* touch = (CCTouch*)(*it);
     CCPoint location = touch->getLocation();
@@ -311,6 +315,7 @@ std::string genRandom()
 
 void HelloWorld::connectToAppWarp()
 {
+    isConnected = false;
     AppWarp::Client *warpClientRef;
     AppWarp::Client::initialize(APPWARP_APP_KEY,APPWARP_SECRET_KEY);
 	warpClientRef = AppWarp::Client::getInstance();
@@ -341,6 +346,7 @@ void HelloWorld::onJoinRoomDone(AppWarp::room revent)
 {
     if (revent.result==0)
     {
+        
         printf("\nonJoinRoomDone .. SUCCESS\n");
         AppWarp::Client *warpClientRef;
         warpClientRef = AppWarp::Client::getInstance();

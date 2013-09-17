@@ -29,7 +29,7 @@ public:
     Player *enemy;
     int score;
     bool isEnemyAdded;
-    
+    bool isConnected;
     std::string userName;
 
     StartGameLayer *startGameLayer;
