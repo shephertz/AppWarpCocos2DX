@@ -31,7 +31,7 @@ public:
     bool isEnemyAdded;
     bool isConnected;
     std::string userName;
-
+    bool isFirstLaunch;
     StartGameLayer *startGameLayer;
     
     // Method 'init' in cocos2d-x returns bool, instead of 'id' in cocos2d-iphone (an object pointer)

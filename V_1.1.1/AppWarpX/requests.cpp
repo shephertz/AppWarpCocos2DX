@@ -139,8 +139,8 @@ namespace AppWarp
 			cJSON_AddStringToObject(payloadJSON,"timeStamp", timeStamp.c_str());
 			cJSON_AddStringToObject(payloadJSON,"user", username.c_str());
 			cJSON_AddStringToObject(payloadJSON,"signature", hmac.c_str());
-
-			char* cRet = cJSON_PrintUnformatted(payloadJSON);			
+            cJSON_AddNumberToObject(payloadJSON, "keepalive", WARP_KEEP_ALIVE_TIME_INTERVAL);
+			char* cRet = cJSON_PrintUnformatted(payloadJSON);
 			std::string payload = cRet;
 			free(cRet);
 
@@ -161,6 +161,18 @@ namespace AppWarp
 			cJSON_Delete(payloadJSON);
 			return buildWarpRequest(requestType, payload, len);
 		}
+    
+        byte * buildKeepAliveRequest(int requestType, int &len)
+        {
+            std::string payload;
+            cJSON *payloadJSON;
+            payloadJSON = cJSON_CreateObject();
+            char* cRet = cJSON_PrintUnformatted(payloadJSON);
+            payload = cRet;
+            free(cRet);
+            cJSON_Delete(payloadJSON);
+            return buildWarpRequest(requestType, payload, len);
+        }
 
 		byte * buildRoomRequest(int requestType,std::string id, int &len)
 		{

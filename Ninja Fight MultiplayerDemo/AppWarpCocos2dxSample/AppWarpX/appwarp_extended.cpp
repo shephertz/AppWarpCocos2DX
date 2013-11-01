@@ -49,7 +49,7 @@ namespace AppWarp
 		{
 			response *res;
 			res = buildResponse(data, index);
-			
+            
 			if(res->requestType == RequestType::auth)
 				handleAuthResponse(res);
 			else if(res->requestType == RequestType::join_lobby)
@@ -257,9 +257,15 @@ namespace AppWarp
 				AppWarpSessionID = sessionId;
                 _state = ConnectionState::connected;
 				delete[] str;
+                scheduleKeepAlive();
 			}
-            else {
+            else
+            {
+                keepAliveWatchDog = false;
+                unscheduleKeepAlive();
                 _state = ConnectionState::disconnected;
+                delete _socket;
+                _socket = NULL;
             }
 			if(_connectionReqListener != NULL)
 				_connectionReqListener->onConnectDone(res->resultCode);

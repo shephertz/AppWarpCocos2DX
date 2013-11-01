@@ -47,7 +47,6 @@ namespace AppWarp
 
 		int Client::handleResponse(char *data, int index)
 		{
-            
 			response *res;
 			res = buildResponse(data, index);
             
@@ -258,9 +257,12 @@ namespace AppWarp
 				AppWarpSessionID = sessionId;
                 _state = ConnectionState::connected;
 				delete[] str;
+                scheduleKeepAlive();
 			}
             else
             {
+                keepAliveWatchDog = false;
+                unscheduleKeepAlive();
                 _state = ConnectionState::disconnected;
                 delete _socket;
                 _socket = NULL;

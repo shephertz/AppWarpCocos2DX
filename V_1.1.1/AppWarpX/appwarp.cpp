@@ -25,8 +25,13 @@
 #include "appwarp.h"
 #include "socket.h"
 #include "curl/curl.h"
+
 #define APPWARPSERVERPORT 12346
 #define LOOKUPHOST "http://control.appwarp.shephertz.com/lookup"
+
+
+
+using namespace cocos2d;
 
 namespace AppWarp
 {
@@ -78,6 +83,7 @@ namespace AppWarp
         _instance->scheduleUpdate();
         _instance->isWaitingForData = false;
         _instance->incompleteDataBuffer = NULL;
+        _instance->keepAliveWatchDog = false;
 	}
 
 	Client* Client::getInstance()
@@ -126,7 +132,8 @@ namespace AppWarp
         
         cJSON *json;
         json = cJSON_Parse((char*)buffer);
-        if(json != NULL && json->child!=NULL){
+        if(json != NULL && json->child!=NULL)
+        {
             json = json->child;
             std::string key = json->string;
             std::string value = json->valuestring;
@@ -141,14 +148,18 @@ namespace AppWarp
     void* Client::threadConnect( void *ptr )
     {
         Client* pWarpClient = (Client*)ptr;
-        if(pWarpClient->APPWARPSERVERHOST.length() > 0){
+        if(pWarpClient->APPWARPSERVERHOST.length() > 0)
+        {
             pWarpClient->connectSocket();
         }
-		else{
-            if(pWarpClient->lookup() == 200){
+		else
+        {
+            if(pWarpClient->lookup() == 200)
+            {
                 pWarpClient->connectSocket();
             }
-            else{
+            else
+            {
                 pWarpClient->_state = ConnectionState::stream_failed;
             }
 		}
@@ -175,7 +186,8 @@ namespace AppWarp
         CURLcode res;
         long http_code = 0;
         curlHandle = curl_easy_init ( ) ;
-        if(!curlHandle){
+        if(!curlHandle)
+        {
             return 500;
         }
         curl_easy_setopt(curlHandle, CURLOPT_WRITEFUNCTION, hostLookupCallback);
@@ -188,10 +200,12 @@ namespace AppWarp
         curl_easy_setopt(curlHandle, CURLOPT_URL, path.c_str());
         
         res = curl_easy_perform( curlHandle );
-        if(res == CURLE_OK){
+        if(res == CURLE_OK)
+        {
             curl_easy_getinfo (curlHandle, CURLINFO_RESPONSE_CODE, &http_code);
         }
-        else{
+        else
+        {
             http_code = 500;
         }
         
@@ -208,9 +222,51 @@ namespace AppWarp
         socketConnectionCallback(result);
     }
     
+    
+    void Client::scheduleKeepAlive()
+    {
+        this->schedule(schedule_selector(Client::sendKeepAlive), CLIENT_KEEP_ALIVE_TIME_INTERVAL);
+    }
+    
+    void Client::unscheduleKeepAlive()
+    {
+        this->unschedule(schedule_selector(Client::sendKeepAlive));
+    }
+    
+    void Client::sendKeepAlive(float dt)
+    {
+        if ( _state!= ConnectionState::connected)
+        {
+            unscheduleKeepAlive();
+        }
+        if (keepAliveWatchDog)
+        {
+            int byteLen;
+            byte *lobbyReq = buildKeepAliveRequest(RequestType::keep_alive, byteLen);
+            char *data = new char[byteLen];
+            for(int i=0; i< byteLen; ++i)
+            {
+                data[i] = lobbyReq[i];
+            }
+            
+            _socket->sockSend(data, byteLen);
+            
+            delete[] data;
+            delete[] lobbyReq;
+            
+            keepAliveWatchDog = true;
+        }
+        else
+        {
+            keepAliveWatchDog = true;
+        }
+    }
+    
+    
 	void Client::socketConnectionCallback(int res)
 	{
-        if(res == AppWarp::result_failure){
+        if(res == AppWarp::result_failure)
+        {
             _state = ConnectionState::stream_failed;
             delete _socket;
             _socket = NULL;
@@ -240,11 +296,19 @@ namespace AppWarp
         }
         else if(_state == ConnectionState::stream_failed)
         {
+            
             _state = ConnectionState::disconnected;
+            keepAliveWatchDog = false;
+            AppWarpSessionID = 0;
+            this->unscheduleKeepAlive();
             if(_connectionReqListener != NULL)
             {
                 _connectionReqListener->onConnectDone(ResultCode::connection_error);
             }
+        }
+        else
+        {
+            
         }
     }
     
@@ -253,7 +317,6 @@ namespace AppWarp
 		int numRead = len;
 		int numDecoded = 0;
         char *bufferToDecode;
-        
         if (isWaitingForData)
         {
             int readLen = len;
@@ -294,7 +357,6 @@ namespace AppWarp
             }
             else
             {
-                
                 incompleteDataBufferSize = numRead-numDecoded;
                 if(incompleteDataBuffer != NULL)
                 {
@@ -348,12 +410,16 @@ namespace AppWarp
 
 	void Client::disconnect()
 	{
+        
+
         if((_socket == NULL) || (_socket->sockDisconnect() == AppWarp::result_failure))
         {
             if(_connectionReqListener != NULL)
                 _connectionReqListener->onDisconnectDone(AppWarp::ResultCode::bad_request);
             return;
         }
+        keepAliveWatchDog = false;
+        this->unscheduleKeepAlive();
         delete _socket;
         _socket = NULL;
         _state = ConnectionState::disconnected;

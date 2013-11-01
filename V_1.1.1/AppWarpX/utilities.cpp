@@ -167,8 +167,10 @@ namespace AppWarp
 			return date;
 		}
     
-        
-    
+    void appWarpTrace(std::string message)
+    {
+        std::cout<<"AppWarp:"<<getODataUTCDateFilter()<<":"<<message<<std::endl;
+    }
     
 }
 

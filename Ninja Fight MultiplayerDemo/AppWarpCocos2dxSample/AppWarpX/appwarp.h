@@ -45,6 +45,10 @@
 #include "listener.h"
 #include "cocos2d.h"
 
+
+#define CLIENT_KEEP_ALIVE_TIME_INTERVAL 2  //In second
+#define WARP_KEEP_ALIVE_TIME_INTERVAL (CLIENT_KEEP_ALIVE_TIME_INTERVAL*3)
+
 namespace AppWarp
 {
 	extern int AppWarpSessionID;
@@ -84,7 +88,7 @@ namespace AppWarp
          * ConnectionState::connected = 2,
 		 */
         int _state;
-        
+        bool keepAliveWatchDog;
         /**
 		 * Set your listener object on which callbacks will be invoked when a
 		 * response from the server is received for connect, authenticate and
@@ -441,13 +445,14 @@ namespace AppWarp
          * Not required to be called in Cocos2DX application code.
          */
 		void socketConnectionCallback(int);
-        void socketNewMsgCallback(char[], int len);        
+        void socketNewMsgCallback(unsigned char[], int len);        
         virtual void update(float dt);
         
     private:
 		std::string APIKEY;
 		std::string SECRETKEY;
 		std::string APPWARPSERVERHOST;
+        bool isWaitingForData;
 		
         Utility::Socket* _socket;
 		static Client* _instance;
@@ -468,9 +473,17 @@ namespace AppWarp
 		void handleZoneResponse(int, response *);
         void connectSocket();
         int lookup();
+        
+        bool canDecode(char data[],int start, int end);
         static size_t hostLookupCallback(void *buffer, size_t size, size_t nmemb, void *userp);
         static void* threadConnect( void *ptr );
 		std::string userName;
+        char *incompleteDataBuffer;
+        int incompleteDataBufferSize;
+        
+        void scheduleKeepAlive();
+        void unscheduleKeepAlive();
+        void sendKeepAlive(float dt);
 	};
 }
 

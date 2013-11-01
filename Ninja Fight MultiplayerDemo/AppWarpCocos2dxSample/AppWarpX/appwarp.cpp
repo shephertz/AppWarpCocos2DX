@@ -25,8 +25,13 @@
 #include "appwarp.h"
 #include "socket.h"
 #include "curl/curl.h"
+
 #define APPWARPSERVERPORT 12346
 #define LOOKUPHOST "http://control.appwarp.shephertz.com/lookup"
+
+
+
+using namespace cocos2d;
 
 namespace AppWarp
 {
@@ -76,7 +81,9 @@ namespace AppWarp
 		_instance->SECRETKEY = SKEY;
         _instance->m_bRunning = true;
         _instance->scheduleUpdate();
-        
+        _instance->isWaitingForData = false;
+        _instance->incompleteDataBuffer = NULL;
+        _instance->keepAliveWatchDog = false;
 	}
 
 	Client* Client::getInstance()
@@ -125,7 +132,8 @@ namespace AppWarp
         
         cJSON *json;
         json = cJSON_Parse((char*)buffer);
-        if(json != NULL && json->child!=NULL){
+        if(json != NULL && json->child!=NULL)
+        {
             json = json->child;
             std::string key = json->string;
             std::string value = json->valuestring;
@@ -140,14 +148,18 @@ namespace AppWarp
     void* Client::threadConnect( void *ptr )
     {
         Client* pWarpClient = (Client*)ptr;
-        if(pWarpClient->APPWARPSERVERHOST.length() > 0){
+        if(pWarpClient->APPWARPSERVERHOST.length() > 0)
+        {
             pWarpClient->connectSocket();
         }
-		else{
-            if(pWarpClient->lookup() == 200){
+		else
+        {
+            if(pWarpClient->lookup() == 200)
+            {
                 pWarpClient->connectSocket();
             }
-            else{
+            else
+            {
                 pWarpClient->_state = ConnectionState::stream_failed;
             }
 		}
@@ -162,6 +174,7 @@ namespace AppWarp
 				_connectionReqListener->onConnectDone(ResultCode::bad_request);
             return;
 		}
+        //AppWarpSessionID = 0;
         userName = user;
         _state = ConnectionState::connecting;
         pthread_t threadConnection;
@@ -174,7 +187,8 @@ namespace AppWarp
         CURLcode res;
         long http_code = 0;
         curlHandle = curl_easy_init ( ) ;
-        if(!curlHandle){
+        if(!curlHandle)
+        {
             return 500;
         }
         curl_easy_setopt(curlHandle, CURLOPT_WRITEFUNCTION, hostLookupCallback);
@@ -187,10 +201,12 @@ namespace AppWarp
         curl_easy_setopt(curlHandle, CURLOPT_URL, path.c_str());
         
         res = curl_easy_perform( curlHandle );
-        if(res == CURLE_OK){
+        if(res == CURLE_OK)
+        {
             curl_easy_getinfo (curlHandle, CURLINFO_RESPONSE_CODE, &http_code);
         }
-        else{
+        else
+        {
             http_code = 500;
         }
         
@@ -203,17 +219,61 @@ namespace AppWarp
     {
         _socket = new Utility::Socket(this);
         int result = _socket->sockConnect(APPWARPSERVERHOST, APPWARPSERVERPORT);
+        //printf("\nClient::connectSocket() .. result=%d",result);
         socketConnectionCallback(result);
     }
     
+    
+    void Client::scheduleKeepAlive()
+    {
+        this->schedule(schedule_selector(Client::sendKeepAlive), CLIENT_KEEP_ALIVE_TIME_INTERVAL);
+    }
+    
+    void Client::unscheduleKeepAlive()
+    {
+        this->unschedule(schedule_selector(Client::sendKeepAlive));
+    }
+    
+    void Client::sendKeepAlive(float dt)
+    {
+        if ( _state!= ConnectionState::connected)
+        {
+            unscheduleKeepAlive();
+        }
+        if (keepAliveWatchDog)
+        {
+            int byteLen;
+            byte *lobbyReq = buildKeepAliveRequest(RequestType::keep_alive, byteLen);
+            char *data = new char[byteLen];
+            for(int i=0; i< byteLen; ++i)
+            {
+                data[i] = lobbyReq[i];
+            }
+            
+            _socket->sockSend(data, byteLen);
+            
+            delete[] data;
+            delete[] lobbyReq;
+            
+            keepAliveWatchDog = true;
+        }
+        else
+        {
+            keepAliveWatchDog = true;
+        }
+    }
+    
+    
 	void Client::socketConnectionCallback(int res)
 	{
-        if(res == AppWarp::result_failure){
+        if(res == AppWarp::result_failure)
+        {
             _state = ConnectionState::stream_failed;
             delete _socket;
             _socket = NULL;
             return;
         }
+        //printf("\n..socketConnectionCallback");
         _state = ConnectionState::stream_connected;
 		int byteLen;
 		byte * authReq = buildAuthRequest(userName, byteLen,this->APIKEY,this->SECRETKEY);
@@ -229,42 +289,143 @@ namespace AppWarp
 		delete[] data;
 	}
 
-    void Client::update(float dt){
-        if(_socket != NULL && (_state == ConnectionState::connected || _state == ConnectionState::stream_connected)){
+    void Client::update(float dt)
+    {
+        if(_socket != NULL && (_state == ConnectionState::connected || _state == ConnectionState::stream_connected))
+        {
             _socket->checkMessages();
         }
-        else if(_state == ConnectionState::stream_failed){
+        else if(_state == ConnectionState::stream_failed)
+        {
+            
             _state = ConnectionState::disconnected;
-            if(_connectionReqListener != NULL){
+            keepAliveWatchDog = false;
+            AppWarpSessionID = 0;
+            this->unscheduleKeepAlive();
+            if(_connectionReqListener != NULL)
+            {
                 _connectionReqListener->onConnectDone(ResultCode::connection_error);
             }
         }
+        else
+        {
+            printf("ConnectionState=%d",_state);
+        }
     }
     
-	void Client::socketNewMsgCallback(char data[], int len)
+	void Client::socketNewMsgCallback(unsigned char data[], int len)
 	{
 		int numRead = len;
 		int numDecoded = 0;
-
+        char *bufferToDecode;
+        if (isWaitingForData)
+        {
+            int readLen = len;
+            len = readLen + incompleteDataBufferSize;
+            
+            bufferToDecode = new char[len];
+            
+            for(int i=0; i<incompleteDataBufferSize;++i)
+            {
+                bufferToDecode[i] = incompleteDataBuffer[i];
+            }
+            for(int i=incompleteDataBufferSize; i<len;++i)
+            {
+                bufferToDecode[i] = data[i-incompleteDataBufferSize];
+            }
+            isWaitingForData = false;
+            incompleteDataBufferSize = 0;
+            delete incompleteDataBuffer;
+            incompleteDataBuffer = NULL;
+            numRead =len;
+        }
+        else
+        {
+            bufferToDecode = new char[len];
+            for(int i=0; i<len;++i)
+                bufferToDecode[i] = data[i];
+        }
+        
 		while(numDecoded < numRead)
 		{
-			if(data[numDecoded] == MessageType::response)
-				numDecoded += handleResponse(data, numDecoded);
-			else
-				numDecoded += handleNotify(data, numDecoded);
+            bool canDecodeData = canDecode(bufferToDecode,numDecoded,numRead);
+            if (canDecodeData)
+            {
+                if(bufferToDecode[numDecoded] == MessageType::response)
+                    numDecoded += handleResponse(bufferToDecode, numDecoded);
+                else
+                    numDecoded += handleNotify(bufferToDecode, numDecoded);
+            }
+            else
+            {
+                incompleteDataBufferSize = numRead-numDecoded;
+                if(incompleteDataBuffer != NULL)
+                {
+                    delete incompleteDataBuffer;
+                    incompleteDataBuffer = NULL;
+                }
+                incompleteDataBuffer = new char[incompleteDataBufferSize];
+                
+                for(int i=numDecoded; i<numRead; ++i)
+                {
+                    incompleteDataBuffer[i-numDecoded] = bufferToDecode[i];
+                }
+                
+                isWaitingForData = true;
+                
+                break;
+            }
+            
 		}
+        delete bufferToDecode;
 	}
+    
+    bool Client::canDecode(char data[],int start, int end)
+    {
+        int len = end-start;
+        if (data[start]==MessageType::response && len >=9)
+        {
+            
+            int payLoadSize = 0;
+            payLoadSize = bytesToInteger(data,start+5);
+            if ((payLoadSize+9)>len)
+            {
+                return false;
+            }
+        }
+        else if(data[start]==MessageType::update  && len >=8)
+        {
+            int payLoadSize = 0;
+            payLoadSize = bytesToInteger(data,start+4);
+            if ((payLoadSize+8)>len)
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
+        return true;
+    }
 
 	void Client::disconnect()
 	{
-        if((_socket == NULL) || (_socket->sockDisconnect() == AppWarp::result_failure)){
+        
+
+        if((_socket == NULL) || (_socket->sockDisconnect() == AppWarp::result_failure))
+        {
             if(_connectionReqListener != NULL)
                 _connectionReqListener->onDisconnectDone(AppWarp::ResultCode::bad_request);
             return;
         }
+        keepAliveWatchDog = false;
+        this->unscheduleKeepAlive();
         delete _socket;
         _socket = NULL;
         _state = ConnectionState::disconnected;
+        AppWarpSessionID = 0;
+        
 		if(_connectionReqListener != NULL)
 			_connectionReqListener->onDisconnectDone(AppWarp::ResultCode::success);
 

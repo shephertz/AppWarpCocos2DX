@@ -2473,6 +2473,7 @@
 				GCC_PREFIX_HEADER = AppWarpCocos2dxSample/Prefix.pch;
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
 				INFOPLIST_FILE = AppWarpCocos2dxSample/Resources/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/AppWarpCocos2dxSample/libs/cocos2dx/platform/third_party/ios/libraries\"",
@@ -2497,6 +2498,7 @@
 				GCC_PREFIX_HEADER = AppWarpCocos2dxSample/Prefix.pch;
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
 				INFOPLIST_FILE = AppWarpCocos2dxSample/Resources/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/AppWarpCocos2dxSample/libs/cocos2dx/platform/third_party/ios/libraries\"",

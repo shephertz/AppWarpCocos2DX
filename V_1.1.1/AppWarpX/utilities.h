@@ -29,4 +29,5 @@ namespace AppWarp
 	int getJSONInt(const char*,byte *,int );
 	bool getJSONBool(const char*,byte *,int );
 	std::string getODataUTCDateFilter();
+    void appWarpTrace(std::string);
 }

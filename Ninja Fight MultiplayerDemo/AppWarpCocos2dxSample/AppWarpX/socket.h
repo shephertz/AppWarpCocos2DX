@@ -54,6 +54,7 @@ namespace AppWarp
 			int sockDisconnect();
 			int sockSend(char *,int);
 			void checkMessages();
+            
 		};
 
 	}

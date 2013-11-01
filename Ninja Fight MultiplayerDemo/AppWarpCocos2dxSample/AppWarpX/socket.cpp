@@ -47,6 +47,7 @@ namespace AppWarp
 		    sockd = socket(AF_INET, SOCK_STREAM, 0);
             if (sockd == -1)
             {
+
                 return AppWarp::result_failure;
             }
             
@@ -56,8 +57,10 @@ namespace AppWarp
             serv_name.sin_port = htons(port);
 
             int status = connect(sockd, (struct sockaddr*)&serv_name, sizeof(serv_name));
+        
             if (status == -1)
             {
+
                 return AppWarp::result_failure;
             }
             fcntl(sockd, F_SETFL, O_NONBLOCK);
@@ -66,7 +69,8 @@ namespace AppWarp
 
 		int Socket::sockDisconnect()
 		{
-            if(sockd == -1){
+            if(sockd == -1)
+            {
                 return AppWarp::result_failure;
             }
             shutdown(sockd, SHUT_RDWR);
@@ -76,28 +80,36 @@ namespace AppWarp
 
 		int Socket::sockSend(char *messageToSend,int messageLength)
 		{
+            _callBack->keepAliveWatchDog = false;
             int bytes_sent = send(sockd, messageToSend, messageLength, 0);
-            if(bytes_sent != messageLength){
+            if(bytes_sent != messageLength)
+            {
                 return AppWarp::result_failure;
             }
-            else{
+            else
+            {
                 return AppWarp::result_success;
             }
 		}
 
 		void Socket::checkMessages()
 		{
-			char msg[4096];
+			unsigned char msg[4096];
 			int ret = recv(sockd, msg, 4096, 0);
-            if(ret > 0){
+            if(ret > 0)
+            {
                 _callBack->socketNewMsgCallback(msg, ret);
             }
-            else if(errno == EWOULDBLOCK){
+            else if(errno == EWOULDBLOCK)
+            {
                 return;
             }
-            else{
+            else
+            {
                 _callBack->socketConnectionCallback(AppWarp::result_failure);
             }
 		}
+        
+        
 	}
 }

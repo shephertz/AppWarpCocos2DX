@@ -119,7 +119,8 @@ namespace AppWarp
             lock_properties = 35,
             unlock_properties = 36,
             join_room_range = 37,
-            get_room_range = 38
+            get_room_range = 38,
+            keep_alive = 63
 		};
 	}
 

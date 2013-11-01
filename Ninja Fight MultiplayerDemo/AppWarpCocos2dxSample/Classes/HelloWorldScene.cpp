@@ -30,7 +30,7 @@ bool HelloWorld::init()
     {
         return false;
     }
-
+    isFirstLaunch = true;
     setTouchEnabled(true);
     showStartGameLayer();
     return true;
@@ -79,7 +79,11 @@ void HelloWorld::startGame()
     enemy->setOpacity(100);
     addChild(enemy);
     isConnected = true;
-    scheduleUpdate();
+    if (isFirstLaunch)
+    {
+        scheduleUpdate();
+    }
+    
 
 }
 
@@ -317,14 +321,25 @@ void HelloWorld::connectToAppWarp()
 {
     isConnected = false;
     AppWarp::Client *warpClientRef;
-    AppWarp::Client::initialize(APPWARP_APP_KEY,APPWARP_SECRET_KEY);
-	warpClientRef = AppWarp::Client::getInstance();
-    warpClientRef->setConnectionRequestListener(this);
-    warpClientRef->setNotificationListener(this);
-    warpClientRef->setRoomRequestListener(this);
-    warpClientRef->setZoneRequestListener(this);
-    userName = genRandom();
-    warpClientRef->connect(userName);
+    if (isFirstLaunch)
+    {
+        isFirstLaunch = !isFirstLaunch;
+        AppWarp::Client::initialize(APPWARP_APP_KEY,APPWARP_SECRET_KEY);
+        warpClientRef = AppWarp::Client::getInstance();
+        warpClientRef->setConnectionRequestListener(this);
+        warpClientRef->setNotificationListener(this);
+        warpClientRef->setRoomRequestListener(this);
+        warpClientRef->setZoneRequestListener(this);
+        userName = genRandom();
+        warpClientRef->connect(userName);
+    }
+    else
+    {
+        AppWarp::Client::getInstance()->connect(userName);
+    }
+    
+
+    
 }
 
 
@@ -338,7 +353,10 @@ void HelloWorld::onConnectDone(int res)
         warpClientRef->joinRoom(ROOM_ID);
     }
     else
+    {
+        
         printf("\nonConnectDone .. FAILED\n");
+    }
     
 }
 
@@ -383,6 +401,7 @@ void HelloWorld::sendData(float x, float y, float duration)
 
 void HelloWorld::onChatReceived(AppWarp::chat chatevent)
 {
+    printf("onChatReceived..");
     if(chatevent.sender != userName)
 	{
 		std::size_t loc = chatevent.chat.find('x');
