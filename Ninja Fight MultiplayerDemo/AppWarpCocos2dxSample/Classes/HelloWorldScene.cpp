@@ -49,7 +49,7 @@ void HelloWorld::showStartGameLayer()
     
     CCMenuItemLabel *startGameButton = CCMenuItemLabel::create(buttonTitle, this,menu_selector(HelloWorld::connectToAppWarp));
     startGameButton->setPosition(ccp(winSize.width/2,winSize.height/2));
-    
+    //printf("\nshowStartGameLayer = (%f,%f)",winSize.width/2,winSize.height/2);
     CCMenu *pMenu = CCMenu::create(startGameButton,NULL);
     pMenu->setPosition(CCPointZero);
     startGameLayer->addChild(pMenu, 1);
@@ -326,6 +326,7 @@ void HelloWorld::connectToAppWarp()
         isFirstLaunch = !isFirstLaunch;
         AppWarp::Client::initialize(APPWARP_APP_KEY,APPWARP_SECRET_KEY);
         warpClientRef = AppWarp::Client::getInstance();
+        warpClientRef->setRecoveryAllowance(60);
         warpClientRef->setConnectionRequestListener(this);
         warpClientRef->setNotificationListener(this);
         warpClientRef->setRoomRequestListener(this);
@@ -337,34 +338,62 @@ void HelloWorld::connectToAppWarp()
     {
         AppWarp::Client::getInstance()->connect(userName);
     }
-    
-
-    
 }
 
 
 void HelloWorld::onConnectDone(int res)
 {
-    if (res==0)
+    if (res==AppWarp::ResultCode::success)
     {
-        printf("\nonConnectDone .. SUCCESS\n");
+        unscheduleRecover();
+        printf("\nonConnectDone .. SUCCESS..session=%d\n",AppWarp::AppWarpSessionID);
         AppWarp::Client *warpClientRef;
         warpClientRef = AppWarp::Client::getInstance();
         warpClientRef->joinRoom(ROOM_ID);
     }
+    else if (res==AppWarp::ResultCode::success_recovered)
+    {
+        unscheduleRecover();
+        printf("\nonConnectDone .. SUCCESS with success_recovered..session=%d\n",AppWarp::AppWarpSessionID);
+    }
+    else if (res==AppWarp::ResultCode::connection_error_recoverable)
+    {
+        scheduleRecover();
+        printf("\nonConnectDone .. FAILED..connection_error_recoverable..session=%d\n",AppWarp::AppWarpSessionID);
+    }
+    else if (res==AppWarp::ResultCode::bad_request)
+    {
+        unscheduleRecover();
+        printf("\nonConnectDone .. FAILED with bad request..session=%d\n",AppWarp::AppWarpSessionID);
+    }
     else
     {
-        
-        printf("\nonConnectDone .. FAILED\n");
+        unscheduleRecover();
+        printf("\nonConnectDone .. FAILED with unknown reason..session=%d\n",AppWarp::AppWarpSessionID);
     }
-    
+}
+
+void HelloWorld::scheduleRecover()
+{
+    schedule(schedule_selector(HelloWorld::recover), 5.0f);
+    showReconnectingLayer("Reconnecting ...");
+}
+
+void HelloWorld::unscheduleRecover()
+{
+    unschedule(schedule_selector(HelloWorld::recover));
+}
+
+void HelloWorld::recover()
+{
+    printf("\nHelloWorld::recover");
+    AppWarp::Client::getInstance()->recoverConnection();
 }
 
 void HelloWorld::onJoinRoomDone(AppWarp::room revent)
 {
     if (revent.result==0)
     {
-        
         printf("\nonJoinRoomDone .. SUCCESS\n");
         AppWarp::Client *warpClientRef;
         warpClientRef = AppWarp::Client::getInstance();
@@ -415,3 +444,38 @@ void HelloWorld::onChatReceived(AppWarp::chat chatevent)
         updateEnemyStatus(ccp(x,y), dest);
     }
 }
+
+void HelloWorld::showReconnectingLayer(std::string message)
+{
+    
+    // Get the dimensions of the window for calculation purposes
+    CCSize winSize = CCDirector::sharedDirector()->getWinSize();
+    
+    startGameLayer = StartGameLayer::create();
+    startGameLayer->setColor(ccc3(0, 0, 0));
+    startGameLayer->setOpacity(50);
+    addChild(startGameLayer);
+    
+    CCLabelTTF *buttonTitle = CCLabelTTF::create(message.c_str(), "Marker Felt", 30);
+    buttonTitle->setColor(ccBLACK);
+    startGameLayer->addChild(buttonTitle);
+    buttonTitle->setPosition(ccp(winSize.width/2,winSize.height/2));
+    
+}
+
+void HelloWorld::onUserPaused(std::string user,std::string locId,bool isLobby)
+{
+    //    printf("\nonUserPaused...user=%s",user.c_str());
+    //    printf("\nonUserPaused...locId=%s",locId.c_str());
+    std::string message = "Waiting for "+user+" response...";
+    showReconnectingLayer(message);
+}
+
+void HelloWorld::onUserResumed(std::string user,std::string locId,bool isLobby)
+{
+    //    printf("\nonUserResumed...user=%s",user.c_str());
+    //    printf("\nonUserResumed...locId=%s",locId.c_str());
+    removeStartGameLayer();
+}
+
+

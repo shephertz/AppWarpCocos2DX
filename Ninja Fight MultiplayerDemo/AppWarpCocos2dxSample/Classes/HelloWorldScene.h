@@ -59,6 +59,13 @@ public:
     void onJoinRoomDone(AppWarp::room revent);
     void onSubscribeRoomDone(AppWarp::room revent);
     void onChatReceived(AppWarp::chat chatevent);
+    void onUserPaused(std::string user,std::string locId,bool isLobby);
+    void onUserResumed(std::string user,std::string locId,bool isLobby);
+    void showReconnectingLayer(std::string message);
+    
+    void scheduleRecover();
+    void unscheduleRecover();
+    void recover();
 };
 
 

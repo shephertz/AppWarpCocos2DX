@@ -55,7 +55,7 @@ namespace AppWarp
     extern int RECOVERY_ALLOWANCE_TIME;
     extern bool AUTO_RECOVER;
 
-	class Client : public cocos2d::CCNode
+	class Client : public cocos2d::Node
 	{
 	public:
 		~Client();

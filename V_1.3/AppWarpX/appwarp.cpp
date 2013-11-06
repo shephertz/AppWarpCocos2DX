@@ -82,7 +82,7 @@ namespace AppWarp
         _instance = new Client();
 		_instance->APIKEY = AKEY;
 		_instance->SECRETKEY = SKEY;
-        _instance->m_bRunning = true;
+        _instance->_running = true;
         _instance->scheduleUpdate();
         _instance->isWaitingForData = false;
         _instance->incompleteDataBuffer = NULL;
