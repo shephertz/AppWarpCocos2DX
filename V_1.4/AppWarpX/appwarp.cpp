@@ -55,7 +55,7 @@ namespace AppWarp
 		_updatelistener = NULL;
         _socket = NULL;
 		userName = "";
-		APPWARPSERVERHOST = "10.0.0.6";
+		APPWARPSERVERHOST = "";
         _state = ConnectionState::disconnected;
         _socketState = SocketStream::stream_failed;
 	}
