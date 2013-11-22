@@ -122,7 +122,12 @@ namespace AppWarp
             unlock_properties = 36,
             join_room_range = 37,
             get_room_range = 38,
-            keep_alive = 63
+            keep_alive = 63,
+            assoc_port = 64,
+            ack_assoc_port = 65,
+            start_game = 66,
+            stop_game = 67,
+            get_move_history = 68
 		};
 	}
 
@@ -156,7 +161,9 @@ namespace AppWarp
             private_chat = 12,
             move_completed = 13,
             user_paused = 14,
-            user_resumed = 15
+            user_resumed = 15,
+            game_started = 16,
+            game_stopped = 17
 		};
 	}
 
@@ -178,12 +185,13 @@ namespace AppWarp
     {
         enum
         {
-            stream_connected = 3,
-            stream_failed = 4,
+            stream_connecting = 1,
+            stream_connected = 2,
+            stream_failed = 3,
         };
     }
     
-	struct lobby_struct
+	typedef struct lobby_struct
 	{
 		std::string lobbyid;
 		std::string owner;
@@ -191,68 +199,68 @@ namespace AppWarp
 		std::string name;
 		bool isPrimary;
 		int result;
-	};
-	typedef lobby_struct lobby; 
+	} lobby; 
 
-	struct room_struct
+	typedef struct room_struct
 	{
 		std::string roomId;
 		std::string owner;
 		int maxUsers;
 		std::string name;
 		int result;
-	};
-	typedef room_struct room; 
+	} room; 
 
-	struct livelobby_struct
+	typedef struct livelobby_struct
 	{
 		room rm;
 		std::string customData;
 		std::vector<std::string> users;
 		int result;
-	};
-	typedef livelobby_struct livelobby; 
+	} livelobby; 
 
-	struct liveroom_struct
+	typedef struct liveroom_struct
 	{
 		room rm;
 		std::string customData;
 		std::vector<std::string> users;
 		std::map<std::string, std::string> properties;
 		int result;
-	};
-	typedef liveroom_struct liveroom;
+	} liveroom;
 
-	struct liveuser_struct
+	typedef struct liveuser_struct
 	{
 		std::string name;
 		std::string locationId;
 		std::string customData;
 		int result;
-	};
-	typedef liveuser_struct liveuser;
+	} liveuser;
 
-	struct liveresult_struct
+	typedef struct liveresult_struct
 	{
 		int result;
 		std::vector<std::string> list;
-	};
-	typedef liveresult_struct liveresult;
+	} liveresult;
 
-	struct matchedroom_struct
+	typedef struct matchedroom_struct
 	{
 		int result;
 		std::vector<room> roomData;
-	};
-	typedef matchedroom_struct matchedroom;
+	} matchedroom;
 
-	struct chat_struct
+	typedef struct chat_struct
 	{
 		std::string chat;
 		std::string sender;
 		int locid;
 		bool isLocationLobby;
 		int result;
-	};
-	typedef chat_struct chat;
+	} chat;
+    
+    typedef struct move_struct
+    {
+        std::string sender;
+        std::string moveData;
+        std::string nextTurn;
+        std::string roomId;
+    } move;
 }

@@ -160,8 +160,9 @@ namespace AppWarp
     {
         Client* pWarpClient = (Client*)userp;
         
-        cJSON *json;
+        cJSON *json,*begPtr;
         json = cJSON_Parse((char*)buffer);
+        begPtr =json;
         if(json != NULL && json->child!=NULL)
         {
             json = json->child;
@@ -172,6 +173,7 @@ namespace AppWarp
                 pWarpClient->APPWARPSERVERHOST = value;
             }
         }
+        cJSON_Delete(begPtr);
         return size*nmemb;
     }
     
@@ -247,6 +249,11 @@ namespace AppWarp
     
     void Client::connectSocket()
     {
+        if (_socket)
+        {
+            delete _socket;
+            _socket = NULL;
+        }
         _socket = new Utility::Socket(this);
         int result = _socket->sockConnect(APPWARPSERVERHOST, APPWARPSERVERPORT);
         socketConnectionCallback(result);
@@ -475,7 +482,8 @@ namespace AppWarp
         this->unscheduleKeepAlive();
         delete _socket;
         _socket = NULL;
-        _state = ConnectionState::disconnecting;
+        _state = ConnectionState::disconnected;
+        _socketState = SocketStream::stream_failed;
         AppWarpSessionID = 0;
         
 		if(_connectionReqListener != NULL)

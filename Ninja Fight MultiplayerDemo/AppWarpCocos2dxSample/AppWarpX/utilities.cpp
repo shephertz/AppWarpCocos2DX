@@ -72,6 +72,37 @@ namespace AppWarp
 			return user;
 		}
 
+    std::string getJSONObjectAsString(const char* name,byte *data,int len)
+    {
+        std::string user;
+        
+        char *str = new char[len];
+        for(int i=0; i<len; ++i)
+        {
+            str[i] = (char)data[i];
+        }
+        
+        cJSON *json, *begPtr;
+        json = cJSON_Parse(str);
+        begPtr = json;
+        json = json->child;
+        while(json != NULL)
+        {
+            if(strcmp(json->string,name) ==  0)
+            {
+                
+                user = cJSON_PrintUnformatted(json);
+                break;
+            }
+            json = json->next;
+        }
+        cJSON_Delete(begPtr);
+        delete[] str;
+        return user;
+    }
+        
+    
+    
 		int getJSONInt(const char* name,byte *data,int len)
 		{
 			int num = -1;

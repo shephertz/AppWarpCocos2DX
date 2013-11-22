@@ -23,6 +23,7 @@
  */
 #include "appwarp.h"
 
+using namespace std;
 
 namespace AppWarp
 {
@@ -45,7 +46,51 @@ namespace AppWarp
 			_room.maxUsers = getJSONInt("maxUsers",data,len);
 		}
 
-		int Client::handleResponse(char *data, int index)
+        move buildMoveEvent(byte* data, int len)
+        {
+            move event;
+            event.roomId = getJSONString("id",data, len);
+            event.sender = getJSONString("sender",data, len);
+            event.nextTurn = getJSONString("nextTurn",data, len);
+            event.moveData = getJSONString("moveData",data, len);
+            return event;
+        }
+		
+        vector<move> buildMoveHistory(byte* data, int len)
+        {
+            vector<move> moves;
+            string history = getJSONObjectAsString("history", data, len);
+            
+            cJSON *json,*json2, *begPtr;
+            json = cJSON_Parse(history.c_str());
+            begPtr = json;
+            json = json->child;
+            while(json != NULL)
+            {
+                move mv;
+                json2 = json->child;
+                while(json2 != NULL)
+                {
+                    if(strcmp(std::string(json2->string).c_str(),"id") == 0)
+                        mv.roomId = json2->valuestring;
+                    if(strcmp(std::string(json2->string).c_str(),"moveData") == 0)
+                        mv.moveData = json2->valuestring;
+                    if(strcmp(std::string(json2->string).c_str(),"nextTurn") == 0)
+                        mv.nextTurn = json2->valuestring;
+                    if(strcmp(std::string(json2->string).c_str(),"sender") == 0)
+                        mv.sender = json2->valuestring;
+                    
+                    json2 = json2->next;
+                }
+                moves.push_back(mv);
+                json = json->next;
+            }
+            
+            cJSON_Delete(begPtr);
+            return moves;
+        }
+    
+        int Client::handleResponse(char *data, int index)
 		{
 			response *res;
 			res = buildResponse(data, index);
@@ -62,10 +107,9 @@ namespace AppWarp
 				handleLobbyResponse(RequestType::leave_lobby,res);
 			else if(res->requestType == RequestType::get_lobby_info)
 				handleLobbyResponse(RequestType::get_lobby_info,res);
-			else if(res->requestType == RequestType::chat)
+			else if(res->requestType == RequestType::chat && _chatlistener!= NULL)
 			{
-				if(_chatlistener != NULL)
-					_chatlistener->onSendChatDone(res->resultCode);
+                _chatlistener->onSendChatDone(res->resultCode);
 			}
             else if(res->requestType == RequestType::private_chat)
 			{
@@ -87,6 +131,20 @@ namespace AppWarp
 				if(_roomlistener != NULL)
 					_roomlistener->onUnlockPropertiesDone(res->resultCode);
 			}
+            else if(res->requestType == RequestType::start_game && _turnlistener!=NULL)
+                _turnlistener->onStartGameDone(res->resultCode);
+            else if(res->requestType == RequestType::stop_game && _turnlistener!=NULL)
+                _turnlistener->onStopGameDone(res->resultCode);
+            else if(res->requestType == RequestType::move && _turnlistener!=NULL)
+                _turnlistener->onSendMoveDone(res->resultCode);
+            else if(res->requestType == RequestType::get_move_history && _turnlistener!=NULL)
+            {
+                vector<move> history;
+                if(res->resultCode == ResultCode::success)
+                    _turnlistener->onGetMoveHistoryDone(res->resultCode, buildMoveHistory(res->payLoad, res->payLoadSize));
+                else
+                    _turnlistener->onGetMoveHistoryDone(res->resultCode, history);
+            }
 			else if(res->requestType == RequestType::join_room || res->requestType == RequestType::join_room_n_user || res->requestType == RequestType::join_room_with_properties || res->requestType == RequestType::join_room_range)
 				handleRoomResponse(RequestType::join_room, res);
 			else if(res->requestType == RequestType::leave_room)
@@ -115,12 +173,6 @@ namespace AppWarp
 				handleRoomResponse(RequestType::update_room_property, res);
 			else if(res->requestType == RequestType::get_room_with_n_user || res->requestType == RequestType::get_room_with_properties || res->requestType == RequestType::get_room_range)
 				handleZoneResponse(res->requestType, res);
-
-			char *log=new char[res->payLoadSize+1];
-			for(int i=0; i<res->payLoadSize;i++)
-				log[i] = res->payLoad[i];
-			log[res->payLoadSize] = '\0';
-			delete[] log;
 
 			int ret = res->payLoadSize+9;
 			delete[] res->payLoad;
@@ -196,6 +248,24 @@ namespace AppWarp
                     std::string user = getJSONString("user",res->payLoad,res->payLoadSize);
                     _notificationListener->onUserLeftRoom(rm, user);
                 }
+                else if(res->updateType == UpdateType::game_started && _notificationListener!=NULL)
+                {
+                    string roomid = getJSONString("id",res->payLoad,res->payLoadSize);
+                    string sender = getJSONString("sender",res->payLoad,res->payLoadSize);
+                    string nextTurn = getJSONString("nextTurn",res->payLoad,res->payLoadSize);
+                    _notificationListener->onGameStarted(sender, roomid, nextTurn);
+                }
+                else if(res->updateType == UpdateType::game_stopped && _notificationListener!=NULL)
+                {
+                    string roomid = getJSONString("id",res->payLoad,res->payLoadSize);
+                    string sender = getJSONString("sender",res->payLoad,res->payLoadSize);
+                    _notificationListener->onGameStopped(sender, roomid);
+                }                
+                else if(res->updateType == UpdateType::move_completed && _notificationListener!=NULL)
+                {
+                    move event = buildMoveEvent(res->payLoad, res->payLoadSize);
+                    _notificationListener->onMoveCompleted(event);
+                }
                 else if(res->updateType == UpdateType::user_paused)
                 {
                     std::string user = getJSONString("user",res->payLoad,res->payLoadSize);
@@ -219,8 +289,9 @@ namespace AppWarp
                     std::string user = getJSONString("sender",res->payLoad,res->payLoadSize);
                     
                     std::string properties_str = getJSONString("properties",res->payLoad,res->payLoadSize);
-                    cJSON *json;
+                    cJSON *json, *begPtr;
                     json = cJSON_Parse(properties_str.c_str());
+                    begPtr = json;
                     if(json != NULL)
                     {
                         json = json->child;
@@ -232,8 +303,9 @@ namespace AppWarp
                     }
                     
                     std::string locktable_str = getJSONString("lockProperties",res->payLoad,res->payLoadSize);
-                    cJSON *jsonLocktable;
+                    cJSON *jsonLocktable, *begPtr2;
                     jsonLocktable = cJSON_Parse(locktable_str.c_str());
+                    begPtr2 = jsonLocktable;
                     if(jsonLocktable != NULL)
                     {
                         jsonLocktable = jsonLocktable->child;
@@ -246,8 +318,8 @@ namespace AppWarp
                     
                     _notificationListener->onUserChangeRoomProperty(rm, user,properties, lockTable);
                     
-                    cJSON_Delete(json);
-                    cJSON_Delete(jsonLocktable);
+                    cJSON_Delete(begPtr);
+                    cJSON_Delete(begPtr2);
                 }
             }
 
@@ -393,8 +465,9 @@ namespace AppWarp
 
 				std::string properties = getJSONString("properties",res->payLoad,res->payLoadSize);
 
-				cJSON *json;
+				cJSON *json, *begPtr;
 				json = cJSON_Parse(properties.c_str());
+                begPtr = json;
 				if(json != NULL)
 				{
 					json = json->child;
@@ -408,7 +481,7 @@ namespace AppWarp
 				if(_roomlistener != NULL)
 					_roomlistener->onGetLiveRoomInfoDone(lr);
 
-				cJSON_Delete(json);
+				cJSON_Delete(begPtr);
 			}
 			else if(reqType == RequestType::set_custom_room_data)
 			{
@@ -434,8 +507,9 @@ namespace AppWarp
 
 				std::string properties = getJSONString("properties",res->payLoad,res->payLoadSize);
 
-				cJSON *json;
+				cJSON *json, *begPtr;
 				json = cJSON_Parse(properties.c_str());
+				begPtr = json;
 				if(json != NULL)
 				{
 					json = json->child;
@@ -449,7 +523,7 @@ namespace AppWarp
 				if(_roomlistener != NULL)
 					_roomlistener->onSetCustomRoomDataDone(lr);
 
-				cJSON_Delete(json);
+				cJSON_Delete(begPtr);
 			}
 			else if(reqType == RequestType::update_room_property)
 			{
@@ -475,8 +549,9 @@ namespace AppWarp
 
 				std::string properties = getJSONString("properties",res->payLoad,res->payLoadSize);
 
-				cJSON *json;
+				cJSON *json, *begPtr;
 				json = cJSON_Parse(properties.c_str());
+				begPtr = json;
 				json = json->child;
 				while(json != NULL)
 				{
@@ -487,7 +562,7 @@ namespace AppWarp
 				if(_roomlistener != NULL)
 					_roomlistener->onUpdatePropertyDone(lr);
 
-				cJSON_Delete(json);
+				cJSON_Delete(begPtr);
 			}
 		}
 

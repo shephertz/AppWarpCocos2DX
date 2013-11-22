@@ -56,6 +56,7 @@ public:
     CREATE_FUNC(HelloWorld);
     
     void onConnectDone(int res);
+    void onDisconnectDone(int res);
     void onJoinRoomDone(AppWarp::room revent);
     void onSubscribeRoomDone(AppWarp::room revent);
     void onChatReceived(AppWarp::chat chatevent);
@@ -66,6 +67,7 @@ public:
     void scheduleRecover();
     void unscheduleRecover();
     void recover();
+    void disconnect();
 };
 
 

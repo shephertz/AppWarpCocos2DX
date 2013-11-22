@@ -289,8 +289,9 @@ namespace AppWarp
                     std::string user = getJSONString("sender",res->payLoad,res->payLoadSize);
                     
                     std::string properties_str = getJSONString("properties",res->payLoad,res->payLoadSize);
-                    cJSON *json;
+                    cJSON *json, *begPtr;
                     json = cJSON_Parse(properties_str.c_str());
+                    begPtr = json;
                     if(json != NULL)
                     {
                         json = json->child;
@@ -302,8 +303,9 @@ namespace AppWarp
                     }
                     
                     std::string locktable_str = getJSONString("lockProperties",res->payLoad,res->payLoadSize);
-                    cJSON *jsonLocktable;
+                    cJSON *jsonLocktable, *begPtr2;
                     jsonLocktable = cJSON_Parse(locktable_str.c_str());
+                    begPtr2 = jsonLocktable;
                     if(jsonLocktable != NULL)
                     {
                         jsonLocktable = jsonLocktable->child;
@@ -316,8 +318,8 @@ namespace AppWarp
                     
                     _notificationListener->onUserChangeRoomProperty(rm, user,properties, lockTable);
                     
-                    cJSON_Delete(json);
-                    cJSON_Delete(jsonLocktable);
+                    cJSON_Delete(begPtr);
+                    cJSON_Delete(begPtr2);
                 }
             }
 
@@ -463,8 +465,9 @@ namespace AppWarp
 
 				std::string properties = getJSONString("properties",res->payLoad,res->payLoadSize);
 
-				cJSON *json;
+				cJSON *json, *begPtr;
 				json = cJSON_Parse(properties.c_str());
+                begPtr = json;
 				if(json != NULL)
 				{
 					json = json->child;
@@ -478,7 +481,7 @@ namespace AppWarp
 				if(_roomlistener != NULL)
 					_roomlistener->onGetLiveRoomInfoDone(lr);
 
-				cJSON_Delete(json);
+				cJSON_Delete(begPtr);
 			}
 			else if(reqType == RequestType::set_custom_room_data)
 			{
@@ -504,8 +507,9 @@ namespace AppWarp
 
 				std::string properties = getJSONString("properties",res->payLoad,res->payLoadSize);
 
-				cJSON *json;
+				cJSON *json, *begPtr;
 				json = cJSON_Parse(properties.c_str());
+				begPtr = json;
 				if(json != NULL)
 				{
 					json = json->child;
@@ -519,7 +523,7 @@ namespace AppWarp
 				if(_roomlistener != NULL)
 					_roomlistener->onSetCustomRoomDataDone(lr);
 
-				cJSON_Delete(json);
+				cJSON_Delete(begPtr);
 			}
 			else if(reqType == RequestType::update_room_property)
 			{
@@ -545,8 +549,9 @@ namespace AppWarp
 
 				std::string properties = getJSONString("properties",res->payLoad,res->payLoadSize);
 
-				cJSON *json;
+				cJSON *json, *begPtr;
 				json = cJSON_Parse(properties.c_str());
+				begPtr = json;
 				json = json->child;
 				while(json != NULL)
 				{
@@ -557,7 +562,7 @@ namespace AppWarp
 				if(_roomlistener != NULL)
 					_roomlistener->onUpdatePropertyDone(lr);
 
-				cJSON_Delete(json);
+				cJSON_Delete(begPtr);
 			}
 		}
 

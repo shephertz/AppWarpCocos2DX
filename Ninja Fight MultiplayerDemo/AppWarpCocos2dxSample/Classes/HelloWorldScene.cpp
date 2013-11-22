@@ -84,6 +84,15 @@ void HelloWorld::startGame()
         scheduleUpdate();
     }
     
+    CCLabelTTF *buttonTitle = CCLabelTTF::create("Disconnect", "Marker Felt", 30);
+    buttonTitle->setColor(ccBLACK);
+    
+    CCMenuItemLabel *startGameButton = CCMenuItemLabel::create(buttonTitle, this,menu_selector(HelloWorld::disconnect));
+    startGameButton->setPosition(ccp(winSize.width/2,winSize.height/4));
+    //printf("\nshowStartGameLayer = (%f,%f)",winSize.width/2,winSize.height/2);
+    CCMenu *pMenu = CCMenu::create(startGameButton,NULL);
+    pMenu->setPosition(CCPointZero);
+    this->addChild(pMenu, 1);
 
 }
 
@@ -95,11 +104,9 @@ void HelloWorld::update(float time)
         return;
     }
     
-    
 	CCArray *projectilesToDelete = CCArray::create();
     if (_projectiles->count())
     {
-        
         CCObject *pObj = NULL;
         CCARRAY_FOREACH(_projectiles, pObj)
         {
@@ -317,6 +324,11 @@ std::string genRandom()
  * AppWarp Helper Methods
  */
 
+void HelloWorld::disconnect()
+{
+    AppWarp::Client::getInstance()->disconnect();
+}
+
 void HelloWorld::connectToAppWarp()
 {
     isConnected = false;
@@ -340,6 +352,10 @@ void HelloWorld::connectToAppWarp()
     }
 }
 
+void HelloWorld::onDisconnectDone(int res)
+{
+    showStartGameLayer();
+}
 
 void HelloWorld::onConnectDone(int res)
 {

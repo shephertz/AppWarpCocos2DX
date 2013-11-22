@@ -161,6 +161,16 @@ namespace AppWarp
 		void setUpdateRequestListener(UpdateRequestListener *);
 		
         /**
+		 * Set your listener object on which callbacks will be invoked when a
+		 * response from the server is received for Turn Based Room requests like
+		 * sendMove, getTurnHistory, startGame and stopGame
+		 *
+		 * @param listener
+		 * @return void
+		 */
+		void setTurnBasedRoomRequestListener(TurnBasedRoomRequestListener *);
+        
+        /**
 		 * Initiates your connection with the WARP server. The result of the
 		 * operation is provided in the onConnectDone callback of the
 		 * ConnectionListener.
@@ -268,6 +278,19 @@ namespace AppWarp
 		 * @return void
 		 */
 		void createRoom(std::string name,std::string owner,int maxUsers,std::map<std::string,std::string> properties);
+        
+        /**
+		 * sends a create room request to the server. Result of the request is
+		 * provided in the onCreateRoomDone callback of the ZoneRequestListener.
+		 *
+		 * @param name
+		 * @param owner
+		 * @param maxUsers
+		 * @param properties
+         * @param turnTime
+		 * @return void
+		 */
+		void createTurnRoom(std::string name,std::string owner,int maxUsers,std::map<std::string,std::string> properties, int turnTime);
         
         /**
 		 * sends a delete room request to the server. Result of the request is
@@ -441,7 +464,36 @@ namespace AppWarp
 		 * @return void
 		 */
 		void getRoomWithProperties(std::map<std::string,std::string>);
-
+        
+        /**
+         * sends a start game request to the server. Result of the request is
+         * provided in the onGameStarted callback of the TurnBasedRoomListener.
+         *
+         */
+        void startGame();
+        
+        /**
+         * sends a stop game request to the server. Result of the request is
+         * provided in the onGameStopped callback of the TurnBasedRoomListener.
+         *
+         */
+        void stopGame();
+        
+        /*
+         * Sends a move to the joined turn based room. Only allowed if its the sender's
+         * turn.
+         *
+         */
+        void sendMove(std::string movedata);
+        
+        
+        /**
+         * sends a get move history request to the server. Result of the request is
+         * provided in the onGetMoveHistoryDone callback of the TurnBasedRoomListener.
+         *
+         */
+        void getMoveHistory();
+        
         /*
          * Sets the connection recovery time (seconds) allowed that will be negotiated
          * with the server. By default it is 0 so there is no connection recovery.
@@ -449,8 +501,9 @@ namespace AppWarp
         void setRecoveryAllowance(int maxRecoveryTime);
         
         
-        /* Attempts to reconnect and recover the session. May succeed if done within
-         * the reconnect time limit negotiated during start up.
+        /* 
+         * Attempts to reconnect and recover the session. May succeed if done within
+         * the recovery allowance time limit negotiated before the prior connect.
          */
         void recoverConnection();
 
@@ -479,6 +532,7 @@ namespace AppWarp
 		RoomRequestListener *_roomlistener;
 		ZoneRequestListener *_zonelistener;
 		UpdateRequestListener *_updatelistener;
+        TurnBasedRoomRequestListener *_turnlistener;
         
 		int handleResponse(char *, int);
 		int handleNotify(char *, int);

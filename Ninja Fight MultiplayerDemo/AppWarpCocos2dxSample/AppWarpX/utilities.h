@@ -26,6 +26,7 @@ namespace AppWarp
 	std::string ItoA(int );
 	int bytesToInteger(char data[], int );
 	std::string getJSONString(const char*,byte *,int );
+    std::string getJSONObjectAsString(const char*,byte *,int );
 	int getJSONInt(const char*,byte *,int );
 	bool getJSONBool(const char*,byte *,int );
 	std::string getODataUTCDateFilter();
