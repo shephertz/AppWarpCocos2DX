@@ -40,6 +40,9 @@ public:
     // there's no 'id' in cpp, so we recommend to return the class instance pointer
     static cocos2d::CCScene* scene();
     void showStartGameLayer();
+    void updateRoomProperties();
+    void getRoomProperties();
+
     void removeStartGameLayer();
     void connectToAppWarp();
     // a selector callback
@@ -63,6 +66,8 @@ public:
     void onUserPaused(std::string user,std::string locId,bool isLobby);
     void onUserResumed(std::string user,std::string locId,bool isLobby);
     void showReconnectingLayer(std::string message);
+    void onUpdatePropertyDone(AppWarp::liveroom revent);
+
     
     void scheduleRecover();
     void unscheduleRecover();

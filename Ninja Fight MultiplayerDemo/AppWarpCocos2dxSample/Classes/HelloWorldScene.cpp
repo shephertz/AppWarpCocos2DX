@@ -49,11 +49,40 @@ void HelloWorld::showStartGameLayer()
     
     CCMenuItemLabel *startGameButton = CCMenuItemLabel::create(buttonTitle, this,menu_selector(HelloWorld::connectToAppWarp));
     startGameButton->setPosition(ccp(winSize.width/2,winSize.height/2));
+    
+    
+    CCLabelTTF *updateButtonTitle = CCLabelTTF::create("Update Room", "Marker Felt", 30);
+    updateButtonTitle->setColor(ccBLACK);
+    
+    CCMenuItemLabel *updateRoomButton = CCMenuItemLabel::create(updateButtonTitle, this,menu_selector(HelloWorld::connectToAppWarp));
+    updateRoomButton->setPosition(ccp(winSize.width/2,winSize.height/4));
+    
+    CCLabelTTF *getRoomButtonTitle = CCLabelTTF::create("Get Room", "Marker Felt", 30);
+    getRoomButtonTitle->setColor(ccBLACK);
+    
+    CCMenuItemLabel *getRoomButton = CCMenuItemLabel::create(getRoomButtonTitle, this,menu_selector(HelloWorld::connectToAppWarp));
+    getRoomButton->setPosition(ccp(winSize.width/2,winSize.height/8));
+
+    
+    
     //printf("\nshowStartGameLayer = (%f,%f)",winSize.width/2,winSize.height/2);
-    CCMenu *pMenu = CCMenu::create(startGameButton,NULL);
+    CCMenu *pMenu = CCMenu::create(startGameButton,updateRoomButton,getRoomButton,NULL);
     pMenu->setPosition(CCPointZero);
     startGameLayer->addChild(pMenu, 1);
 }
+
+
+
+void HelloWorld::updateRoomProperties()
+{
+    
+}
+
+void HelloWorld::getRoomProperties()
+{
+    
+}
+
 void HelloWorld::removeStartGameLayer()
 {
     removeChild(startGameLayer,true);
@@ -426,6 +455,17 @@ void HelloWorld::onSubscribeRoomDone(AppWarp::room revent)
     if (revent.result==0)
     {
         printf("\nonSubscribeRoomDone .. SUCCESS\n");
+        AppWarp::Client *warpClientRef;
+        warpClientRef = AppWarp::Client::getInstance();
+        std::map<std::string, std::string> properties;
+        properties["1"] = "Owner";
+        properties["2"] = "Manager";
+        properties["3"] = "Team Lead";
+        
+      //  properties.insert(std::pair<std::string, std::string>("1","Owner"));
+        
+        std::vector<std::string> removeArray;
+        warpClientRef->updateRoomProperties(ROOM_ID,properties, removeArray);
     }
     else
         printf("\nonSubscribeRoomDone .. FAILED\n");
@@ -442,6 +482,26 @@ void HelloWorld::sendData(float x, float y, float duration)
     warpClientRef->sendChat(str.str());
 }
 
+void HelloWorld::onUpdatePropertyDone(AppWarp::liveroom revent)
+{
+    if (revent.result==0)
+    {
+        printf("onUpdatePropertyDone....Success");
+        std::map<std::string, std::string> properties = revent.properties;
+        std::map<std::string,std::string>::iterator it;
+        for(it = properties.begin(); it != properties.end(); ++it)
+		{
+			//cJSON_AddStringToObject(propJSON, it->first.c_str(),it->second.c_str());
+            printf("key= %s...value= %s",it->first.c_str(),it->second.c_str());
+		}
+
+
+    }
+    else
+    {
+        printf("onUpdatePropertyDone....Failed");
+    }
+}
 
 
 void HelloWorld::onChatReceived(AppWarp::chat chatevent)
