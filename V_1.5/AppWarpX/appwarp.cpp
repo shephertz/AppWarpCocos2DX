@@ -1,18 +1,18 @@
 /*
  Copyright (c) 2013 Shephertz Technologies Pvt. Ltd.
- 
+
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
  in the Software without restriction, including without limitation the rights
  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  copies of the Software, and to permit persons to whom the Software is
  furnished to do so, subject to the following conditions:
- 
+
  The above copyright notice and this permission notice shall be included in all
  copies or substantial portions of the Software.
- 
+
  The Software shall be used for Good, not Evil.
- 
+
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -67,7 +67,7 @@ namespace AppWarp
             delete _socket;
         }
 	}
-    
+
 	void Client::terminate()
 	{
 		if(_instance != NULL){
@@ -125,7 +125,7 @@ namespace AppWarp
 	{
 		_turnlistener = listener;
 	}
-    
+
 	void Client::setZoneRequestListener(ZoneRequestListener *listener)
 	{
 		_zonelistener = listener;
@@ -135,33 +135,33 @@ namespace AppWarp
 	{
 		_updatelistener = listener;
 	}
-    
+
     void Client::setRecoveryAllowance(int maxRecoveryTime)
     {
         RECOVERY_ALLOWANCE_TIME = maxRecoveryTime;
     }
-    
+
     void Client::recoverConnection()
     {
-        
+
         if (AppWarpSessionID==0 || userName.length() == 0 || _socket!=NULL || _state!=ConnectionState::disconnected || APPWARPSERVERHOST.length() <= 0)
         {
 			if(_connectionReqListener != NULL)
 				_connectionReqListener->onConnectDone(ResultCode::bad_request);
             return;
 		}
-        
+
         _state = ConnectionState::recovering;
         pthread_t threadConnection;
         pthread_create(&threadConnection, NULL, &threadConnect, (void *)this);
     }
-    
+
 
 
     size_t Client::hostLookupCallback(void *buffer, size_t size, size_t nmemb, void *userp)
     {
         Client* pWarpClient = (Client*)userp;
-        
+
         cJSON *json,*begPtr;
         json = cJSON_Parse((char*)buffer);
         begPtr =json;
@@ -178,7 +178,7 @@ namespace AppWarp
         cJSON_Delete(begPtr);
         return size*nmemb;
     }
-    
+
     void* Client::threadConnect( void *ptr )
     {
         Client* pWarpClient = (Client*)ptr;
@@ -199,7 +199,7 @@ namespace AppWarp
 		}
         return NULL;
     }
-    
+
 	void Client::connect(std::string user)
 	{
 		if(user.length() == 0 || _socket!=NULL || _state!=ConnectionState::disconnected)
@@ -214,7 +214,7 @@ namespace AppWarp
         _socketState = SocketStream::stream_connecting;
         pthread_create(&threadConnection, NULL, &threadConnect, (void *)this);
 	}
-    
+
     int Client::lookup()
     {
         CURL *curlHandle;
@@ -228,12 +228,12 @@ namespace AppWarp
         curl_easy_setopt(curlHandle, CURLOPT_WRITEFUNCTION, hostLookupCallback);
         curl_easy_setopt(curlHandle, CURLOPT_WRITEDATA, (void *)this);
         curl_easy_setopt(curlHandle, CURLOPT_FOLLOWLOCATION, 1 );
-        
+
         std::string path = LOOKUPHOST;
         path.append("?api=");
         path.append(this->APIKEY);
         curl_easy_setopt(curlHandle, CURLOPT_URL, path.c_str());
-        
+
         res = curl_easy_perform( curlHandle );
         if(res == CURLE_OK)
         {
@@ -243,12 +243,12 @@ namespace AppWarp
         {
             http_code = 500;
         }
-        
+
         curl_easy_cleanup( curlHandle );
-        
+
         return http_code;
     }
-    
+
     void Client::connectSocket()
     {
         if (_socket)
@@ -266,18 +266,18 @@ namespace AppWarp
         int result = _socket->sockConnect(APPWARPSERVERHOST, APPWARPSERVERPORT);
         socketConnectionCallback(result);
     }
-    
-    
+
+
     void Client::scheduleKeepAlive()
     {
         this->schedule(schedule_selector(Client::sendKeepAlive), CLIENT_KEEP_ALIVE_TIME_INTERVAL);
     }
-    
+
     void Client::unscheduleKeepAlive()
     {
         this->unschedule(schedule_selector(Client::sendKeepAlive));
     }
-    
+
     void Client::sendKeepAlive(float dt)
     {
         if ( _state!= ConnectionState::connected)
@@ -293,12 +293,12 @@ namespace AppWarp
             {
                 data[i] = lobbyReq[i];
             }
-            
+
             _socket->sockSend(data, byteLen);
-            
+
             delete[] data;
             delete[] lobbyReq;
-            
+
             keepAliveWatchDog = true;
         }
         else
@@ -306,8 +306,8 @@ namespace AppWarp
             keepAliveWatchDog = true;
         }
     }
-    
-    
+
+
 	void Client::socketConnectionCallback(int res)
 	{
         if(res == AppWarp::result_failure)
@@ -345,9 +345,9 @@ namespace AppWarp
         else if(_socketState == SocketStream::stream_failed)
         {
             keepAliveWatchDog = false;
-            
+
             this->unscheduleKeepAlive();
-            
+
             if(_state == ConnectionState::disconnecting)
             {
                 _state = ConnectionState::disconnected;
@@ -382,7 +382,7 @@ namespace AppWarp
            // printf("ConnectionState=%d",_state);
         }
     }
-    
+
     void Client::udpnotify(notify *notification)
     {
         if((notification->updateType != UpdateType::update_peers) || (_notificationListener == NULL)){
@@ -390,7 +390,7 @@ namespace AppWarp
         }
         _notificationListener->onUpdatePeersReceived(notification->payLoad, notification->payLoadSize, true);
     }
-    
+
     void Client::udpresponse(response* res)
     {
         if(res->resultCode == ResultCode::success){
@@ -404,7 +404,7 @@ namespace AppWarp
             _connectionReqListener->onInitUDPDone(res->resultCode);
         }
     }
-    
+
 	void Client::socketNewMsgCallback(unsigned char data[], int len)
 	{
 		int numRead = len;
@@ -414,9 +414,9 @@ namespace AppWarp
         {
             int readLen = len;
             len = readLen + incompleteDataBufferSize;
-            
+
             bufferToDecode = new char[len];
-            
+
             for(int i=0; i<incompleteDataBufferSize;++i)
             {
                 bufferToDecode[i] = incompleteDataBuffer[i];
@@ -437,7 +437,7 @@ namespace AppWarp
             for(int i=0; i<len;++i)
                 bufferToDecode[i] = data[i];
         }
-        
+
 		while(numDecoded < numRead)
 		{
             bool canDecodeData = canDecode(bufferToDecode,numDecoded,numRead);
@@ -457,27 +457,27 @@ namespace AppWarp
                     incompleteDataBuffer = NULL;
                 }
                 incompleteDataBuffer = new char[incompleteDataBufferSize];
-                
+
                 for(int i=numDecoded; i<numRead; ++i)
                 {
                     incompleteDataBuffer[i-numDecoded] = bufferToDecode[i];
                 }
-                
+
                 isWaitingForData = true;
-                
+
                 break;
             }
-            
+
 		}
         delete bufferToDecode;
 	}
-    
+
     bool Client::canDecode(char data[],int start, int end)
     {
         int len = end-start;
         if (data[start]==MessageType::response && len >=9)
         {
-            
+
             int payLoadSize = 0;
             payLoadSize = bytesToInteger(data,start+5);
             if ((payLoadSize+9)>len)
@@ -503,7 +503,7 @@ namespace AppWarp
 
 	void Client::disconnect()
 	{
-        
+
 
         if((_socket == NULL) || (_socket->sockDisconnect() == AppWarp::result_failure))
         {
@@ -518,7 +518,7 @@ namespace AppWarp
         _state = ConnectionState::disconnected;
         _socketState = SocketStream::stream_failed;
         AppWarpSessionID = 0;
-        
+
 		if(_connectionReqListener != NULL)
 			_connectionReqListener->onDisconnectDone(AppWarp::ResultCode::success);
 
@@ -538,7 +538,7 @@ namespace AppWarp
         byte * req = buildWarpRequest(RequestType::assoc_port, "", len, 2);
         _udpsocket->sockSend((char*)req, len);
     }
-    
+
 	void Client::joinLobby()
 	{
         if((_state != ConnectionState::connected) || (_socket == NULL)){
@@ -813,11 +813,11 @@ namespace AppWarp
 			}
             return;
         }
-        
+
 		std::map<std::string,std::string>::iterator it;
 		cJSON *propJSON;
 		propJSON = cJSON_CreateObject();
-        
+
 		for(it = properties.begin(); it != properties.end(); ++it)
 		{
 			cJSON_AddStringToObject(propJSON, it->first.c_str(),it->second.c_str());
@@ -831,7 +831,7 @@ namespace AppWarp
 			if(_zonelistener != NULL)
 				_zonelistener->onCreateRoomDone(_room);
 		}
-        
+
 		int byteLen;
 		byte *roomReq = buildCreateRoomRequest(name,owner,max, prop, time, byteLen);
 		char *data = new char[byteLen];
@@ -839,15 +839,15 @@ namespace AppWarp
 		{
 			data[i] = roomReq[i];
 		}
-        
+
 		_socket->sockSend(data, byteLen);
-        
+
 		delete[] data;
 		delete[] roomReq;
 		cJSON_Delete(propJSON);
 		free(cRet);
 	}
-    
+
 	void Client::createRoom(std::string name, std::string owner, int max)
 	{
         if((_state != ConnectionState::connected) || (_socket == NULL)){
@@ -1015,36 +1015,36 @@ namespace AppWarp
 		{
 			if(_chatlistener != NULL)
 				_chatlistener->onSendPrivateChatDone(ResultCode::bad_request);
-            
+
 			return;
 		}
-        
+
 		std::string payload;
 		int len;
-        
+
 		cJSON *payloadJSON;
 		payloadJSON = cJSON_CreateObject();
         cJSON_AddStringToObject(payloadJSON, "to" ,toUser.c_str());
 		cJSON_AddStringToObject(payloadJSON, "chat" ,message.c_str());
 		char *cRet = cJSON_PrintUnformatted(payloadJSON);
 		payload = cRet;
-        
+
 		byte * req = buildWarpRequest(RequestType::private_chat, payload, len);
-        
+
 		char *data = new char[len];
 		for(int i=0; i< len; ++i)
 		{
 			data[i] = req[i];
 		}
-        
+
 		_socket->sockSend(data, len);
-        
+
 		delete[] data;
 		delete[] req;
 		cJSON_Delete(payloadJSON);
 		free(cRet);
 	}
-    
+
 	void Client::sendUpdate(byte *update,int data_len)
 	{
         if((_state != ConnectionState::connected) || (_socket == NULL)){
@@ -1069,7 +1069,7 @@ namespace AppWarp
 
 		delete[] req;
 	}
-    
+
     void Client::sendUdpUpdate(byte *update, int updateLen)
     {
         if((_state != ConnectionState::connected) || (updateLen >= 1000) || (_udpsocket == NULL))
@@ -1078,9 +1078,9 @@ namespace AppWarp
         }
         int len;
 		byte * req = buildWarpRequest(RequestType::update_peers, update, updateLen,len,2);
-        
+
 		_udpsocket->sockSend((char*)req, len);
-        
+
 		delete[] req;
     }
 
@@ -1223,9 +1223,9 @@ namespace AppWarp
         }
         int byteLen;
 		byte *req;
-        
+
 		std::map<std::string,std::string>::iterator it;
-        
+
 		std::string payload;
 		cJSON *propJSON;
 		cJSON *payloadJSON;
@@ -1235,29 +1235,28 @@ namespace AppWarp
 		{
 			cJSON_AddStringToObject(propJSON, it->first.c_str(),it->second.c_str());
 		}
-        
-		cJSON_AddStringToObject(payloadJSON, "lockProperties", cJSON_PrintUnformatted(propJSON));
-        
+
+		cJSON_AddItemToObject(payloadJSON, "lockProperties", propJSON);
+
 		char *cRet = cJSON_PrintUnformatted(payloadJSON);
 		payload = cRet;
-        
+
 		req = buildWarpRequest(RequestType::lock_properties, payload, byteLen);
-        
+
 		char *data = new char[byteLen];
 		for(int i=0; i< byteLen; ++i)
 		{
 			data[i] = req[i];
 		}
-        
+
 		_socket->sockSend(data, byteLen);
-        
+
 		delete[] data;
 		delete[] req;
-		cJSON_Delete(propJSON);
 		cJSON_Delete(payloadJSON);
 		free(cRet);
     }
-    
+
     void Client::unlockProperties(std::vector<std::string> properties)
     {
         if((_state != ConnectionState::connected) || (_socket == NULL)){
@@ -1269,13 +1268,13 @@ namespace AppWarp
         }
         int byteLen;
 		byte *req;
-        
-		
+
+
 		std::string payload;
-		
+
 		cJSON *payloadJSON;
 		payloadJSON = cJSON_CreateObject();
-        
+
 		std::string unlockArrayStr = "";
 		for(unsigned int i=0; i<properties.size(); ++i)
 		{
@@ -1284,28 +1283,28 @@ namespace AppWarp
 			else
 				unlockArrayStr += properties[i];
 		}
-        
+
 		cJSON_AddStringToObject(payloadJSON,"unlockProperties",unlockArrayStr.c_str());
-        
+
 		char *cRet = cJSON_PrintUnformatted(payloadJSON);
 		payload = cRet;
-        
+
 		req = buildWarpRequest(RequestType::unlock_properties, payload, byteLen);
-        
+
 		char *data = new char[byteLen];
 		for(int i=0; i< byteLen; ++i)
 		{
 			data[i] = req[i];
 		}
-        
+
 		_socket->sockSend(data, byteLen);
-        
+
 		delete[] data;
 		delete[] req;
 		cJSON_Delete(payloadJSON);
 		free(cRet);
     }
-    
+
 	void Client::updateRoomProperties(std::string roomID, std::map<std::string,std::string> properties,std::vector<std::string> removeArray)
 	{
         if((_state != ConnectionState::connected) || (_socket == NULL)){
@@ -1333,7 +1332,7 @@ namespace AppWarp
 		}
 
 		cJSON_AddStringToObject(payloadJSON, "id", roomID.c_str());
-		cJSON_AddStringToObject(payloadJSON, "addOrUpdate", cJSON_PrintUnformatted(propJSON));
+		cJSON_AddItemToObject(payloadJSON, "addOrUpdate", propJSON);
 
 		std::string removeArrayStr = "";
 		for(unsigned int i=0; i<removeArray.size(); ++i)
@@ -1361,11 +1360,10 @@ namespace AppWarp
 
 		delete[] data;
 		delete[] req;
-		cJSON_Delete(propJSON);
 		cJSON_Delete(payloadJSON);
 		free(cRet);
 	}
-    
+
     void Client::getRoomsInUserRange(int minJoinedUsers, int maxJoinedUsers)
     {
         if((_state != ConnectionState::connected) || (_socket == NULL)){
@@ -1379,7 +1377,7 @@ namespace AppWarp
         }
 		int byteLen;
 		byte *req;
-        
+
 		std::string payload;
 		cJSON *payloadJSON;
 		payloadJSON = cJSON_CreateObject();
@@ -1387,23 +1385,23 @@ namespace AppWarp
 		cJSON_AddNumberToObject(payloadJSON, "maxUsers", maxJoinedUsers);
 		char *cRet =  cJSON_PrintUnformatted(payloadJSON);
 		payload = cRet;
-        
+
 		req = buildWarpRequest(RequestType::get_room_range, payload, byteLen);
-        
+
 		char *data = new char[byteLen];
 		for(int i=0; i< byteLen; ++i)
 		{
 			data[i] = req[i];
 		}
-        
+
 		_socket->sockSend(data, byteLen);
-        
+
 		delete[] data;
 		delete[] req;
 		cJSON_Delete(payloadJSON);
 		free(cRet);
     }
-    
+
     void Client::joinRoomInUserRange(int minJoinedUsers, int maxJoinedUsers, bool maxPreferred)
     {
         if((_state != ConnectionState::connected) || (_socket == NULL)){
@@ -1417,7 +1415,7 @@ namespace AppWarp
         }
         int byteLen;
 		byte *req;
-        
+
 		std::string payload;
 		cJSON *payloadJSON;
 		payloadJSON = cJSON_CreateObject();
@@ -1426,23 +1424,23 @@ namespace AppWarp
         maxPreferred ? cJSON_AddTrueToObject(payloadJSON, "maxPreferred") : cJSON_AddFalseToObject(payloadJSON, "maxPreferred");
 		char *cRet =  cJSON_PrintUnformatted(payloadJSON);
 		payload = cRet;
-        
+
 		req = buildWarpRequest(RequestType::join_room_range, payload, byteLen);
-        
+
 		char *data = new char[byteLen];
 		for(int i=0; i< byteLen; ++i)
 		{
 			data[i] = req[i];
 		}
-        
+
 		_socket->sockSend(data, byteLen);
-        
+
 		delete[] data;
 		delete[] req;
 		cJSON_Delete(payloadJSON);
 		free(cRet);
     }
-    
+
 	extern std::string ItoA(int num);
 
 	void Client::joinRoomWithProperties(std::map<std::string,std::string> properties)
@@ -1470,7 +1468,7 @@ namespace AppWarp
 		{
 			cJSON_AddStringToObject(propJSON, it->first.c_str(),it->second.c_str());
 		}
-		cJSON_AddStringToObject(payloadJSON, "properties", cJSON_PrintUnformatted(propJSON));
+		cJSON_AddItemToObject(payloadJSON, "properties", propJSON);
 
 		char *cRet = cJSON_PrintUnformatted(payloadJSON);
 		payload = cRet;
@@ -1487,7 +1485,6 @@ namespace AppWarp
 
 		delete[] data;
 		delete[] req;
-		cJSON_Delete(propJSON);
 		cJSON_Delete(payloadJSON);
 		free(cRet);
 	}
@@ -1534,11 +1531,10 @@ namespace AppWarp
 
 		delete[] data;
 		delete[] req;
-		cJSON_Delete(propJSON);
 		cJSON_Delete(payloadJSON);
 		free(cRet);
 	}
-    
+
     void Client::startGame()
     {
         if((_state != ConnectionState::connected) || (_socket == NULL)){
@@ -1550,12 +1546,12 @@ namespace AppWarp
         }
 		int len;
 		byte * req = buildWarpRequest(RequestType::start_game, NULL, 0, len);
-        
+
 		_socket->sockSend((char*)req, len);
 
 		delete[] req;
     }
-    
+
     void Client::stopGame()
     {
         if((_state != ConnectionState::connected) || (_socket == NULL)){
@@ -1567,12 +1563,12 @@ namespace AppWarp
         }
 		int len;
 		byte * req = buildWarpRequest(RequestType::stop_game, NULL, 0, len);
-        
+
 		_socket->sockSend((char*)req, len);
-        
+
 		delete[] req;
     }
-    
+
     void Client::getMoveHistory()
     {
         if((_state != ConnectionState::connected) || (_socket == NULL)){
@@ -1585,23 +1581,23 @@ namespace AppWarp
         }
         int byteLen;
 		byte *req;
-        
+
 		std::string payload;
 		cJSON *payloadJSON;
 		payloadJSON = cJSON_CreateObject();
 		cJSON_AddNumberToObject(payloadJSON, "count", 5);
 		char *cRet =  cJSON_PrintUnformatted(payloadJSON);
 		payload = cRet;
-        
+
 		req = buildWarpRequest(RequestType::get_move_history, payload, byteLen);
-        
+
 		_socket->sockSend((char*)req, byteLen);
-        
+
 		delete[] req;
 		cJSON_Delete(payloadJSON);
 		free(cRet);
     }
-    
+
     void Client::sendMove(std::string moveData)
     {
         if((_state != ConnectionState::connected) || (_socket == NULL)){
@@ -1611,19 +1607,19 @@ namespace AppWarp
 			}
             return;
         }
-        
+
         int byteLen;
 		byte *req;
-        
+
 		std::string payload;
 		cJSON *payloadJSON;
 		payloadJSON = cJSON_CreateObject();
 		cJSON_AddStringToObject(payloadJSON, "moveData", moveData.c_str());
 		char *cRet =  cJSON_PrintUnformatted(payloadJSON);
 		payload = cRet;
-        
+
 		req = buildWarpRequest(RequestType::move, payload, byteLen);
-        
+
 		_socket->sockSend((char*)req, byteLen);
 
 		delete[] req;
