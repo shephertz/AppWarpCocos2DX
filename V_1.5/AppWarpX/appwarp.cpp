@@ -469,7 +469,7 @@ namespace AppWarp
             }
             
 		}
-        delete bufferToDecode;
+        delete[] bufferToDecode;
 	}
     
     bool Client::canDecode(char data[],int start, int end)
