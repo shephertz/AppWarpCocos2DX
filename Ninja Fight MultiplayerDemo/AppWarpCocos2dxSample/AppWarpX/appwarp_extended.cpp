@@ -182,113 +182,113 @@ namespace AppWarp
 
 		int Client::handleNotify(char *data, int index)
 		{
-			notify *res = buildNotify(data, index);
+			notify *notification = buildNotify(data, index);
             if(_notificationListener != NULL){
-                if(res->updateType == UpdateType::user_joined_lobby)
+                if(notification->updateType == UpdateType::user_joined_lobby)
                 {
                     lobby _lobby;
-                    buildLobbyData(_lobby,res->payLoad,res->payLoadSize);
-                    std::string user = getJSONString("user",res->payLoad,res->payLoadSize);
+                    buildLobbyData(_lobby,notification->payLoad,notification->payLoadSize);
+                    std::string user = getJSONString("user",notification->payLoad,notification->payLoadSize);
                     _notificationListener->onUserJoinedLobby(_lobby,user);
                 }
-                else if(res->updateType == UpdateType::user_left_lobby)
+                else if(notification->updateType == UpdateType::user_left_lobby)
                 {
                     lobby _lobby;
-                    buildLobbyData(_lobby,res->payLoad,res->payLoadSize);
-                    std::string user = getJSONString("user",res->payLoad,res->payLoadSize);
+                    buildLobbyData(_lobby,notification->payLoad,notification->payLoadSize);
+                    std::string user = getJSONString("user",notification->payLoad,notification->payLoadSize);
                     _notificationListener->onUserLeftLobby(_lobby,user);
                 }
-                else if(res->updateType == UpdateType::chat)
+                else if(notification->updateType == UpdateType::chat)
                 {
                     chat cht;
-                    cht.chat = getJSONString("chat",res->payLoad, res->payLoadSize);
-                    cht.sender = getJSONString("sender",res->payLoad, res->payLoadSize);
-                    cht.locid = getJSONInt("locid",res->payLoad, res->payLoadSize);
-                    cht.isLocationLobby = getJSONBool("isLocationLobby",res->payLoad, res->payLoadSize);
+                    cht.chat = getJSONString("chat",notification->payLoad, notification->payLoadSize);
+                    cht.sender = getJSONString("sender",notification->payLoad, notification->payLoadSize);
+                    cht.locid = getJSONInt("locid",notification->payLoad, notification->payLoadSize);
+                    cht.isLocationLobby = getJSONBool("isLocationLobby",notification->payLoad, notification->payLoadSize);
                     _notificationListener->onChatReceived(cht);
                 }
-                else if(res->updateType == UpdateType::private_chat)
+                else if(notification->updateType == UpdateType::private_chat)
                 {
-                    std::string sender = getJSONString("sender",res->payLoad, res->payLoadSize);
-                    std::string message = getJSONString("chat", res->payLoad, res->payLoadSize);
+                    std::string sender = getJSONString("sender",notification->payLoad, notification->payLoadSize);
+                    std::string message = getJSONString("chat", notification->payLoad, notification->payLoadSize);
                     _notificationListener->onPrivateChatReceived(sender, message);
                 }
-                else if(res->updateType == UpdateType::update_peers)
+                else if(notification->updateType == UpdateType::update_peers)
                 {
-                    byte *update = new byte[res->payLoadSize];
-                    for(int i=0; i<res->payLoadSize; ++i)
-                        update[i] = res->payLoad[i];
-                    _notificationListener->onUpdatePeersReceived(update, res->payLoadSize);
+                    byte *update = new byte[notification->payLoadSize];
+                    for(int i=0; i<notification->payLoadSize; ++i)
+                        update[i] = notification->payLoad[i];
+                    _notificationListener->onUpdatePeersReceived(update, notification->payLoadSize, false);
                     
                     delete[] update;
                 }
-                else if(res->updateType == UpdateType::room_created)
+                else if(notification->updateType == UpdateType::room_created)
                 {
                     room rm;
-                    buildRoomData(rm, res->payLoad, res->payLoadSize);
+                    buildRoomData(rm, notification->payLoad, notification->payLoadSize);
                     _notificationListener->onRoomCreated(rm);
                 }
-                else if(res->updateType == UpdateType::room_deleted)
+                else if(notification->updateType == UpdateType::room_deleted)
                 {
                     room rm;
-                    buildRoomData(rm, res->payLoad, res->payLoadSize);
+                    buildRoomData(rm, notification->payLoad, notification->payLoadSize);
                     _notificationListener->onRoomDestroyed(rm);
                 }
-                else if(res->updateType == UpdateType::user_joined_room)
+                else if(notification->updateType == UpdateType::user_joined_room)
                 {
                     room rm;
-                    buildRoomData(rm, res->payLoad, res->payLoadSize);
-                    std::string user = getJSONString("user",res->payLoad,res->payLoadSize);
+                    buildRoomData(rm, notification->payLoad, notification->payLoadSize);
+                    std::string user = getJSONString("user",notification->payLoad,notification->payLoadSize);
                     _notificationListener->onUserJoinedRoom(rm, user);
                 }
-                else if(res->updateType == UpdateType::user_left_room)
+                else if(notification->updateType == UpdateType::user_left_room)
                 {
                     room rm;
-                    buildRoomData(rm, res->payLoad, res->payLoadSize);
-                    std::string user = getJSONString("user",res->payLoad,res->payLoadSize);
+                    buildRoomData(rm, notification->payLoad, notification->payLoadSize);
+                    std::string user = getJSONString("user",notification->payLoad,notification->payLoadSize);
                     _notificationListener->onUserLeftRoom(rm, user);
                 }
-                else if(res->updateType == UpdateType::game_started && _notificationListener!=NULL)
+                else if(notification->updateType == UpdateType::game_started && _notificationListener!=NULL)
                 {
-                    string roomid = getJSONString("id",res->payLoad,res->payLoadSize);
-                    string sender = getJSONString("sender",res->payLoad,res->payLoadSize);
-                    string nextTurn = getJSONString("nextTurn",res->payLoad,res->payLoadSize);
+                    string roomid = getJSONString("id",notification->payLoad,notification->payLoadSize);
+                    string sender = getJSONString("sender",notification->payLoad,notification->payLoadSize);
+                    string nextTurn = getJSONString("nextTurn",notification->payLoad,notification->payLoadSize);
                     _notificationListener->onGameStarted(sender, roomid, nextTurn);
                 }
-                else if(res->updateType == UpdateType::game_stopped && _notificationListener!=NULL)
+                else if(notification->updateType == UpdateType::game_stopped && _notificationListener!=NULL)
                 {
-                    string roomid = getJSONString("id",res->payLoad,res->payLoadSize);
-                    string sender = getJSONString("sender",res->payLoad,res->payLoadSize);
+                    string roomid = getJSONString("id",notification->payLoad,notification->payLoadSize);
+                    string sender = getJSONString("sender",notification->payLoad,notification->payLoadSize);
                     _notificationListener->onGameStopped(sender, roomid);
                 }                
-                else if(res->updateType == UpdateType::move_completed && _notificationListener!=NULL)
+                else if(notification->updateType == UpdateType::move_completed && _notificationListener!=NULL)
                 {
-                    move event = buildMoveEvent(res->payLoad, res->payLoadSize);
+                    move event = buildMoveEvent(notification->payLoad, notification->payLoadSize);
                     _notificationListener->onMoveCompleted(event);
                 }
-                else if(res->updateType == UpdateType::user_paused)
+                else if(notification->updateType == UpdateType::user_paused)
                 {
-                    std::string user = getJSONString("user",res->payLoad,res->payLoadSize);
-                    std::string locId = getJSONString("id",res->payLoad,res->payLoadSize);
-                    bool isLobby = getJSONBool("isLobby", res->payLoad,res->payLoadSize);
+                    std::string user = getJSONString("user",notification->payLoad,notification->payLoadSize);
+                    std::string locId = getJSONString("id",notification->payLoad,notification->payLoadSize);
+                    bool isLobby = getJSONBool("isLobby", notification->payLoad,notification->payLoadSize);
                     _notificationListener->onUserPaused(user, locId, isLobby);
                 }
-                else if(res->updateType == UpdateType::user_resumed)
+                else if(notification->updateType == UpdateType::user_resumed)
                 {
-                    std::string user = getJSONString("user",res->payLoad,res->payLoadSize);
-                    std::string locId = getJSONString("id",res->payLoad,res->payLoadSize);
-                    bool isLobby = getJSONBool("isLobby", res->payLoad,res->payLoadSize);
+                    std::string user = getJSONString("user",notification->payLoad,notification->payLoadSize);
+                    std::string locId = getJSONString("id",notification->payLoad,notification->payLoadSize);
+                    bool isLobby = getJSONBool("isLobby", notification->payLoad,notification->payLoadSize);
                     _notificationListener->onUserResumed(user, locId, isLobby);                }
 
-                else if(res->updateType == UpdateType::room_property_change)
+                else if(notification->updateType == UpdateType::room_property_change)
                 {
                     std::map<std::string, std::string> properties;
                     std::map<std::string, std::string> lockTable;
                     room rm;
-                    buildRoomData(rm, res->payLoad, res->payLoadSize);
-                    std::string user = getJSONString("sender",res->payLoad,res->payLoadSize);
+                    buildRoomData(rm, notification->payLoad, notification->payLoadSize);
+                    std::string user = getJSONString("sender",notification->payLoad,notification->payLoadSize);
                     
-                    std::string properties_str = getJSONString("properties",res->payLoad,res->payLoadSize);
+                    std::string properties_str = getJSONString("properties",notification->payLoad,notification->payLoadSize);
                     cJSON *json, *begPtr;
                     json = cJSON_Parse(properties_str.c_str());
                     begPtr = json;
@@ -302,7 +302,7 @@ namespace AppWarp
                         }
                     }
                     
-                    std::string locktable_str = getJSONString("lockProperties",res->payLoad,res->payLoadSize);
+                    std::string locktable_str = getJSONString("lockProperties",notification->payLoad,notification->payLoadSize);
                     cJSON *jsonLocktable, *begPtr2;
                     jsonLocktable = cJSON_Parse(locktable_str.c_str());
                     begPtr2 = jsonLocktable;
@@ -323,9 +323,9 @@ namespace AppWarp
                 }
             }
 
-			int ret = res->payLoadSize+8;
-			delete[] res->payLoad;
-			delete res;
+			int ret = notification->payLoadSize+8;
+			delete[] notification->payLoad;
+			delete notification;
 			return ret;
 		}
 

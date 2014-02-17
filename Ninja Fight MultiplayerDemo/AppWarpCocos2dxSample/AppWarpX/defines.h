@@ -21,6 +21,10 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
+#ifndef defines__h
+#define defines__h
+#include <vector>
+#include <map>
 namespace AppWarp
 {
 	typedef unsigned char byte;
@@ -216,7 +220,7 @@ namespace AppWarp
 		std::string customData;
 		std::vector<std::string> users;
 		int result;
-	} livelobby; 
+	} livelobby;
 
 	typedef struct liveroom_struct
 	{
@@ -264,3 +268,5 @@ namespace AppWarp
         std::string roomId;
     } move;
 }
+
+#endif

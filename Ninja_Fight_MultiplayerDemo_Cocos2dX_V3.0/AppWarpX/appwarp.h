@@ -33,7 +33,7 @@
 
 #include "pthread.h"
 #include "socket.h"
-
+#include "udpsocket.h"
 #include "HMAC_SHA1.h"
 #include "base64.h"
 #include "urlencode.h"
@@ -55,7 +55,7 @@ namespace AppWarp
     extern int RECOVERY_ALLOWANCE_TIME;
     extern bool AUTO_RECOVER;
 
-	class Client : public cocos2d::Node
+	class Client : public cocos2d::CCNode
 	{
 	public:
 		~Client();
@@ -74,7 +74,7 @@ namespace AppWarp
 		 * @param secretekey
 		 * @return void
 		 */
-		static void initialize(std::string, std::string);
+		static void initialize(std::string, std::string, std::string host = "");
         
         /**
 		 * Terminate the singleton instance and frees the allocated memory
@@ -161,6 +161,16 @@ namespace AppWarp
 		void setUpdateRequestListener(UpdateRequestListener *);
 		
         /**
+		 * Set your listener object on which callbacks will be invoked when a
+		 * response from the server is received for Turn Based Room requests like
+		 * sendMove, getTurnHistory, startGame and stopGame
+		 *
+		 * @param listener
+		 * @return void
+		 */
+		void setTurnBasedRoomRequestListener(TurnBasedRoomRequestListener *);
+        
+        /**
 		 * Initiates your connection with the WARP server. The result of the
 		 * operation is provided in the onConnectDone callback of the
 		 * ConnectionListener.
@@ -178,6 +188,12 @@ namespace AppWarp
 		 * @return void
 		 */
 		void disconnect();
+        
+        /**
+         * Initiates the UDP handshake with the server. The result is provided in the
+         * onInitUDPDone callback of the connection request listener.
+         */
+        void initUDP();
         
         /**
 		 * sends a join lobby request to the server. Result of the request is
@@ -270,6 +286,19 @@ namespace AppWarp
 		void createRoom(std::string name,std::string owner,int maxUsers,std::map<std::string,std::string> properties);
         
         /**
+		 * sends a create room request to the server. Result of the request is
+		 * provided in the onCreateRoomDone callback of the ZoneRequestListener.
+		 *
+		 * @param name
+		 * @param owner
+		 * @param maxUsers
+		 * @param properties
+         * @param turnTime
+		 * @return void
+		 */
+		void createTurnRoom(std::string name,std::string owner,int maxUsers,std::map<std::string,std::string> properties, int turnTime);
+        
+        /**
 		 * sends a delete room request to the server. Result of the request is
 		 * provided in the onDeleteRoomDone callback of the ZoneListener.
 		 *
@@ -334,6 +363,15 @@ namespace AppWarp
 		 * @param updateLen
 		 */
 		void sendUpdate(byte* update,int updateLen);
+        
+        /**
+		 * sends a custom UDP update message to room in which the user is currently
+		 * joined. No acknowledgement is received for this request.
+		 *
+		 * @param update
+		 * @param updateLen
+		 */
+		void sendUdpUpdate(byte* update,int updateLen);
         
 		/**
 		 * Updates the custom roomData associated with the given user on the server.
@@ -441,7 +479,36 @@ namespace AppWarp
 		 * @return void
 		 */
 		void getRoomWithProperties(std::map<std::string,std::string>);
-
+        
+        /**
+         * sends a start game request to the server. Result of the request is
+         * provided in the onGameStarted callback of the TurnBasedRoomListener.
+         *
+         */
+        void startGame();
+        
+        /**
+         * sends a stop game request to the server. Result of the request is
+         * provided in the onGameStopped callback of the TurnBasedRoomListener.
+         *
+         */
+        void stopGame();
+        
+        /*
+         * Sends a move to the joined turn based room. Only allowed if its the sender's
+         * turn.
+         *
+         */
+        void sendMove(std::string movedata);
+        
+        
+        /**
+         * sends a get move history request to the server. Result of the request is
+         * provided in the onGetMoveHistoryDone callback of the TurnBasedRoomListener.
+         *
+         */
+        void getMoveHistory();
+        
         /*
          * Sets the connection recovery time (seconds) allowed that will be negotiated
          * with the server. By default it is 0 so there is no connection recovery.
@@ -449,8 +516,9 @@ namespace AppWarp
         void setRecoveryAllowance(int maxRecoveryTime);
         
         
-        /* Attempts to reconnect and recover the session. May succeed if done within
-         * the reconnect time limit negotiated during start up.
+        /* 
+         * Attempts to reconnect and recover the session. May succeed if done within
+         * the recovery allowance time limit negotiated before the prior connect.
          */
         void recoverConnection();
 
@@ -460,7 +528,9 @@ namespace AppWarp
          * Not required to be called in Cocos2DX application code.
          */
 		void socketConnectionCallback(int);
-        void socketNewMsgCallback(unsigned char[], int len);        
+        void socketNewMsgCallback(unsigned char[], int len);
+        void udpresponse(response* response);
+        void udpnotify(notify* notification);
         virtual void update(float dt);
         
     private:
@@ -470,6 +540,7 @@ namespace AppWarp
         bool isWaitingForData;
 		
         Utility::Socket* _socket;
+        Utility::UdpSocket* _udpsocket;
 		static Client* _instance;
 		Client();
 		ConnectionRequestListener * _connectionReqListener;
@@ -479,6 +550,7 @@ namespace AppWarp
 		RoomRequestListener *_roomlistener;
 		ZoneRequestListener *_zonelistener;
 		UpdateRequestListener *_updatelistener;
+        TurnBasedRoomRequestListener *_turnlistener;
         
 		int handleResponse(char *, int);
 		int handleNotify(char *, int);

@@ -51,27 +51,49 @@ void HelloWorld::showStartGameLayer()
     startGameButton->setPosition(ccp(winSize.width/2,winSize.height/2));
     
     
-    CCLabelTTF *updateButtonTitle = CCLabelTTF::create("Update Room", "Marker Felt", 30);
+    CCLabelTTF *updateButtonTitle = CCLabelTTF::create("Create Room", "Marker Felt", 30);
     updateButtonTitle->setColor(ccBLACK);
     
-    CCMenuItemLabel *updateRoomButton = CCMenuItemLabel::create(updateButtonTitle, this,menu_selector(HelloWorld::connectToAppWarp));
+    CCMenuItemLabel *updateRoomButton = CCMenuItemLabel::create(updateButtonTitle, this,menu_selector(HelloWorld::createRooms));
     updateRoomButton->setPosition(ccp(winSize.width/2,winSize.height/4));
     
-    CCLabelTTF *getRoomButtonTitle = CCLabelTTF::create("Get Room", "Marker Felt", 30);
+    CCLabelTTF *getRoomButtonTitle = CCLabelTTF::create("GetRoom", "Marker Felt", 30);
     getRoomButtonTitle->setColor(ccBLACK);
     
-    CCMenuItemLabel *getRoomButton = CCMenuItemLabel::create(getRoomButtonTitle, this,menu_selector(HelloWorld::connectToAppWarp));
+    CCMenuItemLabel *getRoomButton = CCMenuItemLabel::create(getRoomButtonTitle, this,menu_selector(HelloWorld::getRooms));
     getRoomButton->setPosition(ccp(winSize.width/2,winSize.height/8));
+    
+    CCLabelTTF *disconnectTitle = CCLabelTTF::create("Disconnect", "Marker Felt", 30);
+    disconnectTitle->setColor(ccBLACK);
+    
+    CCMenuItemLabel *disconnectButton = CCMenuItemLabel::create(disconnectTitle, this,menu_selector(HelloWorld::disconnect));
+    disconnectButton->setPosition(ccp(winSize.width/2,winSize.height/16));
+
 
     
     
     //printf("\nshowStartGameLayer = (%f,%f)",winSize.width/2,winSize.height/2);
-    CCMenu *pMenu = CCMenu::create(startGameButton,updateRoomButton,getRoomButton,NULL);
+    CCMenu *pMenu = CCMenu::create(startGameButton,updateRoomButton,getRoomButton,disconnectButton,NULL);
     pMenu->setPosition(CCPointZero);
     startGameLayer->addChild(pMenu, 1);
 }
 
 
+void HelloWorld::createRooms()
+{
+    printf("createRooms");
+    for (int i=3; i<8; i++)
+    {
+        std::string roomName = "r";
+        
+        AppWarp::Client::getInstance()->createRoom("r", "Raj", i);
+    }
+}
+
+void HelloWorld::getRooms()
+{
+    AppWarp::Client::getInstance()->getAllRooms();
+}
 
 void HelloWorld::updateRoomProperties()
 {
@@ -373,6 +395,10 @@ void HelloWorld::connectToAppWarp()
         warpClientRef->setRoomRequestListener(this);
         warpClientRef->setZoneRequestListener(this);
         userName = genRandom();
+        //warpClientRef->setGeo("us");
+        warpClientRef->setGeo("eu");
+        //warpClientRef->setGeo("japan");
+
         warpClientRef->connect(userName);
     }
     else
@@ -394,7 +420,7 @@ void HelloWorld::onConnectDone(int res)
         printf("\nonConnectDone .. SUCCESS..session=%d\n",AppWarp::AppWarpSessionID);
         AppWarp::Client *warpClientRef;
         warpClientRef = AppWarp::Client::getInstance();
-        warpClientRef->joinRoom(ROOM_ID);
+        //warpClientRef->joinRoom(ROOM_ID);
     }
     else if (res==AppWarp::ResultCode::success_recovered)
     {
@@ -486,20 +512,20 @@ void HelloWorld::onUpdatePropertyDone(AppWarp::liveroom revent)
 {
     if (revent.result==0)
     {
-        printf("onUpdatePropertyDone....Success");
+        printf("onUpdatePropertyDone....Success\n");
         std::map<std::string, std::string> properties = revent.properties;
         std::map<std::string,std::string>::iterator it;
         for(it = properties.begin(); it != properties.end(); ++it)
 		{
 			//cJSON_AddStringToObject(propJSON, it->first.c_str(),it->second.c_str());
-            printf("key= %s...value= %s",it->first.c_str(),it->second.c_str());
+            printf("key= %s...value= %s\n",it->first.c_str(),it->second.c_str());
 		}
 
 
     }
     else
     {
-        printf("onUpdatePropertyDone....Failed");
+        printf("\nonUpdatePropertyDone....Failed");
     }
 }
 
@@ -554,4 +580,23 @@ void HelloWorld::onUserResumed(std::string user,std::string locId,bool isLobby)
     removeStartGameLayer();
 }
 
+void HelloWorld::onCreateRoomDone(AppWarp::room revent)
+{
+    if (revent.result==0)
+    {
+        printf("onCreateRoomDone success");
+    }
+}
 
+void HelloWorld::onGetAllRoomsDone(AppWarp::liveresult res)
+{
+    if (res.result == 0)
+    {
+        std::vector<std::string>::iterator it;
+        for(it = res.list.begin(); it != res.list.end(); ++it)
+		{
+            printf("key= %s\n",it->c_str());
+		}
+
+    }
+}

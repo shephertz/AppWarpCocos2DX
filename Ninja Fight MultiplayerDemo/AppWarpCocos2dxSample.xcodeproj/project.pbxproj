@@ -11,6 +11,17 @@
 		D720A180178FCBB900E5E04A /* Bullet-blue.png in Resources */ = {isa = PBXBuildFile; fileRef = D720A17C178FCBB900E5E04A /* Bullet-blue.png */; };
 		D720A181178FCBB900E5E04A /* Bullet-red.png in Resources */ = {isa = PBXBuildFile; fileRef = D720A17D178FCBB900E5E04A /* Bullet-red.png */; };
 		D720A182178FCBB900E5E04A /* Enemy.png in Resources */ = {isa = PBXBuildFile; fileRef = D720A17E178FCBB900E5E04A /* Enemy.png */; };
+		D75E6EE618B23729009D8376 /* appwarp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D75E6ECF18B23729009D8376 /* appwarp.cpp */; };
+		D75E6EE718B23729009D8376 /* appwarp_extended.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D75E6ED118B23729009D8376 /* appwarp_extended.cpp */; };
+		D75E6EE818B23729009D8376 /* base64.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D75E6ED218B23729009D8376 /* base64.cpp */; };
+		D75E6EE918B23729009D8376 /* cJSON.c in Sources */ = {isa = PBXBuildFile; fileRef = D75E6ED418B23729009D8376 /* cJSON.c */; };
+		D75E6EEA18B23729009D8376 /* HMAC_SHA1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D75E6ED718B23729009D8376 /* HMAC_SHA1.cpp */; };
+		D75E6EEB18B23729009D8376 /* requests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D75E6EDA18B23729009D8376 /* requests.cpp */; };
+		D75E6EEC18B23729009D8376 /* SHA1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D75E6EDC18B23729009D8376 /* SHA1.cpp */; };
+		D75E6EED18B23729009D8376 /* socket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D75E6EDE18B23729009D8376 /* socket.cpp */; };
+		D75E6EEE18B23729009D8376 /* udpsocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D75E6EE018B23729009D8376 /* udpsocket.cpp */; };
+		D75E6EEF18B23729009D8376 /* urlencode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D75E6EE218B23729009D8376 /* urlencode.cpp */; };
+		D75E6EF018B23729009D8376 /* utilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D75E6EE418B23729009D8376 /* utilities.cpp */; };
 		D7C64957178E7C0100A43251 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7C64956178E7C0100A43251 /* QuartzCore.framework */; };
 		D7C64959178E7C0100A43251 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7C64958178E7C0100A43251 /* OpenGLES.framework */; };
 		D7C6495B178E7C0100A43251 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7C6495A178E7C0100A43251 /* OpenAL.framework */; };
@@ -270,16 +281,6 @@
 		D7C64CC4178E7C0C00A43251 /* cpVect.c in Sources */ = {isa = PBXBuildFile; fileRef = D7C64CC3178E7C0C00A43251 /* cpVect.c */; };
 		D7C64CCB178E7C0C00A43251 /* AppDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D7C64CCA178E7C0C00A43251 /* AppDelegate.cpp */; };
 		D7C64CCE178E7C0C00A43251 /* HelloWorldScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D7C64CCD178E7C0C00A43251 /* HelloWorldScene.cpp */; };
-		D7C64CEA178E7C5000A43251 /* appwarp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D7C64CD5178E7C5000A43251 /* appwarp.cpp */; };
-		D7C64CEB178E7C5000A43251 /* appwarp_extended.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D7C64CD7178E7C5000A43251 /* appwarp_extended.cpp */; };
-		D7C64CEC178E7C5000A43251 /* base64.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D7C64CD8178E7C5000A43251 /* base64.cpp */; };
-		D7C64CED178E7C5000A43251 /* cJSON.c in Sources */ = {isa = PBXBuildFile; fileRef = D7C64CDA178E7C5000A43251 /* cJSON.c */; };
-		D7C64CEE178E7C5000A43251 /* HMAC_SHA1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D7C64CDD178E7C5000A43251 /* HMAC_SHA1.cpp */; };
-		D7C64CEF178E7C5000A43251 /* requests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D7C64CE0178E7C5000A43251 /* requests.cpp */; };
-		D7C64CF0178E7C5000A43251 /* SHA1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D7C64CE2178E7C5000A43251 /* SHA1.cpp */; };
-		D7C64CF1178E7C5000A43251 /* socket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D7C64CE4178E7C5000A43251 /* socket.cpp */; };
-		D7C64CF2178E7C5000A43251 /* urlencode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D7C64CE6178E7C5000A43251 /* urlencode.cpp */; };
-		D7C64CF3178E7C5000A43251 /* utilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D7C64CE8178E7C5000A43251 /* utilities.cpp */; };
 		D7C64CF5178E7C9600A43251 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D7C64CF4178E7C9600A43251 /* Default-568h@2x.png */; };
 		D7C64D09178EF13E00A43251 /* StartGameLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D7C64D05178EF13E00A43251 /* StartGameLayer.cpp */; };
 		D7C64D0A178EF13E00A43251 /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D7C64D08178EF13E00A43251 /* Player.cpp */; };
@@ -290,6 +291,29 @@
 		D720A17C178FCBB900E5E04A /* Bullet-blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Bullet-blue.png"; path = "Resources/Bullet-blue.png"; sourceTree = "<group>"; };
 		D720A17D178FCBB900E5E04A /* Bullet-red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Bullet-red.png"; path = "Resources/Bullet-red.png"; sourceTree = "<group>"; };
 		D720A17E178FCBB900E5E04A /* Enemy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Enemy.png; path = Resources/Enemy.png; sourceTree = "<group>"; };
+		D75E6ECF18B23729009D8376 /* appwarp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = appwarp.cpp; sourceTree = "<group>"; };
+		D75E6ED018B23729009D8376 /* appwarp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = appwarp.h; sourceTree = "<group>"; };
+		D75E6ED118B23729009D8376 /* appwarp_extended.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = appwarp_extended.cpp; sourceTree = "<group>"; };
+		D75E6ED218B23729009D8376 /* base64.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = base64.cpp; sourceTree = "<group>"; };
+		D75E6ED318B23729009D8376 /* base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = base64.h; sourceTree = "<group>"; };
+		D75E6ED418B23729009D8376 /* cJSON.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = cJSON.c; sourceTree = "<group>"; };
+		D75E6ED518B23729009D8376 /* cJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cJSON.h; sourceTree = "<group>"; };
+		D75E6ED618B23729009D8376 /* defines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = defines.h; sourceTree = "<group>"; };
+		D75E6ED718B23729009D8376 /* HMAC_SHA1.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HMAC_SHA1.cpp; sourceTree = "<group>"; };
+		D75E6ED818B23729009D8376 /* HMAC_SHA1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMAC_SHA1.h; sourceTree = "<group>"; };
+		D75E6ED918B23729009D8376 /* listener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = listener.h; sourceTree = "<group>"; };
+		D75E6EDA18B23729009D8376 /* requests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = requests.cpp; sourceTree = "<group>"; };
+		D75E6EDB18B23729009D8376 /* requests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = requests.h; sourceTree = "<group>"; };
+		D75E6EDC18B23729009D8376 /* SHA1.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SHA1.cpp; sourceTree = "<group>"; };
+		D75E6EDD18B23729009D8376 /* SHA1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHA1.h; sourceTree = "<group>"; };
+		D75E6EDE18B23729009D8376 /* socket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = socket.cpp; sourceTree = "<group>"; };
+		D75E6EDF18B23729009D8376 /* socket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = socket.h; sourceTree = "<group>"; };
+		D75E6EE018B23729009D8376 /* udpsocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = udpsocket.cpp; sourceTree = "<group>"; };
+		D75E6EE118B23729009D8376 /* udpsocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = udpsocket.h; sourceTree = "<group>"; };
+		D75E6EE218B23729009D8376 /* urlencode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = urlencode.cpp; sourceTree = "<group>"; };
+		D75E6EE318B23729009D8376 /* urlencode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = urlencode.h; sourceTree = "<group>"; };
+		D75E6EE418B23729009D8376 /* utilities.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = utilities.cpp; sourceTree = "<group>"; };
+		D75E6EE518B23729009D8376 /* utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = utilities.h; sourceTree = "<group>"; };
 		D7C64953178E7C0100A43251 /* AppWarpCocos2dxSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AppWarpCocos2dxSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7C64956178E7C0100A43251 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		D7C64958178E7C0100A43251 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -853,27 +877,6 @@
 		D7C64CCA178E7C0C00A43251 /* AppDelegate.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = AppDelegate.cpp; path = Classes/AppDelegate.cpp; sourceTree = "<group>"; };
 		D7C64CCC178E7C0C00A43251 /* HelloWorldScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = HelloWorldScene.h; path = Classes/HelloWorldScene.h; sourceTree = "<group>"; };
 		D7C64CCD178E7C0C00A43251 /* HelloWorldScene.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = HelloWorldScene.cpp; path = Classes/HelloWorldScene.cpp; sourceTree = "<group>"; };
-		D7C64CD5178E7C5000A43251 /* appwarp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = appwarp.cpp; sourceTree = "<group>"; };
-		D7C64CD6178E7C5000A43251 /* appwarp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = appwarp.h; sourceTree = "<group>"; };
-		D7C64CD7178E7C5000A43251 /* appwarp_extended.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = appwarp_extended.cpp; sourceTree = "<group>"; };
-		D7C64CD8178E7C5000A43251 /* base64.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = base64.cpp; sourceTree = "<group>"; };
-		D7C64CD9178E7C5000A43251 /* base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = base64.h; sourceTree = "<group>"; };
-		D7C64CDA178E7C5000A43251 /* cJSON.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = cJSON.c; sourceTree = "<group>"; };
-		D7C64CDB178E7C5000A43251 /* cJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cJSON.h; sourceTree = "<group>"; };
-		D7C64CDC178E7C5000A43251 /* defines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = defines.h; sourceTree = "<group>"; };
-		D7C64CDD178E7C5000A43251 /* HMAC_SHA1.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HMAC_SHA1.cpp; sourceTree = "<group>"; };
-		D7C64CDE178E7C5000A43251 /* HMAC_SHA1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMAC_SHA1.h; sourceTree = "<group>"; };
-		D7C64CDF178E7C5000A43251 /* listener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = listener.h; sourceTree = "<group>"; };
-		D7C64CE0178E7C5000A43251 /* requests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = requests.cpp; sourceTree = "<group>"; };
-		D7C64CE1178E7C5000A43251 /* requests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = requests.h; sourceTree = "<group>"; };
-		D7C64CE2178E7C5000A43251 /* SHA1.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SHA1.cpp; sourceTree = "<group>"; };
-		D7C64CE3178E7C5000A43251 /* SHA1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHA1.h; sourceTree = "<group>"; };
-		D7C64CE4178E7C5000A43251 /* socket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = socket.cpp; sourceTree = "<group>"; };
-		D7C64CE5178E7C5000A43251 /* socket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = socket.h; sourceTree = "<group>"; };
-		D7C64CE6178E7C5000A43251 /* urlencode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = urlencode.cpp; sourceTree = "<group>"; };
-		D7C64CE7178E7C5000A43251 /* urlencode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = urlencode.h; sourceTree = "<group>"; };
-		D7C64CE8178E7C5000A43251 /* utilities.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = utilities.cpp; sourceTree = "<group>"; };
-		D7C64CE9178E7C5000A43251 /* utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = utilities.h; sourceTree = "<group>"; };
 		D7C64CF4178E7C9600A43251 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		D7C64D05178EF13E00A43251 /* StartGameLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = StartGameLayer.cpp; path = Classes/StartGameLayer.cpp; sourceTree = "<group>"; };
 		D7C64D06178EF13E00A43251 /* StartGameLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StartGameLayer.h; path = Classes/StartGameLayer.h; sourceTree = "<group>"; };
@@ -902,6 +905,36 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D75E6ECE18B23729009D8376 /* AppWarpX */ = {
+			isa = PBXGroup;
+			children = (
+				D75E6ECF18B23729009D8376 /* appwarp.cpp */,
+				D75E6ED018B23729009D8376 /* appwarp.h */,
+				D75E6ED118B23729009D8376 /* appwarp_extended.cpp */,
+				D75E6ED218B23729009D8376 /* base64.cpp */,
+				D75E6ED318B23729009D8376 /* base64.h */,
+				D75E6ED418B23729009D8376 /* cJSON.c */,
+				D75E6ED518B23729009D8376 /* cJSON.h */,
+				D75E6ED618B23729009D8376 /* defines.h */,
+				D75E6ED718B23729009D8376 /* HMAC_SHA1.cpp */,
+				D75E6ED818B23729009D8376 /* HMAC_SHA1.h */,
+				D75E6ED918B23729009D8376 /* listener.h */,
+				D75E6EDA18B23729009D8376 /* requests.cpp */,
+				D75E6EDB18B23729009D8376 /* requests.h */,
+				D75E6EDC18B23729009D8376 /* SHA1.cpp */,
+				D75E6EDD18B23729009D8376 /* SHA1.h */,
+				D75E6EDE18B23729009D8376 /* socket.cpp */,
+				D75E6EDF18B23729009D8376 /* socket.h */,
+				D75E6EE018B23729009D8376 /* udpsocket.cpp */,
+				D75E6EE118B23729009D8376 /* udpsocket.h */,
+				D75E6EE218B23729009D8376 /* urlencode.cpp */,
+				D75E6EE318B23729009D8376 /* urlencode.h */,
+				D75E6EE418B23729009D8376 /* utilities.cpp */,
+				D75E6EE518B23729009D8376 /* utilities.h */,
+			);
+			path = AppWarpX;
+			sourceTree = "<group>";
+		};
 		D7C6494A178E7C0000A43251 = {
 			isa = PBXGroup;
 			children = (
@@ -938,7 +971,7 @@
 		D7C64966178E7C0100A43251 /* AppWarpCocos2dxSample */ = {
 			isa = PBXGroup;
 			children = (
-				D7C64CD4178E7C4F00A43251 /* AppWarpX */,
+				D75E6ECE18B23729009D8376 /* AppWarpX */,
 				D7C6497F178E7C0100A43251 /* ios */,
 				D7C64988178E7C0100A43251 /* libs */,
 				D7C64CC8178E7C0C00A43251 /* Classes */,
@@ -2041,34 +2074,6 @@
 			name = Classes;
 			sourceTree = "<group>";
 		};
-		D7C64CD4178E7C4F00A43251 /* AppWarpX */ = {
-			isa = PBXGroup;
-			children = (
-				D7C64CD5178E7C5000A43251 /* appwarp.cpp */,
-				D7C64CD6178E7C5000A43251 /* appwarp.h */,
-				D7C64CD7178E7C5000A43251 /* appwarp_extended.cpp */,
-				D7C64CD8178E7C5000A43251 /* base64.cpp */,
-				D7C64CD9178E7C5000A43251 /* base64.h */,
-				D7C64CDA178E7C5000A43251 /* cJSON.c */,
-				D7C64CDB178E7C5000A43251 /* cJSON.h */,
-				D7C64CDC178E7C5000A43251 /* defines.h */,
-				D7C64CDD178E7C5000A43251 /* HMAC_SHA1.cpp */,
-				D7C64CDE178E7C5000A43251 /* HMAC_SHA1.h */,
-				D7C64CDF178E7C5000A43251 /* listener.h */,
-				D7C64CE0178E7C5000A43251 /* requests.cpp */,
-				D7C64CE1178E7C5000A43251 /* requests.h */,
-				D7C64CE2178E7C5000A43251 /* SHA1.cpp */,
-				D7C64CE3178E7C5000A43251 /* SHA1.h */,
-				D7C64CE4178E7C5000A43251 /* socket.cpp */,
-				D7C64CE5178E7C5000A43251 /* socket.h */,
-				D7C64CE6178E7C5000A43251 /* urlencode.cpp */,
-				D7C64CE7178E7C5000A43251 /* urlencode.h */,
-				D7C64CE8178E7C5000A43251 /* utilities.cpp */,
-				D7C64CE9178E7C5000A43251 /* utilities.h */,
-			);
-			path = AppWarpX;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -2147,6 +2152,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D75E6EEA18B23729009D8376 /* HMAC_SHA1.cpp in Sources */,
 				D7C64982178E7C0100A43251 /* AppController.mm in Sources */,
 				D7C64985178E7C0100A43251 /* RootViewController.mm in Sources */,
 				D7C64987178E7C0100A43251 /* main.m in Sources */,
@@ -2170,6 +2176,7 @@
 				D7C649C0178E7C0200A43251 /* CCDirector.cpp in Sources */,
 				D7C649C3178E7C0200A43251 /* ccFPSImages.c in Sources */,
 				D7C649C6178E7C0200A43251 /* CCScheduler.cpp in Sources */,
+				D75E6EEC18B23729009D8376 /* SHA1.cpp in Sources */,
 				D7C649CA178E7C0200A43251 /* CCAffineTransform.cpp in Sources */,
 				D7C649CD178E7C0200A43251 /* CCArray.cpp in Sources */,
 				D7C649D0178E7C0200A43251 /* CCAutoreleasePool.cpp in Sources */,
@@ -2198,6 +2205,7 @@
 				D7C64A2F178E7C0300A43251 /* vec2.c in Sources */,
 				D7C64A31178E7C0300A43251 /* vec3.c in Sources */,
 				D7C64A33178E7C0300A43251 /* vec4.c in Sources */,
+				D75E6EE618B23729009D8376 /* appwarp.cpp in Sources */,
 				D7C64A36178E7C0300A43251 /* CCKeypadDelegate.cpp in Sources */,
 				D7C64A39178E7C0300A43251 /* CCKeypadDispatcher.cpp in Sources */,
 				D7C64A3D178E7C0300A43251 /* CCLabelAtlas.cpp in Sources */,
@@ -2218,6 +2226,7 @@
 				D7C64A6E178E7C0400A43251 /* CCParticleExamples.cpp in Sources */,
 				D7C64A71178E7C0400A43251 /* CCParticleSystem.cpp in Sources */,
 				D7C64A74178E7C0400A43251 /* CCParticleSystemQuad.cpp in Sources */,
+				D75E6EEB18B23729009D8376 /* requests.cpp in Sources */,
 				D7C64A7D178E7C0400A43251 /* CCEGLViewProtocol.cpp in Sources */,
 				D7C64A80178E7C0400A43251 /* CCFileUtils.cpp in Sources */,
 				D7C64A84178E7C0400A43251 /* CCImageCommonWebp.cpp in Sources */,
@@ -2239,6 +2248,8 @@
 				D7C64AB9178E7C0500A43251 /* platform.cpp in Sources */,
 				D7C64AD2178E7C0500A43251 /* CCScriptSupport.cpp in Sources */,
 				D7C64AD6178E7C0500A43251 /* CCGLProgram.cpp in Sources */,
+				D75E6EF018B23729009D8376 /* utilities.cpp in Sources */,
+				D75E6EE818B23729009D8376 /* base64.cpp in Sources */,
 				D7C64AD9178E7C0500A43251 /* ccGLStateCache.cpp in Sources */,
 				D7C64AEB178E7C0500A43251 /* CCShaderCache.cpp in Sources */,
 				D7C64AEF178E7C0600A43251 /* ccShaders.cpp in Sources */,
@@ -2269,6 +2280,7 @@
 				D7C64B46178E7C0700A43251 /* CCTextureAtlas.cpp in Sources */,
 				D7C64B49178E7C0700A43251 /* CCTextureCache.cpp in Sources */,
 				D7C64B4C178E7C0700A43251 /* CCTexturePVR.cpp in Sources */,
+				D75E6EEF18B23729009D8376 /* urlencode.cpp in Sources */,
 				D7C64B50178E7C0700A43251 /* CCParallaxNode.cpp in Sources */,
 				D7C64B53178E7C0700A43251 /* CCTileMapAtlas.cpp in Sources */,
 				D7C64B56178E7C0700A43251 /* CCTMXLayer.cpp in Sources */,
@@ -2284,6 +2296,7 @@
 				D7C64B7C178E7C0900A43251 /* SimpleAudioEngine.mm in Sources */,
 				D7C64B7F178E7C0900A43251 /* SimpleAudioEngine_objc.m in Sources */,
 				D7C64B87178E7C0900A43251 /* AssetsManager.cpp in Sources */,
+				D75E6EE918B23729009D8376 /* cJSON.c in Sources */,
 				D7C64B8B178E7C0900A43251 /* CCBAnimationManager.cpp in Sources */,
 				D7C64B8E178E7C0900A43251 /* CCBFileLoader.cpp in Sources */,
 				D7C64B91178E7C0900A43251 /* CCBKeyframe.cpp in Sources */,
@@ -2311,6 +2324,7 @@
 				D7C64BDB178E7C0900A43251 /* CCControl.cpp in Sources */,
 				D7C64BDE178E7C0900A43251 /* CCControlButton.cpp in Sources */,
 				D7C64BE1178E7C0900A43251 /* CCControlColourPicker.cpp in Sources */,
+				D75E6EEE18B23729009D8376 /* udpsocket.cpp in Sources */,
 				D7C64BE5178E7C0A00A43251 /* CCControlHuePicker.cpp in Sources */,
 				D7C64BE8178E7C0A00A43251 /* CCControlPotentiometer.cpp in Sources */,
 				D7C64BEB178E7C0A00A43251 /* CCControlSaturationBrightnessPicker.cpp in Sources */,
@@ -2354,6 +2368,7 @@
 				D7C64C65178E7C0B00A43251 /* spine-cocos2dx.cpp in Sources */,
 				D7C64C8A178E7C0B00A43251 /* chipmunk.c in Sources */,
 				D7C64C8E178E7C0B00A43251 /* cpConstraint.c in Sources */,
+				D75E6EE718B23729009D8376 /* appwarp_extended.cpp in Sources */,
 				D7C64C90178E7C0B00A43251 /* cpDampedRotarySpring.c in Sources */,
 				D7C64C92178E7C0B00A43251 /* cpDampedSpring.c in Sources */,
 				D7C64C94178E7C0B00A43251 /* cpGearJoint.c in Sources */,
@@ -2378,21 +2393,12 @@
 				D7C64CBA178E7C0C00A43251 /* cpSpaceHash.c in Sources */,
 				D7C64CBC178E7C0C00A43251 /* cpSpaceQuery.c in Sources */,
 				D7C64CBE178E7C0C00A43251 /* cpSpaceStep.c in Sources */,
+				D75E6EED18B23729009D8376 /* socket.cpp in Sources */,
 				D7C64CC0178E7C0C00A43251 /* cpSpatialIndex.c in Sources */,
 				D7C64CC2178E7C0C00A43251 /* cpSweep1D.c in Sources */,
 				D7C64CC4178E7C0C00A43251 /* cpVect.c in Sources */,
 				D7C64CCB178E7C0C00A43251 /* AppDelegate.cpp in Sources */,
 				D7C64CCE178E7C0C00A43251 /* HelloWorldScene.cpp in Sources */,
-				D7C64CEA178E7C5000A43251 /* appwarp.cpp in Sources */,
-				D7C64CEB178E7C5000A43251 /* appwarp_extended.cpp in Sources */,
-				D7C64CEC178E7C5000A43251 /* base64.cpp in Sources */,
-				D7C64CED178E7C5000A43251 /* cJSON.c in Sources */,
-				D7C64CEE178E7C5000A43251 /* HMAC_SHA1.cpp in Sources */,
-				D7C64CEF178E7C5000A43251 /* requests.cpp in Sources */,
-				D7C64CF0178E7C5000A43251 /* SHA1.cpp in Sources */,
-				D7C64CF1178E7C5000A43251 /* socket.cpp in Sources */,
-				D7C64CF2178E7C5000A43251 /* urlencode.cpp in Sources */,
-				D7C64CF3178E7C5000A43251 /* utilities.cpp in Sources */,
 				D7C64D09178EF13E00A43251 /* StartGameLayer.cpp in Sources */,
 				D7C64D0A178EF13E00A43251 /* Player.cpp in Sources */,
 			);
@@ -2404,7 +2410,7 @@
 		D7C64CCF178E7C0C00A43251 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = "$(ARCHS_STANDARD)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -2427,7 +2433,7 @@
 					"\"$(PROJECT_NAME)/libs/cocos2dx/platform/third_party/ios\"",
 					"\"$(PROJECT_NAME)/libs/cocos2dx/platform/ios\"",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -2436,7 +2442,7 @@
 		D7C64CD0178E7C0C00A43251 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = "$(ARCHS_STANDARD)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -2456,7 +2462,7 @@
 					"\"$(PROJECT_NAME)/libs/cocos2dx/platform/third_party/ios\"",
 					"\"$(PROJECT_NAME)/libs/cocos2dx/platform/ios\"",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2467,13 +2473,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
+				ARCHS = "$(ARCHS_STANDARD)";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = AppWarpCocos2dxSample/Prefix.pch;
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
 				INFOPLIST_FILE = AppWarpCocos2dxSample/Resources/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/AppWarpCocos2dxSample/libs/cocos2dx/platform/third_party/ios/libraries\"",
@@ -2493,12 +2500,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
+				ARCHS = "$(ARCHS_STANDARD)";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = AppWarpCocos2dxSample/Prefix.pch;
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
 				INFOPLIST_FILE = AppWarpCocos2dxSample/Resources/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/AppWarpCocos2dxSample/libs/cocos2dx/platform/third_party/ios/libraries\"",

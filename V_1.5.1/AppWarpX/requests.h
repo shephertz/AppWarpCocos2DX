@@ -21,14 +21,23 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
+
+#ifndef requests__h
+#define requests__h
+
 namespace AppWarp
 {
-	std::string ItoA(int );
-	int bytesToInteger(char data[], int );
-	std::string getJSONString(const char*,byte *,int );
-    std::string getJSONObjectAsString(const char*,byte *,int );
-	int getJSONInt(const char*,byte *,int );
-	bool getJSONBool(const char*,byte *,int );
-	std::string getODataUTCDateFilter();
-    void appWarpTrace(std::string);
+		byte* buildWarpRequest(int, std::string, int &, byte reserved=0);
+		byte* buildWarpRequest(int , byte *, int , int &, byte reserved = 0);
+		byte* buildAuthRequest(std::string, int &,std::string, std::string);
+		byte* buildLobbyRequest(int,int &);
+		byte *buildRoomRequest(int,std::string,int &);
+		byte *buildCreateRoomRequest(std::string,std::string,int,int &);
+		byte *buildCreateRoomRequest(std::string,std::string,int,std::string,int,int &);
+        byte *buildKeepAliveRequest(int requestType, int &len);
+        byte * buildSignOutRequest(int requestType, int &len);
+		response *buildResponse(char *, int);
+		notify *buildNotify(char *, int);
 }
+
+#endif

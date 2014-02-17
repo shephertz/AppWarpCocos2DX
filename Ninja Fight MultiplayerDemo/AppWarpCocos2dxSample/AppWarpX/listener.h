@@ -33,6 +33,7 @@ namespace AppWarp
 	public:
 		virtual void onConnectDone(int) {};
 		virtual void onDisconnectDone(int) {};
+        virtual void onInitUDPDone(int) {};
 	};
 
 	class LobbyRequestListener
@@ -56,7 +57,7 @@ namespace AppWarp
 		virtual void onUserJoinedLobby(AppWarp::lobby ldata, std::string user) {}
 		virtual void onChatReceived(AppWarp::chat chatevent) {}
         virtual void onPrivateChatReceived(std::string sender, std::string message) {}
-		virtual void onUpdatePeersReceived(AppWarp::byte update[], int len) {}
+		virtual void onUpdatePeersReceived(AppWarp::byte update[], int len, bool isUDP) {}
 		virtual void onUserChangeRoomProperty(AppWarp::room rData, std::string user,std::map<std::string, std::string> properties, std::map<std::string, std::string>lockTable){}
         virtual void onUserPaused(std::string user,std::string locId,bool isLobby){}
         virtual void onUserResumed(std::string user,std::string locId,bool isLobby){}

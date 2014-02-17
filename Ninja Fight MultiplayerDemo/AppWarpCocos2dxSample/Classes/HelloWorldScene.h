@@ -42,7 +42,8 @@ public:
     void showStartGameLayer();
     void updateRoomProperties();
     void getRoomProperties();
-
+    void createRooms();
+    void getRooms();
     void removeStartGameLayer();
     void connectToAppWarp();
     // a selector callback
@@ -67,6 +68,8 @@ public:
     void onUserResumed(std::string user,std::string locId,bool isLobby);
     void showReconnectingLayer(std::string message);
     void onUpdatePropertyDone(AppWarp::liveroom revent);
+    void onGetAllRoomsDone(AppWarp::liveresult res);
+    void onCreateRoomDone(AppWarp::room revent);
 
     
     void scheduleRecover();

@@ -21,14 +21,43 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
+
+#ifndef __APPWARP_SOCKET__
+#define __APPWARP_SOCKET__
+#include <iostream>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+
+
 namespace AppWarp
 {
-	std::string ItoA(int );
-	int bytesToInteger(char data[], int );
-	std::string getJSONString(const char*,byte *,int );
-    std::string getJSONObjectAsString(const char*,byte *,int );
-	int getJSONInt(const char*,byte *,int );
-	bool getJSONBool(const char*,byte *,int );
-	std::string getODataUTCDateFilter();
-    void appWarpTrace(std::string);
+    class Client;
+	namespace Utility
+	{
+		class Socket
+		{
+			int sockd;
+            struct sockaddr_in serv_name;
+            Client* _callBack;
+            
+		public:
+			Socket(Client* owner);
+			~Socket();
+			int sockConnect(std::string, short );
+			int sockDisconnect();
+			int sockSend(char *,int);
+			void checkMessages();
+            
+		};
+
+	}
 }
+
+#endif

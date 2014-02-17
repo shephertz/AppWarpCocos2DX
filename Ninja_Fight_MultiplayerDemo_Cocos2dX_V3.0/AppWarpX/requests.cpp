@@ -26,7 +26,7 @@
 namespace AppWarp
 {
 
-		byte* buildWarpRequest(int requestType, std::string payload, int &byteLen)
+		byte* buildWarpRequest(int requestType, std::string payload, int &byteLen, byte reserved)
 		{
 
 			byteLen = 16 + payload.length();
@@ -48,7 +48,7 @@ namespace AppWarp
 				byteArray[i] = 0;
 
 			//byte 10 : reserved
-			byteArray[10] = 0;
+			byteArray[10] = reserved;
 
 			//byte 11 : payload type String, Binary, JSON
 			if(payload.length() > 0 && requestType != RequestType::update_peers)
@@ -70,7 +70,7 @@ namespace AppWarp
 			return byteArray;
 		}
 
-		byte* buildWarpRequest(int requestType, byte *payload, int payload_len, int &byteLen)
+		byte* buildWarpRequest(int requestType, byte *payload, int payload_len, int &byteLen, byte reserved)
 		{
 
 			byteLen = 16 + payload_len;
@@ -92,7 +92,7 @@ namespace AppWarp
 				byteArray[i] = 0;
 
 			//byte 10 : reserved
-			byteArray[10] = 0;
+			byteArray[10] = reserved;
 
 			//byte 11 : payload type String, Binary, JSON
 			if(payload_len > 0 && requestType != RequestType::update_peers)
@@ -124,7 +124,7 @@ namespace AppWarp
 			params.append(timeStamp);
 			params.append("user");
 			params.append(username);
-			params.append("version0.1");
+			params.append("version1.5");
 
 			unsigned char hmac_digest[20];
 			memset(hmac_digest, 0, 20);
@@ -135,7 +135,7 @@ namespace AppWarp
 			cJSON *payloadJSON;
 			payloadJSON = cJSON_CreateObject();
 			cJSON_AddStringToObject(payloadJSON,"apiKey", APIKEY.c_str());
-			cJSON_AddStringToObject(payloadJSON,"version", "0.1");
+			cJSON_AddStringToObject(payloadJSON,"version", "1.5");
 			cJSON_AddStringToObject(payloadJSON,"timeStamp", timeStamp.c_str());
 			cJSON_AddStringToObject(payloadJSON,"user", username.c_str());
 			cJSON_AddStringToObject(payloadJSON,"signature", hmac.c_str());
@@ -203,7 +203,7 @@ namespace AppWarp
 			return buildWarpRequest(RequestType::create_room, payload, len);
 		}
 		
-		byte * buildCreateRoomRequest(std::string name,std::string owner,int max, std::string properties, int &len)
+		byte * buildCreateRoomRequest(std::string name,std::string owner,int max, std::string properties, int time, int &len)
 		{
 			std::string payload;
 			cJSON *payloadJSON;
@@ -211,8 +211,9 @@ namespace AppWarp
 			cJSON_AddStringToObject(payloadJSON, "name",name.c_str());
 			cJSON_AddStringToObject(payloadJSON, "owner",owner.c_str());
 			cJSON_AddNumberToObject(payloadJSON, "maxUsers", max);
-			cJSON_AddStringToObject(payloadJSON, "addOrUpdate", properties.c_str());
-
+			cJSON_AddStringToObject(payloadJSON, "properties", properties.c_str());
+            cJSON_AddNumberToObject(payloadJSON, "turnTime", time);
+            cJSON_AddTrueToObject(payloadJSON, "inox");
 			char* cRet = cJSON_PrintUnformatted(payloadJSON);			
 			payload = cRet;
 			free(cRet);
