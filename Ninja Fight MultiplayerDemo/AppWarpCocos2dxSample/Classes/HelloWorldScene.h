@@ -16,7 +16,7 @@
 
 
 
-class HelloWorld : public cocos2d::CCLayerColor, public AppWarp::ConnectionRequestListener,public AppWarp::RoomRequestListener,public AppWarp::NotificationListener,public AppWarp::ZoneRequestListener
+class HelloWorld : public cocos2d::CCLayerColor, public AppWarp::ConnectionRequestListener,public AppWarp::RoomRequestListener,public AppWarp::NotificationListener,public AppWarp::ZoneRequestListener,public AppWarp::LobbyRequestListener
 {
     
 public:
@@ -56,6 +56,10 @@ public:
     virtual void ccTouchesEnded(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent);
     virtual void update(float time);
     
+    void joinLobby();
+    void subscribeLobby();
+    void leaveLobby();
+    void unsubscribeLobby();
     // preprocessor macro for "static create()" constructor ( node() deprecated )
     CREATE_FUNC(HelloWorld);
     
@@ -70,7 +74,11 @@ public:
     void onUpdatePropertyDone(AppWarp::liveroom revent);
     void onGetAllRoomsDone(AppWarp::liveresult res);
     void onCreateRoomDone(AppWarp::room revent);
-
+    void onGetMatchedRoomsDone(AppWarp::matchedroom mevent);
+    void onLeaveLobbyDone(AppWarp::lobby levent);
+    void onJoinLobbyDone(AppWarp::lobby levent);
+    void onSubscribeLobbyDone(AppWarp::lobby levent);
+    void onUnsubscribeLobbyDone(AppWarp::lobby levent);
     
     void scheduleRecover();
     void unscheduleRecover();

@@ -1531,37 +1531,41 @@ namespace AppWarp
         }
 		int byteLen;
 		byte *req;
-
+        
 		std::map<std::string,std::string>::iterator it;
-
+        
 		std::string payload;
 		cJSON *propJSON;
 		cJSON *payloadJSON;
 		payloadJSON = cJSON_CreateObject();
 		propJSON = cJSON_CreateObject();
-		for(it = properties.begin(); it != properties.end(); ++it)
+        
+        for(it = properties.begin(); it != properties.end(); ++it)
 		{
 			cJSON_AddStringToObject(propJSON, it->first.c_str(),it->second.c_str());
 		}
-		cJSON_AddItemToObject(payloadJSON, "properties", propJSON);
-
+        
+		char *tmp = cJSON_PrintUnformatted(propJSON);
+		cJSON_AddStringToObject(payloadJSON, "properties", tmp);
+        
 		char *cRet = cJSON_PrintUnformatted(payloadJSON);
 		payload = cRet;
-
+        
 		req = buildWarpRequest(RequestType::get_room_with_properties, payload, byteLen);
-
+        
 		char *data = new char[byteLen];
 		for(int i=0; i< byteLen; ++i)
 		{
 			data[i] = req[i];
 		}
-
+        
 		_socket->sockSend(data, byteLen);
-
+        
 		delete[] data;
 		delete[] req;
 		cJSON_Delete(propJSON);
 		cJSON_Delete(payloadJSON);
+        free(tmp);
 		free(cRet);
 	}
     

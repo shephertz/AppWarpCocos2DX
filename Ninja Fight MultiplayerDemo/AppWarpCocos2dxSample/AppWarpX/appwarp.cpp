@@ -329,7 +329,6 @@ namespace AppWarp
             _socket = NULL;
             return;
         }
-        //printf("\n..socketConnectionCallback");
         _socketState = SocketStream::stream_connected;
 		int byteLen;
 		byte * authReq = buildAuthRequest(userName, byteLen,this->APIKEY,this->SECRETKEY);
@@ -1539,11 +1538,14 @@ namespace AppWarp
 		cJSON *payloadJSON;
 		payloadJSON = cJSON_CreateObject();
 		propJSON = cJSON_CreateObject();
-		for(it = properties.begin(); it != properties.end(); ++it)
+        
+        for(it = properties.begin(); it != properties.end(); ++it)
 		{
 			cJSON_AddStringToObject(propJSON, it->first.c_str(),it->second.c_str());
 		}
-		cJSON_AddItemToObject(payloadJSON, "properties", propJSON);
+        
+		char *tmp = cJSON_PrintUnformatted(propJSON);
+		cJSON_AddStringToObject(payloadJSON, "properties", tmp);
 
 		char *cRet = cJSON_PrintUnformatted(payloadJSON);
 		payload = cRet;
@@ -1562,6 +1564,7 @@ namespace AppWarp
 		delete[] req;
 		cJSON_Delete(propJSON);
 		cJSON_Delete(payloadJSON);
+        free(tmp);
 		free(cRet);
 	}
     
