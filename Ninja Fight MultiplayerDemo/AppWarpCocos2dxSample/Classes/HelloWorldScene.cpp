@@ -44,12 +44,12 @@ void HelloWorld::showStartGameLayer()
     startGameLayer = StartGameLayer::create();
     addChild(startGameLayer);
     
-    CCLabelTTF *buttonTitle = CCLabelTTF::create("Connect", "Marker Felt", 30);
+    CCLabelTTF *buttonTitle = CCLabelTTF::create("Start Game", "Marker Felt", 30);
     buttonTitle->setColor(ccBLACK);
     
     CCMenuItemLabel *startGameButton = CCMenuItemLabel::create(buttonTitle, this,menu_selector(HelloWorld::connectToAppWarp));
-    startGameButton->setPosition(ccp(winSize.width/2,winSize.height-y_offset));
-    
+    startGameButton->setPosition(ccp(winSize.width/2,winSize.height/2));
+    /*
     y_offset+=60;
     
     CCLabelTTF *lobbyTitle = CCLabelTTF::create("JoinLobby", "Marker Felt", 30);
@@ -89,7 +89,8 @@ void HelloWorld::showStartGameLayer()
     disconnectButton->setPosition(ccp(winSize.width/2,winSize.height-y_offset));
 
     //printf("\nshowStartGameLayer = (%f,%f)",winSize.width/2,winSize.height/2);
-    CCMenu *pMenu = CCMenu::create(startGameButton,joinLobbyButton,leaveLobbyButton,updateRoomButton,getRoomButton,disconnectButton,NULL);
+    CCMenu *pMenu = CCMenu::create(startGameButton,joinLobbyButton,leaveLobbyButton,updateRoomButton,getRoomButton,disconnectButton,NULL);*/
+    CCMenu *pMenu = CCMenu::create(startGameButton,NULL);
     pMenu->setPosition(CCPointZero);
     startGameLayer->addChild(pMenu, 1);
 }
@@ -180,15 +181,15 @@ void HelloWorld::startGame()
         scheduleUpdate();
     }
     
-    CCLabelTTF *buttonTitle = CCLabelTTF::create("Disconnect", "Marker Felt", 30);
-    buttonTitle->setColor(ccBLACK);
-    
-    CCMenuItemLabel *startGameButton = CCMenuItemLabel::create(buttonTitle, this,menu_selector(HelloWorld::disconnect));
-    startGameButton->setPosition(ccp(winSize.width/2,winSize.height/4));
-    //printf("\nshowStartGameLayer = (%f,%f)",winSize.width/2,winSize.height/2);
-    CCMenu *pMenu = CCMenu::create(startGameButton,NULL);
-    pMenu->setPosition(CCPointZero);
-    this->addChild(pMenu, 1);
+//    CCLabelTTF *buttonTitle = CCLabelTTF::create("Disconnect", "Marker Felt", 30);
+//    buttonTitle->setColor(ccBLACK);
+//    
+//    CCMenuItemLabel *startGameButton = CCMenuItemLabel::create(buttonTitle, this,menu_selector(HelloWorld::disconnect));
+//    startGameButton->setPosition(ccp(winSize.width/2,winSize.height/4));
+//    //printf("\nshowStartGameLayer = (%f,%f)",winSize.width/2,winSize.height/2);
+//    CCMenu *pMenu = CCMenu::create(startGameButton,NULL);
+//    pMenu->setPosition(CCPointZero);
+//    this->addChild(pMenu, 1);
 
 }
 
@@ -441,10 +442,6 @@ void HelloWorld::connectToAppWarp()
         warpClientRef->setZoneRequestListener(this);
         warpClientRef->setLobbyRequestListener(this);
         userName = genRandom();
-        //warpClientRef->setGeo("us");
-        warpClientRef->setGeo("eu");
-        //warpClientRef->setGeo("japan");
-
         warpClientRef->connect(userName);
     }
     else
@@ -466,7 +463,7 @@ void HelloWorld::onConnectDone(int res)
         printf("\nonConnectDone .. SUCCESS..session=%d\n",AppWarp::AppWarpSessionID);
         AppWarp::Client *warpClientRef;
         warpClientRef = AppWarp::Client::getInstance();
-        //warpClientRef->joinRoom(ROOM_ID);
+        warpClientRef->joinRoom(ROOM_ID);
     }
     else if (res==AppWarp::ResultCode::success_recovered)
     {
@@ -482,6 +479,11 @@ void HelloWorld::onConnectDone(int res)
     {
         unscheduleRecover();
         printf("\nonConnectDone .. FAILED with bad request..session=%d\n",AppWarp::AppWarpSessionID);
+    }
+    else if (res==AppWarp::ResultCode::connection_error)
+    {
+        unscheduleRecover();
+        printf("\nonConnectDone .. FAILED with connection error..session=%d\n",AppWarp::AppWarpSessionID);
     }
     else
     {
