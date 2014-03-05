@@ -43,6 +43,7 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
                    ../../AppWarpX/requests.cpp \
                    ../../AppWarpX/SHA1.cpp \
                    ../../AppWarpX/socket.cpp \
+                   ../../AppWarpX/udpsocket.cpp \
                    ../../AppWarpX/urlencode.cpp \
                    ../../AppWarpX/utilities.cpp
 ```
