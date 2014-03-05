@@ -35,6 +35,7 @@ namespace AppWarp
 		byte *buildCreateRoomRequest(std::string,std::string,int,int &);
 		byte *buildCreateRoomRequest(std::string,std::string,int,std::string,int,int &);
         byte *buildKeepAliveRequest(int requestType, int &len);
+        byte * buildSignOutRequest(int requestType, int &len);
 		response *buildResponse(char *, int);
 		notify *buildNotify(char *, int);
 }

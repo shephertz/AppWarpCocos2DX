@@ -23,10 +23,8 @@
  */
 
 #include "udpsocket.h"
-#include "appwarp.h"
-#include "defines.h"
-#include "requests.h"
 #include <fcntl.h>
+#include "appwarp.h"
 
 using namespace std;
 

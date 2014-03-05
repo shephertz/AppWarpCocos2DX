@@ -55,7 +55,7 @@ namespace AppWarp
     extern int RECOVERY_ALLOWANCE_TIME;
     extern bool AUTO_RECOVER;
 
-	class Client : public cocos2d::CCNode
+	class Client : public cocos2d::Node
 	{
 	public:
 		~Client();
@@ -522,7 +522,7 @@ namespace AppWarp
          */
         void recoverConnection();
 
-
+        void setGeo(std::string _geo);
         /**
          * Methods used for internal AppWarp socket callbacks.
          * Not required to be called in Cocos2DX application code.
@@ -537,6 +537,8 @@ namespace AppWarp
 		std::string APIKEY;
 		std::string SECRETKEY;
 		std::string APPWARPSERVERHOST;
+        std::string geo;
+
         bool isWaitingForData;
 		
         Utility::Socket* _socket;

@@ -75,6 +75,12 @@ namespace AppWarp
 		}
 	}
 
+    void Client::setGeo(std::string _geo)
+    {
+        APPWARPSERVERHOST = "";
+        geo = _geo;
+    }
+
 	void Client::initialize(std::string AKEY, std::string SKEY, std::string host)
 	{
 		if(_instance != NULL){
@@ -83,7 +89,7 @@ namespace AppWarp
         _instance = new Client();
 		_instance->APIKEY = AKEY;
 		_instance->SECRETKEY = SKEY;
-        _instance->m_bRunning = true;
+        _instance->_running = true;
         _instance->scheduleUpdate();
         _instance->isWaitingForData = false;
         _instance->incompleteDataBuffer = NULL;
@@ -232,6 +238,12 @@ namespace AppWarp
         std::string path = LOOKUPHOST;
         path.append("?api=");
         path.append(this->APIKEY);
+        if (geo.length()>0)
+        {
+            path.append("&geo=");
+            path.append(geo);
+        }
+        
         curl_easy_setopt(curlHandle, CURLOPT_URL, path.c_str());
         
         res = curl_easy_perform( curlHandle );
@@ -317,7 +329,7 @@ namespace AppWarp
             _socket = NULL;
             return;
         }
-        //printf("\n..socketConnectionCallback");
+        printf("\n..socketConnectionCallback");
         _socketState = SocketStream::stream_connected;
 		int byteLen;
 		byte * authReq = buildAuthRequest(userName, byteLen,this->APIKEY,this->SECRETKEY);
@@ -345,13 +357,18 @@ namespace AppWarp
         else if(_socketState == SocketStream::stream_failed)
         {
             keepAliveWatchDog = false;
-            
             this->unscheduleKeepAlive();
             
             if(_state == ConnectionState::disconnecting)
             {
+                if(_socket)
+                {
+                    delete _socket;
+                    _socket = NULL;
+                }
                 _state = ConnectionState::disconnected;
                 AppWarpSessionID = 0;
+                
                 if(_connectionReqListener != NULL)
                 {
                     _connectionReqListener->onDisconnectDone(ResultCode::success);
@@ -469,7 +486,7 @@ namespace AppWarp
             }
             
 		}
-        delete bufferToDecode;
+        delete[] bufferToDecode;
 	}
     
     bool Client::canDecode(char data[],int start, int end)
@@ -503,25 +520,28 @@ namespace AppWarp
 
 	void Client::disconnect()
 	{
-        
-
-        if((_socket == NULL) || (_socket->sockDisconnect() == AppWarp::result_failure))
+        if(_socket == NULL)
         {
             if(_connectionReqListener != NULL)
                 _connectionReqListener->onDisconnectDone(AppWarp::ResultCode::bad_request);
             return;
         }
-        keepAliveWatchDog = false;
-        this->unscheduleKeepAlive();
-        delete _socket;
-        _socket = NULL;
-        _state = ConnectionState::disconnected;
-        _socketState = SocketStream::stream_failed;
-        AppWarpSessionID = 0;
+        int byteLen;
+		byte *signOutReq = buildSignOutRequest(RequestType::signout, byteLen);
         
-		if(_connectionReqListener != NULL)
-			_connectionReqListener->onDisconnectDone(AppWarp::ResultCode::success);
-
+		_socket->sockSend((char*)signOutReq, byteLen);
+        
+        
+		delete[] signOutReq;
+        
+        _state = ConnectionState::disconnecting;
+        
+        
+        if((_socket->sockDisconnect() == AppWarp::result_failure))
+        {
+            if(_connectionReqListener != NULL)
+                _connectionReqListener->onDisconnectDone(AppWarp::ResultCode::bad_request);
+        }
 	}
 
     void Client::initUDP()
@@ -541,7 +561,7 @@ namespace AppWarp
     
 	void Client::joinLobby()
 	{
-        if(_state != ConnectionState::connected){
+        if((_state != ConnectionState::connected) || (_socket == NULL)){
             if(_lobbyListener != NULL)
 			{
 				lobby _lobby;
@@ -560,7 +580,7 @@ namespace AppWarp
 
 	void Client::leaveLobby()
 	{
-        if(_state != ConnectionState::connected){
+        if((_state != ConnectionState::connected) || (_socket == NULL)){
             if(_lobbyListener != NULL)
 			{
 				lobby _lobby;
@@ -585,7 +605,7 @@ namespace AppWarp
 
 	void Client::subscribeLobby()
 	{
-        if(_state != ConnectionState::connected){
+        if((_state != ConnectionState::connected) || (_socket == NULL)){
             if(_lobbyListener != NULL)
 			{
 				lobby _lobby;
@@ -610,7 +630,7 @@ namespace AppWarp
 
 	void Client::unsubscribeLobby()
 	{
-        if(_state != ConnectionState::connected){
+        if((_state != ConnectionState::connected) || (_socket == NULL)){
             if(_lobbyListener != NULL)
 			{
 				lobby _lobby;
@@ -635,7 +655,7 @@ namespace AppWarp
 
 	void Client::joinRoom(std::string roomId)
 	{
-        if(_state != ConnectionState::connected){
+        if((_state != ConnectionState::connected) || (_socket == NULL)){
 			if(_roomlistener != NULL)
 			{
 				room _room;
@@ -660,7 +680,7 @@ namespace AppWarp
 
 	void Client::leaveRoom(std::string roomId)
 	{
-        if(_state != ConnectionState::connected){
+        if((_state != ConnectionState::connected) || (_socket == NULL)){
 			if(_roomlistener != NULL)
 			{
 				room _room;
@@ -685,7 +705,7 @@ namespace AppWarp
 
 	void Client::subscribeRoom(std::string roomId)
 	{
-        if(_state != ConnectionState::connected){
+        if((_state != ConnectionState::connected) || (_socket == NULL)){
 			if(_roomlistener != NULL)
 			{
 				room _room;
@@ -710,7 +730,7 @@ namespace AppWarp
 
 	void Client::unsubscribeRoom(std::string roomId)
 	{
-        if(_state != ConnectionState::connected){
+        if((_state != ConnectionState::connected) || (_socket == NULL)){
 			if(_roomlistener != NULL)
 			{
 				room _room;
@@ -735,7 +755,7 @@ namespace AppWarp
 
 	void Client::deleteRoom(std::string roomId)
 	{
-        if(_state != ConnectionState::connected){
+        if((_state != ConnectionState::connected) || (_socket == NULL)){
 			if(_zonelistener != NULL)
 			{
 				room _room;
@@ -760,7 +780,7 @@ namespace AppWarp
 
 	void Client::createRoom(std::string name, std::string owner, int max, std::map<std::string,std::string> properties)
 	{
-        if(_state != ConnectionState::connected){
+        if((_state != ConnectionState::connected) || (_socket == NULL)){
 			if(_zonelistener != NULL)
 			{
 				room _room;
@@ -804,7 +824,7 @@ namespace AppWarp
 
     void Client::createTurnRoom(std::string name, std::string owner, int max, std::map<std::string,std::string> properties, int time)
 	{
-        if(_state != ConnectionState::connected){
+        if((_state != ConnectionState::connected) || (_socket == NULL)){
 			if(_zonelistener != NULL)
 			{
 				room _room;
@@ -850,7 +870,7 @@ namespace AppWarp
     
 	void Client::createRoom(std::string name, std::string owner, int max)
 	{
-        if(_state != ConnectionState::connected){
+        if((_state != ConnectionState::connected) || (_socket == NULL)){
 			if(_zonelistener != NULL)
 			{
 				room _room;
@@ -875,7 +895,7 @@ namespace AppWarp
 
 	void Client::getLiveRoomInfo(std::string roomId)
 	{
-        if(_state != ConnectionState::connected){
+        if((_state != ConnectionState::connected) || (_socket == NULL)){
 			if(_roomlistener != NULL)
 			{
 				liveroom _room;
@@ -900,7 +920,7 @@ namespace AppWarp
 
 	void Client::getLiveLobbyInfo()
 	{
-        if(_state != ConnectionState::connected){
+        if((_state != ConnectionState::connected) || (_socket == NULL)){
             if(_lobbyListener != NULL)
             {
                 livelobby _lobby;
@@ -925,7 +945,7 @@ namespace AppWarp
 
 	void Client::getLiveUserInfo(std::string user)
 	{
-        if(_state != ConnectionState::connected){
+        if((_state != ConnectionState::connected) || (_socket == NULL)){
             if(_zonelistener != NULL)
 			{
 				liveuser _user;
@@ -962,7 +982,7 @@ namespace AppWarp
 
 	void Client::sendChat(std::string str)
 	{
-        if(_state != ConnectionState::connected){
+        if((_state != ConnectionState::connected) || (_socket == NULL)){
             if(_chatlistener != NULL)
 			{
 				_chatlistener->onSendChatDone(ResultCode::connection_error);
@@ -1004,7 +1024,7 @@ namespace AppWarp
 
     void Client::sendPrivateChat(std::string toUser, std::string message)
 	{
-        if(_state != ConnectionState::connected){
+        if((_state != ConnectionState::connected) || (_socket == NULL)){
             if(_chatlistener != NULL)
 			{
 				_chatlistener->onSendPrivateChatDone(ResultCode::connection_error);
@@ -1047,7 +1067,7 @@ namespace AppWarp
     
 	void Client::sendUpdate(byte *update,int data_len)
 	{
-        if(_state != ConnectionState::connected){
+        if((_state != ConnectionState::connected) || (_socket == NULL)){
             if(_updatelistener != NULL)
 			{
 				_updatelistener->onSendUpdateDone(ResultCode::connection_error);
@@ -1086,7 +1106,7 @@ namespace AppWarp
 
 	void Client::setCustomUserData(std::string userName, std::string customData)
 	{
-        if(_state != ConnectionState::connected){
+        if((_state != ConnectionState::connected) || (_socket == NULL)){
             if(_zonelistener != NULL)
 			{
 				liveuser _user;
@@ -1124,7 +1144,7 @@ namespace AppWarp
 
 	void Client::setCustomRoomData(std::string roomId, std::string customData)
 	{
-        if(_state != ConnectionState::connected){
+        if((_state != ConnectionState::connected) || (_socket == NULL)){
             if(_roomlistener != NULL)
 			{
 				liveroom _room;
@@ -1162,7 +1182,7 @@ namespace AppWarp
 
 	void Client::getAllRooms()
 	{
-        if(_state != ConnectionState::connected){
+        if((_state != ConnectionState::connected) || (_socket == NULL)){
             if(_zonelistener != NULL)
 			{
 				liveresult _res;
@@ -1188,7 +1208,7 @@ namespace AppWarp
 
 	void Client::getOnlineUsers()
 	{
-        if(_state != ConnectionState::connected){
+        if((_state != ConnectionState::connected) || (_socket == NULL)){
             if(_zonelistener != NULL)
 			{
 				liveresult _res;
@@ -1214,7 +1234,7 @@ namespace AppWarp
 
     void Client::lockProperties(std::map<std::string, std::string> properties)
     {
-        if(_state != ConnectionState::connected){
+        if((_state != ConnectionState::connected) || (_socket == NULL)){
             if(_roomlistener != NULL)
 			{
 				_roomlistener->onLockPropertiesDone(ResultCode::connection_error);
@@ -1236,7 +1256,8 @@ namespace AppWarp
 			cJSON_AddStringToObject(propJSON, it->first.c_str(),it->second.c_str());
 		}
         
-		cJSON_AddStringToObject(payloadJSON, "lockProperties", cJSON_PrintUnformatted(propJSON));
+		char *tmp = cJSON_PrintUnformatted(propJSON);
+		cJSON_AddStringToObject(payloadJSON, "lockProperties", tmp);
         
 		char *cRet = cJSON_PrintUnformatted(payloadJSON);
 		payload = cRet;
@@ -1256,11 +1277,12 @@ namespace AppWarp
 		cJSON_Delete(propJSON);
 		cJSON_Delete(payloadJSON);
 		free(cRet);
+		free(tmp);
     }
     
     void Client::unlockProperties(std::vector<std::string> properties)
     {
-        if(_state != ConnectionState::connected){
+        if((_state != ConnectionState::connected) || (_socket == NULL)){
             if(_roomlistener != NULL)
 			{
 				_roomlistener->onUnlockPropertiesDone(ResultCode::connection_error);
@@ -1308,7 +1330,7 @@ namespace AppWarp
     
 	void Client::updateRoomProperties(std::string roomID, std::map<std::string,std::string> properties,std::vector<std::string> removeArray)
 	{
-        if(_state != ConnectionState::connected){
+        if((_state != ConnectionState::connected) || (_socket == NULL)){
             if(_roomlistener != NULL)
 			{
 				liveroom _room;
@@ -1333,7 +1355,8 @@ namespace AppWarp
 		}
 
 		cJSON_AddStringToObject(payloadJSON, "id", roomID.c_str());
-		cJSON_AddStringToObject(payloadJSON, "addOrUpdate", cJSON_PrintUnformatted(propJSON));
+		char *tmp = cJSON_PrintUnformatted(propJSON);
+		cJSON_AddStringToObject(payloadJSON, "addOrUpdate", tmp);
 
 		std::string removeArrayStr = "";
 		for(unsigned int i=0; i<removeArray.size(); ++i)
@@ -1364,11 +1387,12 @@ namespace AppWarp
 		cJSON_Delete(propJSON);
 		cJSON_Delete(payloadJSON);
 		free(cRet);
+		free(tmp);
 	}
     
     void Client::getRoomsInUserRange(int minJoinedUsers, int maxJoinedUsers)
     {
-        if(_state != ConnectionState::connected){
+        if((_state != ConnectionState::connected) || (_socket == NULL)){
             if(_zonelistener != NULL)
 			{
 				matchedroom _room;
@@ -1406,7 +1430,7 @@ namespace AppWarp
     
     void Client::joinRoomInUserRange(int minJoinedUsers, int maxJoinedUsers, bool maxPreferred)
     {
-        if(_state != ConnectionState::connected){
+        if((_state != ConnectionState::connected) || (_socket == NULL)){
             if(_roomlistener != NULL)
 			{
 				room _room;
@@ -1447,7 +1471,7 @@ namespace AppWarp
 
 	void Client::joinRoomWithProperties(std::map<std::string,std::string> properties)
 	{
-        if(_state != ConnectionState::connected){
+        if((_state != ConnectionState::connected) || (_socket == NULL)){
             if(_roomlistener != NULL)
 			{
 				room _room;
@@ -1470,7 +1494,8 @@ namespace AppWarp
 		{
 			cJSON_AddStringToObject(propJSON, it->first.c_str(),it->second.c_str());
 		}
-		cJSON_AddStringToObject(payloadJSON, "properties", cJSON_PrintUnformatted(propJSON));
+		char *tmp = cJSON_PrintUnformatted(propJSON);
+		cJSON_AddStringToObject(payloadJSON, "properties", tmp);
 
 		char *cRet = cJSON_PrintUnformatted(payloadJSON);
 		payload = cRet;
@@ -1490,11 +1515,12 @@ namespace AppWarp
 		cJSON_Delete(propJSON);
 		cJSON_Delete(payloadJSON);
 		free(cRet);
+		free(tmp);
 	}
 
 	void Client::getRoomWithProperties(std::map<std::string,std::string> properties)
 	{
-        if(_state != ConnectionState::connected){
+        if((_state != ConnectionState::connected) || (_socket == NULL)){
             if(_zonelistener != NULL)
 			{
 				matchedroom _room;
@@ -1505,43 +1531,47 @@ namespace AppWarp
         }
 		int byteLen;
 		byte *req;
-
+        
 		std::map<std::string,std::string>::iterator it;
-
+        
 		std::string payload;
 		cJSON *propJSON;
 		cJSON *payloadJSON;
 		payloadJSON = cJSON_CreateObject();
 		propJSON = cJSON_CreateObject();
-		for(it = properties.begin(); it != properties.end(); ++it)
+        
+        for(it = properties.begin(); it != properties.end(); ++it)
 		{
 			cJSON_AddStringToObject(propJSON, it->first.c_str(),it->second.c_str());
 		}
-		cJSON_AddItemToObject(payloadJSON, "properties", propJSON);
-
+        
+		char *tmp = cJSON_PrintUnformatted(propJSON);
+		cJSON_AddStringToObject(payloadJSON, "properties", tmp);
+        
 		char *cRet = cJSON_PrintUnformatted(payloadJSON);
 		payload = cRet;
-
+        
 		req = buildWarpRequest(RequestType::get_room_with_properties, payload, byteLen);
-
+        
 		char *data = new char[byteLen];
 		for(int i=0; i< byteLen; ++i)
 		{
 			data[i] = req[i];
 		}
-
+        
 		_socket->sockSend(data, byteLen);
-
+        
 		delete[] data;
 		delete[] req;
 		cJSON_Delete(propJSON);
 		cJSON_Delete(payloadJSON);
+        free(tmp);
 		free(cRet);
 	}
     
     void Client::startGame()
     {
-        if(_state != ConnectionState::connected){
+        if((_state != ConnectionState::connected) || (_socket == NULL)){
             if(_turnlistener != NULL)
 			{
 				_turnlistener->onStartGameDone(ResultCode::connection_error);
@@ -1558,7 +1588,7 @@ namespace AppWarp
     
     void Client::stopGame()
     {
-        if(_state != ConnectionState::connected){
+        if((_state != ConnectionState::connected) || (_socket == NULL)){
             if(_turnlistener != NULL)
 			{
 				_turnlistener->onStopGameDone(ResultCode::connection_error);
@@ -1575,7 +1605,7 @@ namespace AppWarp
     
     void Client::getMoveHistory()
     {
-        if(_state != ConnectionState::connected){
+        if((_state != ConnectionState::connected) || (_socket == NULL)){
             if(_turnlistener != NULL)
 			{
                 std::vector<move> history;
@@ -1604,7 +1634,7 @@ namespace AppWarp
     
     void Client::sendMove(std::string moveData)
     {
-        if(_state != ConnectionState::connected){
+        if((_state != ConnectionState::connected) || (_socket == NULL)){
             if(_turnlistener != NULL)
 			{
 				_turnlistener->onSendMoveDone(ResultCode::connection_error);

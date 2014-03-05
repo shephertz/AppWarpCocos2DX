@@ -487,8 +487,10 @@ void HelloWorld::onConnectDone(int res)
     }
     else
     {
+        removeStartGameLayer();
         unscheduleRecover();
         printf("\nonConnectDone .. FAILED with unknown reason..session=%d\n",AppWarp::AppWarpSessionID);
+        showStartGameLayer();
     }
 }
 
@@ -615,18 +617,26 @@ void HelloWorld::showReconnectingLayer(std::string message)
 
 void HelloWorld::onUserPaused(std::string user,std::string locId,bool isLobby)
 {
-    //    printf("\nonUserPaused...user=%s",user.c_str());
-    //    printf("\nonUserPaused...locId=%s",locId.c_str());
+        printf("\nonUserPaused...user=%s",user.c_str());
+        printf("\nonUserPaused...locId=%s",locId.c_str());
     std::string message = "Waiting for "+user+" response...";
     showReconnectingLayer(message);
 }
 
 void HelloWorld::onUserResumed(std::string user,std::string locId,bool isLobby)
 {
-    //    printf("\nonUserResumed...user=%s",user.c_str());
-    //    printf("\nonUserResumed...locId=%s",locId.c_str());
+        printf("\nonUserResumed...user=%s",user.c_str());
+        printf("\nonUserResumed...locId=%s",locId.c_str());
     removeStartGameLayer();
 }
+
+void HelloWorld::onUserLeftRoom(AppWarp::room rData, std::string user)
+{
+    printf("\nonUserLeftRoom...user=%s",user.c_str());
+    removeStartGameLayer();
+}
+
+
 
 void HelloWorld::onCreateRoomDone(AppWarp::room revent)
 {

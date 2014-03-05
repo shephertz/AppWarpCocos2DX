@@ -174,6 +174,18 @@ namespace AppWarp
             cJSON_Delete(payloadJSON);
             return buildWarpRequest(requestType, payload, len);
         }
+    
+        byte * buildSignOutRequest(int requestType, int &len)
+        {
+            std::string payload;
+            cJSON *payloadJSON;
+            payloadJSON = cJSON_CreateObject();
+            char* cRet = cJSON_PrintUnformatted(payloadJSON);
+            payload = cRet;
+            free(cRet);
+            cJSON_Delete(payloadJSON);
+            return buildWarpRequest(requestType, payload, len);
+        }
 
 		byte * buildRoomRequest(int requestType,std::string id, int &len)
 		{

@@ -79,6 +79,7 @@ public:
     void onJoinLobbyDone(AppWarp::lobby levent);
     void onSubscribeLobbyDone(AppWarp::lobby levent);
     void onUnsubscribeLobbyDone(AppWarp::lobby levent);
+    void onUserLeftRoom(AppWarp::room rData, std::string user);
     
     void scheduleRecover();
     void unscheduleRecover();
