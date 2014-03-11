@@ -1,0 +1,3 @@
+* Consume keep alive responses from error for more reliable connection error event.
+
+

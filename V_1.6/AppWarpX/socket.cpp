@@ -21,80 +21,95 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
-
-#include "udpsocket.h"
+#include "socket.h"
 #include <fcntl.h>
 #include "appwarp.h"
-
-using namespace std;
+#include <errno.h>
 
 namespace AppWarp
 {
 	namespace Utility
 	{
         
-		UdpSocket::UdpSocket(Client* owner)
+		Socket::Socket(Client* owner)
 		{
             _callBack = owner;
             sockd = -1;
 		}
-        
-		UdpSocket::~UdpSocket()
+
+		Socket::~Socket()
 		{
-            
+
 		}
-        
-        int UdpSocket::connect(string host, short port)
-        {
-            if ((sockd = socket(AF_INET, SOCK_DGRAM, 0)) < 0) {
+
+		int Socket::sockConnect(std::string host, short port)
+		{
+		    sockd = socket(AF_INET, SOCK_STREAM, 0);
+            if (sockd == -1)
+            {
+
                 return AppWarp::result_failure;
             }
-            
-            fcntl(sockd, F_SETFL, O_NONBLOCK);
-            
-            memset((char*)&serv_name, 0, sizeof(serv_name));
             
             serv_name.sin_family = AF_INET;
+            
             inet_aton(host.c_str(), &serv_name.sin_addr);
             serv_name.sin_port = htons(port);
-            
-            return AppWarp::result_success;
-        }
+
+            int status = connect(sockd, (struct sockaddr*)&serv_name, sizeof(serv_name));
         
-		int UdpSocket::sockSend(char *messageToSend,int messageLength)
-		{
-            if (sendto(sockd, messageToSend, messageLength, 0, (struct sockaddr *)&serv_name, sizeof(serv_name)) < 0) {
+            if (status == -1)
+            {
+
                 return AppWarp::result_failure;
             }
+            fcntl(sockd, F_SETFL, O_NONBLOCK);
             return AppWarp::result_success;
 		}
-        
-		void UdpSocket::checkMessages()
+
+		int Socket::sockDisconnect()
 		{
-            if(sockd == -1){
+            if(sockd == -1)
+            {
+                return AppWarp::result_failure;
+            }
+            shutdown(sockd, SHUT_RDWR);
+            close(sockd);
+            return AppWarp::result_success;
+		}
+
+		int Socket::sockSend(char *messageToSend,int messageLength)
+		{
+            _callBack->keepAliveWatchDog = false;
+            int bytes_sent = send(sockd, messageToSend, messageLength, 0);
+            if(bytes_sent != messageLength)
+            {
+                return AppWarp::result_failure;
+            }
+            else
+            {
+                return AppWarp::result_success;
+            }
+		}
+
+		void Socket::checkMessages()
+		{
+			unsigned char msg[4096];
+			int ret = recv(sockd, msg, 4096, 0);
+            if(ret > 0)
+            {
+                _callBack->socketNewMsgCallback(msg, ret);
+            }
+            else if(errno == EWOULDBLOCK)
+            {
                 return;
             }
-            unsigned char buf[2048];
-            socklen_t addrlen = sizeof(serv_name);
-            int ret = recvfrom(sockd, buf, 2048, 0, (struct sockaddr *)&serv_name, &addrlen);
-            if(ret > 0){
-                if(buf[0] == MessageType::response){
-                    response* udpresponse = buildResponse((char*)buf, 0);
-                    _callBack->udpresponse(udpresponse);
-                    delete udpresponse;
-                }
-                else if(buf[0] == MessageType::update){
-                    notify* notification = buildNotify((char*)buf, 0);
-                    _callBack->udpnotify(notification);
-                    delete notification;
-                }
+            else
+            {
+                _callBack->socketConnectionCallback(AppWarp::result_failure);
             }
 		}
         
-        void UdpSocket::disconnect()
-        {
-            close(sockd);
-        }
         
 	}
 }
