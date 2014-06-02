@@ -47,7 +47,7 @@ __The Header Search path should look like this__
 
 * Extract and add the AppWarpX folder next to your Classes folder. The directory structure should look like this
 
-![AppWarp Cocos2dx iOS](https://dl.dropboxusercontent.com/u/61084350/android_cocos2dx.png)
+![AppWarp Cocos2dx iOS](https://raw.githubusercontent.com/shephertz/AppWarpDeveloper/master/Cocos2dX/68747470733a2f2f646c2e64726f70626f7875736572636f6e74656e742e636f6d2f752f36313038343335302f616e64726f69645f636f636f733264782e706e67.png)
 
 * Edit proj.android\jni\Android.mk file
 
