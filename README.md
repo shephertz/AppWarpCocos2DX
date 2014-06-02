@@ -15,7 +15,29 @@ The steps below describe the integration points of AppWarpX in your Cococs2DX ap
 
 * Your XCode structure should look something like this
 
-![AppWarp Cocos2dx iOS](https://dl.dropboxusercontent.com/u/61084350/xcode_cocos2dx.png)
+![AppWarp Cocos2dx iOS](https://raw.githubusercontent.com/shephertz/AppWarpDeveloper/master/Cocos2dX/xcode_cocos2dx.png)
+
+
+* Now add path for curl as follows:
+
+  
+    -Open Xcode project 
+    
+    -Click on project name in the left pane 
+    
+    -Select your project under PROJECT heading and search for Header Search Path 
+    
+    -Double click on the value of Header Search Path
+    
+    -Click on "+" button on the bottom left cornor of the popup appeared 
+    
+    -Add this: "$(SRCROOT)/../cocos2d/external/curl/include/ios"
+
+__The Header Search path should look like this__
+
+
+![AppWarp Cocos2dx iOS](https://raw.githubusercontent.com/shephertz/AppWarpDeveloper/master/Cocos2dX/SetCurlPath.png)
+
 
 * Build
 
