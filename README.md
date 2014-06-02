@@ -73,7 +73,7 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 Also add the following at the end of your Android.mk file for curl
 
 ```
-$(call import-module,cocos2dx/platform/third_party/android/prebuilt/libcurl)
+$(call import-module,cocos2d/external/curl/prebuilt/android/{ARCH}/libcurl)
 ```
 * Build the native code
 
