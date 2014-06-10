@@ -15,7 +15,29 @@ The steps below describe the integration points of AppWarpX in your Cococs2DX ap
 
 * Your XCode structure should look something like this
 
-![AppWarp Cocos2dx iOS](https://dl.dropboxusercontent.com/u/61084350/xcode_cocos2dx.png)
+![AppWarp Cocos2dx iOS](https://raw.githubusercontent.com/shephertz/AppWarpDeveloper/master/Cocos2dX/xcode_cocos2dx.png)
+
+
+* Now add path for curl as follows:
+
+  
+    -Open Xcode project 
+    
+    -Click on project name in the left pane 
+    
+    -Select your project under PROJECT heading and search for Header Search Path 
+    
+    -Double click on the value of Header Search Path
+    
+    -Click on "+" button on the bottom left cornor of the popup appeared 
+    
+    -Add this: "$(SRCROOT)/../cocos2d/external/curl/include/ios"
+
+__The Header Search path should look like this__
+
+
+![AppWarp Cocos2dx iOS](https://raw.githubusercontent.com/shephertz/AppWarpDeveloper/master/Cocos2dX/SetCurlPath.png)
+
 
 * Build
 
@@ -25,7 +47,7 @@ The steps below describe the integration points of AppWarpX in your Cococs2DX ap
 
 * Extract and add the AppWarpX folder next to your Classes folder. The directory structure should look like this
 
-![AppWarp Cocos2dx iOS](https://dl.dropboxusercontent.com/u/61084350/android_cocos2dx.png)
+![AppWarp Cocos2dx iOS](https://raw.githubusercontent.com/shephertz/AppWarpDeveloper/master/Cocos2dX/68747470733a2f2f646c2e64726f70626f7875736572636f6e74656e742e636f6d2f752f36313038343335302f616e64726f69645f636f636f733264782e706e67.png)
 
 * Edit proj.android\jni\Android.mk file
 
@@ -51,7 +73,7 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 Also add the following at the end of your Android.mk file for curl
 
 ```
-$(call import-module,cocos2dx/platform/third_party/android/prebuilt/libcurl)
+$(call import-module,cocos2d/external/curl/prebuilt/android/{ARCH}/libcurl)
 ```
 * Build the native code
 
