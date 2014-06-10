@@ -222,6 +222,7 @@ namespace AppWarp
             return;
 		}
         userName = user;
+        AppWarpSessionID = 0;
         setState(ConnectionState::connecting);
         pthread_t threadConnection;
         _socketState = SocketStream::stream_connecting;
