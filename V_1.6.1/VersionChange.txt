@@ -1,0 +1,3 @@
+* Bug Fix: Fixed Auth error issue on calling connect if recover failed due to recoveryAllowance time-out.
+
+
