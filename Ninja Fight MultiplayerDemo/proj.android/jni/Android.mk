@@ -12,9 +12,23 @@ LOCAL_MODULE_FILENAME := libcocos2dcpp
 
 LOCAL_SRC_FILES := hellocpp/main.cpp \
                    ../../Classes/AppDelegate.cpp \
-                   ../../Classes/HelloWorldScene.cpp
+                   ../../Classes/HelloWorldScene.cpp \
+                   ../../Classes/Player.cpp \
+                   ../../Classes/StartGameLayer.cpp \
+                   ../../AppWarpX/HMAC_SHA1.cpp \
+                   ../../AppWarpX/SHA1.cpp \
+                   ../../AppWarpX/appwarp.cpp \
+                   ../../AppWarpX/appwarp_extended.cpp \
+                   ../../AppWarpX/base64.cpp \
+                   ../../AppWarpX/requests.cpp \
+                   ../../AppWarpX/socket.cpp \
+                   ../../AppWarpX/udpsocket.cpp \
+                   ../../AppWarpX/urlencode.cpp \
+                   ../../AppWarpX/utilities.cpp \
+                   ../../AppWarpX/cJSON.c
 
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../Classes
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../Classes \
+                    $(LOCAL_PATH)/../../AppWarpX
 
 # _COCOS_HEADER_ANDROID_BEGIN
 # _COCOS_HEADER_ANDROID_END
