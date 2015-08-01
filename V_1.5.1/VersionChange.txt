@@ -1,6 +1,0 @@
-* setGeo method added to WarpClient to connect with desired location of AppWarp Server 
-
-
-* Bug Fix: Fixed Auth Error issue.
-
-
