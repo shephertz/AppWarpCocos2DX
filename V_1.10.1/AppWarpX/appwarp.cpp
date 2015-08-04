@@ -303,7 +303,7 @@ namespace AppWarp
     
     void Client::sendKeepAlive(float dt)
     {
-        if ( _state!= ConnectionState::connected)
+        if (_state!= ConnectionState::connected || (_socket == NULL))
         {
             unscheduleKeepAlive();
             return;
