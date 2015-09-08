@@ -51,7 +51,7 @@ __The Header Search path should look like this__
 
 * Edit proj.android\jni\Android.mk file
 
-Add AppWarp source c and cpp files so that they are built. For example something like this
+Add AppWarp source c and cpp files so that they can also be built. After adding the AppWarp source files, your android.mk file should be as follows:
 
 ```
 LOCAL_SRC_FILES := hellocpp/main.cpp \
@@ -72,7 +72,7 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 
 * Build the native code
 
-* Add the following to your manifest file
+* Add the following to your manifest file to give internet permission if not given already
 
 ```
 <uses-permission android:name="android.permission.INTERNET" />
