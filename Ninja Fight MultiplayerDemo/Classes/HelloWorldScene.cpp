@@ -373,8 +373,9 @@ void HelloWorld::connectToAppWarp(Ref* pSender)
     if (isFirstLaunch)
     {
         isFirstLaunch = !isFirstLaunch;
-        AppWarp::Client::initialize(APPWARP_APP_KEY,APPWARP_SECRET_KEY);
+        AppWarp::Client::initialize(APPWARP_APP_KEY,APPWARP_SECRET_KEY);//,"192.168.1.34");
         warpClientRef = AppWarp::Client::getInstance();
+        //warpClientRef->setGeo("sgp");
         warpClientRef->setRecoveryAllowance(60);
         warpClientRef->setConnectionRequestListener(this);
         warpClientRef->setNotificationListener(this);
@@ -398,7 +399,16 @@ void HelloWorld::onConnectDone(int res, int reasonCode)
         printf("\nonConnectDone .. SUCCESS..session=%d\n",AppWarp::AppWarpSessionID);
         AppWarp::Client *warpClientRef;
         warpClientRef = AppWarp::Client::getInstance();
-        warpClientRef->joinRoom(ROOM_ID);
+        //warpClientRef->joinRoom(ROOM_ID);
+        //std::map<std::string,std::string> properties;
+        //properties["level"]= "Beginner";
+        warpClientRef->createRoom("R1", "Rajeev", 4);
+    }
+    else if (res==AppWarp::ResultCode::auth_error)
+    {
+        unscheduleRecover();
+       // this->connectToAppWarp(this);
+        printf("\nonConnectDone .. Failed with auth_error and reasonCode = %d..session=%d\n",reasonCode,AppWarp::AppWarpSessionID);
     }
     else if (res==AppWarp::ResultCode::success_recovered)
     {
@@ -426,9 +436,12 @@ void HelloWorld::onConnectDone(int res, int reasonCode)
 void HelloWorld::scheduleRecover()
 {
     printf("\nHelloWorld::scheduleRecover");
-    this->schedule(schedule_selector(HelloWorld::recover), 5.0f);
-    
-    showReconnectingLayer("Reconnecting ...");
+    if (!this->isScheduled(schedule_selector(HelloWorld::recover)))
+    {
+        this->schedule(schedule_selector(HelloWorld::recover), 5.0f);
+        
+        showReconnectingLayer("Reconnecting ...");
+    }
 }
 
 void HelloWorld::unscheduleRecover()
@@ -445,7 +458,6 @@ void HelloWorld::recover(float dt)
 
 void HelloWorld::showReconnectingLayer(std::string message)
 {
-    
     // Get the dimensions of the window for calculation purposes
     Size winSize = Director::getInstance()->getWinSize();
     
@@ -458,7 +470,6 @@ void HelloWorld::showReconnectingLayer(std::string message)
     buttonTitle->setColor(Color3B::BLACK);
     startGameLayer->addChild(buttonTitle);
     buttonTitle->setPosition(Point(winSize.width/2,winSize.height/2));
-    
 }
 
 void HelloWorld::onJoinRoomDone(AppWarp::room revent)
@@ -468,12 +479,14 @@ void HelloWorld::onJoinRoomDone(AppWarp::room revent)
         printf("\nonJoinRoomDone .. SUCCESS\n");
         AppWarp::Client *warpClientRef;
         warpClientRef = AppWarp::Client::getInstance();
-        warpClientRef->subscribeRoom(ROOM_ID);
+        warpClientRef->subscribeRoom(revent.roomId);
         startGame();
         removeStartGameLayer();
     }
     else
         printf("\nonJoinRoomDone .. FAILED\n");
+    
+    
 }
 
 void HelloWorld::onSubscribeRoomDone(AppWarp::room revent)
@@ -481,6 +494,7 @@ void HelloWorld::onSubscribeRoomDone(AppWarp::room revent)
     if (revent.result==0)
     {
         printf("\nonSubscribeRoomDone .. SUCCESS\n");
+        AppWarp::Client::getInstance()->getLiveRoomInfo(revent.roomId);
     }
     else
         printf("\nonSubscribeRoomDone .. FAILED\n");
@@ -493,7 +507,7 @@ void HelloWorld::sendData(float x, float y, float duration)
 	warpClientRef = AppWarp::Client::getInstance();
     
     std::stringstream str;
-    str <<x << "x" <<y << "d" << duration;
+    str <<"z"<<x << "x" <<y << "d" << duration;
     warpClientRef->sendChat(str.str());
 }
 
@@ -501,19 +515,116 @@ void HelloWorld::sendData(float x, float y, float duration)
 
 void HelloWorld::onChatReceived(AppWarp::chat chatevent)
 {
-    printf("onChatReceived..");
+    printf("\nonChatReceived..");
     if(chatevent.sender != userName)
 	{
-		std::size_t loc = chatevent.chat.find('x');
-		std::string str1 = chatevent.chat.substr(0,loc);
-		std::string str2 = chatevent.chat.substr(loc+1);
-        loc = chatevent.chat.find('d');
-        std::string str3 = chatevent.chat.substr(loc+1);
-		float x = (float)std::atof (str1.c_str());
-		float y = (float)std::atof(str2.c_str());
-        float dest = (float)std::atof(str3.c_str());
-        updateEnemyStatus(Point(x,y), dest);
+        std:: string zstr = chatevent.chat.substr(0,0);
+        printf("\nNormal Chat = %s",zstr.c_str());
+        if (!zstr.compare("z"))
+        {
+            printf("\nNormal Chat");
+        }
+        else
+        {
+            std::size_t loc = chatevent.chat.find('x');
+            std::string str1 = chatevent.chat.substr(1,loc);
+            std::string str2 = chatevent.chat.substr(loc+1);
+            loc = chatevent.chat.find('d');
+            std::string str3 = chatevent.chat.substr(loc+1);
+            float x = (float)std::atof (str1.c_str());
+            float y = (float)std::atof(str2.c_str());
+            float dest = (float)std::atof(str3.c_str());
+            updateEnemyStatus(Point(x,y), dest);
+        }
     }
+}
+
+void HelloWorld::onGetLiveRoomInfoDone(AppWarp::liveroom revent)
+{
+    printf("\nonGetLiveRoomInfoDone..");
+    std::vector<std::string> users = revent.users;
+    for(std::vector<std::string>::iterator it = users.begin() ; it != users.end(); ++it){
+        printf("roomusers: %s", it->c_str());
+    }
+}
+
+std::string HelloWorld::getMessage()
+{
+    static int msgCode = 1;
+    
+    std::string msg = "";
+    switch (msgCode) {
+        case 1:
+            msg = "synchronizationComplete";
+            break;
+        case 2:
+            msg = "startMinigame|TheJumper";
+            break;
+        case 3:
+            msg = "initMaingame";
+            break;
+        case 4:
+            msg = "setServer|";
+            msg.append(userName);
+            break;
+        case 5:
+            msg = "restartMinigame";
+            break;
+        case 6:
+            msg = "synchronized";
+            break;
+        case 7:
+            msg = "state|Intro";
+            break;
+        case 8:
+            msg = "state|Countdown";
+            break;
+        case 9:
+            msg = "state|Game";
+            break;
+        case 10:
+            msg = "state|Outro";
+            break;
+        case 11:
+            msg = "gameTime|1.0f";
+            break;
+        case 12:
+            msg = "coin|instantiate|coinName|level|x";
+            break;
+        case 13:
+            msg = "addPoints|username|points";
+            break;
+        case 14:
+            msg = "setJumpForce|username|jumpForce";
+            break;
+        case 15:
+            msg = "setMaxCoinLevel|username|coinLevel";
+            break;
+        case 16:
+            msg = "coin|destroy|coinName| |";
+            msgCode = 0;
+            break;
+        default:
+            break;
+    }
+    
+    msgCode++;
+    
+    return msg;
+}
+
+void HelloWorld::onCreateRoomDone (AppWarp::room revent)
+{
+    if (revent.result==0)
+    {
+        printf("\nonCreateRoomDone .. SUCCESS\n");
+        AppWarp::Client::getInstance()->joinRoom(revent.roomId);
+    }
+    else
+        printf("\nonCreateRoomDone .. FAILED\n");
+
+    //printf("\nonCreateRoomDone = %d",revent.result);
+    //printf("\nRoomID = %s",revent.roomId.c_str());
 }
 
 

@@ -6,10 +6,11 @@
 #include "StartGameLayer.h"
 #include "appwarp.h"
 
+//5:11PM, 16 Sept, sendChat called for 202 times
 #define APPWARP_APP_KEY     "cad2bfab6310acd9696187b98682925125e469ab0d0d585db0b00609f461b791"
 #define APPWARP_SECRET_KEY  "55811709916e7ce4405cde0cdc5a254cf4b506fbafdae05760a73100b8080b67"
 #define GAME_NAME           "NinjaFight"
-#define ROOM_ID             "152328576"
+#define ROOM_ID             "53240423"
 #define ROOM_NAME           "R1"
 #define ROOM_OWNER          "Rajeev"
 #define MAX_PLAYER          2
@@ -63,13 +64,15 @@ public:
     void onChatReceived(AppWarp::chat chatevent);
     void onUserPaused(std::string user,std::string locId,bool isLobby);
     void onUserResumed(std::string user,std::string locId,bool isLobby);
+    void onGetLiveRoomInfoDone(AppWarp::liveroom revent);
+    void onCreateRoomDone (AppWarp::room revent);
     
     void scheduleRecover();
     void unscheduleRecover();
     void recover(float dt);
     void showReconnectingLayer(std::string message);
     
-    
+    std::string getMessage();
 };
 
 #endif // __HELLOWORLD_SCENE_H__
