@@ -3,7 +3,7 @@
 Visit [AppWarp Cocos2DX home page](http://appwarp.shephertz.com/game-development-center/cocos2dx-game-developers-home/) to learn about AppWarp features and documentation.
 
 **IMPORTANT**
-The instructions below assume you have already Cocos2DX environment already setup for iOS and Android development. To help set up your development for Cocos2DX, you can read this [Cocos2DX getting started guide](http://www.raywenderlich.com/33750/cocos2d-x-tutorial-for-ios-and-android-getting-started).
+The instructions below assume you have already setup Cocos2DX environment for iOS and Android development. To help set up your development for Cocos2DX, you can read this [Cocos2DX getting started guide](http://www.raywenderlich.com/33750/cocos2d-x-tutorial-for-ios-and-android-getting-started).
 
 The steps below describe the integration points of AppWarpX in your Cococs2DX application. 
 
@@ -77,7 +77,6 @@ Add AppWarp source file folder so that it can be detected by Compiler. For Examp
 	LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../Classes \
 			    $(LOCAL_PATH)/../../AppWarpX
 ```
-* Please note that (AppWarpX) is name of the folder in which you have kept AppWarp SDK files.
 
 * Build the native code
 
