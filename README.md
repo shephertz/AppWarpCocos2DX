@@ -51,6 +51,8 @@ __The Header Search path should look like this__
 
 * Edit proj.android\jni\Android.mk file
 
+* Add $(call import-module,curl/prebuilt/android) to Android.mk file if you are using cocos V3.X or above for enabling cURL support.
+
 Add AppWarp source c and cpp files so that they can also be built. After adding the AppWarp source files, your android.mk file should be as follows:
 
 ```
@@ -69,7 +71,14 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
                    ../../AppWarpX/urlencode.cpp \
                    ../../AppWarpX/utilities.cpp
 ```
+-Add AppWarp source file folder so they can be detected by Compiler. For Example :
 
+```
+	LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../Classes \
+						          $(LOCAL_PATH)/../../AppWarpX
+```
+* Please note that (AppWarpX) is name of the folder in which you have kept AppWarp SDK files.
+* 
 * Build the native code
 
 * Add the following to your manifest file to give internet permission if not given already
