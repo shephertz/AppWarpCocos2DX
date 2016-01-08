@@ -75,7 +75,7 @@ Add AppWarp source file folder so that it can be detected by Compiler. For Examp
 
 ```
 	LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../Classes \
-			    	$(LOCAL_PATH)/../../AppWarpX
+			    		$(LOCAL_PATH)/../../AppWarpX
 ```
 
 * Build the native code
