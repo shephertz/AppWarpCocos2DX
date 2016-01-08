@@ -71,11 +71,11 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
                    ../../AppWarpX/urlencode.cpp \
                    ../../AppWarpX/utilities.cpp
 ```
-Add AppWarp source file folder so they can be detected by Compiler. For Example :
+Add AppWarp source file folder so that it can be detected by Compiler. For Example :
 
 ```
 	LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../Classes \
-						          $(LOCAL_PATH)/../../AppWarpX
+			    $(LOCAL_PATH)/../../AppWarpX
 ```
 * Please note that (AppWarpX) is name of the folder in which you have kept AppWarp SDK files.
 
