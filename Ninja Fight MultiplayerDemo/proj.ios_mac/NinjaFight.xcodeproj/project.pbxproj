@@ -64,17 +64,17 @@
 		5DBC2DE01AAAFFAA00878AD9 /* Bullet-red.png in Resources */ = {isa = PBXBuildFile; fileRef = 5DBC2DDC1AAAFFAA00878AD9 /* Bullet-red.png */; };
 		5DBC2DE11AAAFFAA00878AD9 /* Enemy.png in Resources */ = {isa = PBXBuildFile; fileRef = 5DBC2DDD1AAAFFAA00878AD9 /* Enemy.png */; };
 		5DBC2DE21AAAFFAA00878AD9 /* Player.png in Resources */ = {isa = PBXBuildFile; fileRef = 5DBC2DDE1AAAFFAA00878AD9 /* Player.png */; };
-		5DF641461B70C668005B4035 /* appwarp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5DF6412F1B70C668005B4035 /* appwarp.cpp */; };
-		5DF641471B70C668005B4035 /* appwarp_extended.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5DF641311B70C668005B4035 /* appwarp_extended.cpp */; };
-		5DF641481B70C668005B4035 /* base64.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5DF641321B70C668005B4035 /* base64.cpp */; };
-		5DF641491B70C668005B4035 /* cJSON.c in Sources */ = {isa = PBXBuildFile; fileRef = 5DF641341B70C668005B4035 /* cJSON.c */; };
-		5DF6414A1B70C668005B4035 /* HMAC_SHA1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5DF641371B70C668005B4035 /* HMAC_SHA1.cpp */; };
-		5DF6414B1B70C668005B4035 /* requests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5DF6413A1B70C668005B4035 /* requests.cpp */; };
-		5DF6414C1B70C668005B4035 /* SHA1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5DF6413C1B70C668005B4035 /* SHA1.cpp */; };
-		5DF6414D1B70C668005B4035 /* socket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5DF6413E1B70C668005B4035 /* socket.cpp */; };
-		5DF6414E1B70C668005B4035 /* udpsocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5DF641401B70C668005B4035 /* udpsocket.cpp */; };
-		5DF6414F1B70C668005B4035 /* urlencode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5DF641421B70C668005B4035 /* urlencode.cpp */; };
-		5DF641501B70C668005B4035 /* utilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5DF641441B70C668005B4035 /* utilities.cpp */; };
+		5DC5BA351C744D1D00AF73F6 /* appwarp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5DC5BA1E1C744D1D00AF73F6 /* appwarp.cpp */; };
+		5DC5BA361C744D1D00AF73F6 /* appwarp_extended.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5DC5BA201C744D1D00AF73F6 /* appwarp_extended.cpp */; };
+		5DC5BA371C744D1D00AF73F6 /* base64.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5DC5BA211C744D1D00AF73F6 /* base64.cpp */; };
+		5DC5BA381C744D1D00AF73F6 /* cJSON.c in Sources */ = {isa = PBXBuildFile; fileRef = 5DC5BA231C744D1D00AF73F6 /* cJSON.c */; };
+		5DC5BA391C744D1D00AF73F6 /* HMAC_SHA1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5DC5BA261C744D1D00AF73F6 /* HMAC_SHA1.cpp */; };
+		5DC5BA3A1C744D1D00AF73F6 /* requests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5DC5BA291C744D1D00AF73F6 /* requests.cpp */; };
+		5DC5BA3B1C744D1D00AF73F6 /* SHA1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5DC5BA2B1C744D1D00AF73F6 /* SHA1.cpp */; };
+		5DC5BA3C1C744D1D00AF73F6 /* socket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5DC5BA2D1C744D1D00AF73F6 /* socket.cpp */; };
+		5DC5BA3D1C744D1D00AF73F6 /* udpsocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5DC5BA2F1C744D1D00AF73F6 /* udpsocket.cpp */; };
+		5DC5BA3E1C744D1D00AF73F6 /* urlencode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5DC5BA311C744D1D00AF73F6 /* urlencode.cpp */; };
+		5DC5BA3F1C744D1D00AF73F6 /* utilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5DC5BA331C744D1D00AF73F6 /* utilities.cpp */; };
 		BF171245129291EC00B8313A /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB012928DE900B8313A /* OpenGLES.framework */; };
 		BF1712471292920000B8313A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB412928DE900B8313A /* libz.dylib */; };
 		BF1C47F01293687400B63C5D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF1C47EA1293683800B63C5D /* QuartzCore.framework */; };
@@ -174,29 +174,29 @@
 		5DBC2DDC1AAAFFAA00878AD9 /* Bullet-red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Bullet-red.png"; sourceTree = "<group>"; };
 		5DBC2DDD1AAAFFAA00878AD9 /* Enemy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Enemy.png; sourceTree = "<group>"; };
 		5DBC2DDE1AAAFFAA00878AD9 /* Player.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Player.png; sourceTree = "<group>"; };
-		5DF6412F1B70C668005B4035 /* appwarp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = appwarp.cpp; sourceTree = "<group>"; };
-		5DF641301B70C668005B4035 /* appwarp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = appwarp.h; sourceTree = "<group>"; };
-		5DF641311B70C668005B4035 /* appwarp_extended.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = appwarp_extended.cpp; sourceTree = "<group>"; };
-		5DF641321B70C668005B4035 /* base64.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = base64.cpp; sourceTree = "<group>"; };
-		5DF641331B70C668005B4035 /* base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = base64.h; sourceTree = "<group>"; };
-		5DF641341B70C668005B4035 /* cJSON.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = cJSON.c; sourceTree = "<group>"; };
-		5DF641351B70C668005B4035 /* cJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cJSON.h; sourceTree = "<group>"; };
-		5DF641361B70C668005B4035 /* defines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = defines.h; sourceTree = "<group>"; };
-		5DF641371B70C668005B4035 /* HMAC_SHA1.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HMAC_SHA1.cpp; sourceTree = "<group>"; };
-		5DF641381B70C668005B4035 /* HMAC_SHA1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMAC_SHA1.h; sourceTree = "<group>"; };
-		5DF641391B70C668005B4035 /* listener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = listener.h; sourceTree = "<group>"; };
-		5DF6413A1B70C668005B4035 /* requests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = requests.cpp; sourceTree = "<group>"; };
-		5DF6413B1B70C668005B4035 /* requests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = requests.h; sourceTree = "<group>"; };
-		5DF6413C1B70C668005B4035 /* SHA1.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SHA1.cpp; sourceTree = "<group>"; };
-		5DF6413D1B70C668005B4035 /* SHA1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHA1.h; sourceTree = "<group>"; };
-		5DF6413E1B70C668005B4035 /* socket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = socket.cpp; sourceTree = "<group>"; };
-		5DF6413F1B70C668005B4035 /* socket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = socket.h; sourceTree = "<group>"; };
-		5DF641401B70C668005B4035 /* udpsocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = udpsocket.cpp; sourceTree = "<group>"; };
-		5DF641411B70C668005B4035 /* udpsocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = udpsocket.h; sourceTree = "<group>"; };
-		5DF641421B70C668005B4035 /* urlencode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = urlencode.cpp; sourceTree = "<group>"; };
-		5DF641431B70C668005B4035 /* urlencode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = urlencode.h; sourceTree = "<group>"; };
-		5DF641441B70C668005B4035 /* utilities.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = utilities.cpp; sourceTree = "<group>"; };
-		5DF641451B70C668005B4035 /* utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = utilities.h; sourceTree = "<group>"; };
+		5DC5BA1E1C744D1D00AF73F6 /* appwarp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = appwarp.cpp; sourceTree = "<group>"; };
+		5DC5BA1F1C744D1D00AF73F6 /* appwarp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = appwarp.h; sourceTree = "<group>"; };
+		5DC5BA201C744D1D00AF73F6 /* appwarp_extended.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = appwarp_extended.cpp; sourceTree = "<group>"; };
+		5DC5BA211C744D1D00AF73F6 /* base64.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = base64.cpp; sourceTree = "<group>"; };
+		5DC5BA221C744D1D00AF73F6 /* base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = base64.h; sourceTree = "<group>"; };
+		5DC5BA231C744D1D00AF73F6 /* cJSON.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = cJSON.c; sourceTree = "<group>"; };
+		5DC5BA241C744D1D00AF73F6 /* cJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cJSON.h; sourceTree = "<group>"; };
+		5DC5BA251C744D1D00AF73F6 /* defines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = defines.h; sourceTree = "<group>"; };
+		5DC5BA261C744D1D00AF73F6 /* HMAC_SHA1.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HMAC_SHA1.cpp; sourceTree = "<group>"; };
+		5DC5BA271C744D1D00AF73F6 /* HMAC_SHA1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMAC_SHA1.h; sourceTree = "<group>"; };
+		5DC5BA281C744D1D00AF73F6 /* listener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = listener.h; sourceTree = "<group>"; };
+		5DC5BA291C744D1D00AF73F6 /* requests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = requests.cpp; sourceTree = "<group>"; };
+		5DC5BA2A1C744D1D00AF73F6 /* requests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = requests.h; sourceTree = "<group>"; };
+		5DC5BA2B1C744D1D00AF73F6 /* SHA1.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SHA1.cpp; sourceTree = "<group>"; };
+		5DC5BA2C1C744D1D00AF73F6 /* SHA1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHA1.h; sourceTree = "<group>"; };
+		5DC5BA2D1C744D1D00AF73F6 /* socket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = socket.cpp; sourceTree = "<group>"; };
+		5DC5BA2E1C744D1D00AF73F6 /* socket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = socket.h; sourceTree = "<group>"; };
+		5DC5BA2F1C744D1D00AF73F6 /* udpsocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = udpsocket.cpp; sourceTree = "<group>"; };
+		5DC5BA301C744D1D00AF73F6 /* udpsocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = udpsocket.h; sourceTree = "<group>"; };
+		5DC5BA311C744D1D00AF73F6 /* urlencode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = urlencode.cpp; sourceTree = "<group>"; };
+		5DC5BA321C744D1D00AF73F6 /* urlencode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = urlencode.h; sourceTree = "<group>"; };
+		5DC5BA331C744D1D00AF73F6 /* utilities.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = utilities.cpp; sourceTree = "<group>"; };
+		5DC5BA341C744D1D00AF73F6 /* utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = utilities.h; sourceTree = "<group>"; };
 		BF170DB012928DE900B8313A /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		BF170DB412928DE900B8313A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		BF1C47EA1293683800B63C5D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -282,7 +282,6 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
-				5DF6412E1B70C668005B4035 /* AppWarpX */,
 				46880B8319C43A87006E1F66 /* Classes */,
 				46880B7519C43A67006E1F66 /* Resources */,
 				1AC6FAE5180E9839004C840B /* cocos2d_libs.xcodeproj */,
@@ -337,6 +336,7 @@
 		46880B8319C43A87006E1F66 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				5DC5BA1D1C744D1D00AF73F6 /* AppWarpX */,
 				46880B8419C43A87006E1F66 /* AppDelegate.cpp */,
 				46880B8519C43A87006E1F66 /* AppDelegate.h */,
 				5DBC2DD21AAAFF8A00878AD9 /* HelloWorldScene.cpp */,
@@ -397,35 +397,35 @@
 			path = ios;
 			sourceTree = SOURCE_ROOT;
 		};
-		5DF6412E1B70C668005B4035 /* AppWarpX */ = {
+		5DC5BA1D1C744D1D00AF73F6 /* AppWarpX */ = {
 			isa = PBXGroup;
 			children = (
-				5DF6412F1B70C668005B4035 /* appwarp.cpp */,
-				5DF641301B70C668005B4035 /* appwarp.h */,
-				5DF641311B70C668005B4035 /* appwarp_extended.cpp */,
-				5DF641321B70C668005B4035 /* base64.cpp */,
-				5DF641331B70C668005B4035 /* base64.h */,
-				5DF641341B70C668005B4035 /* cJSON.c */,
-				5DF641351B70C668005B4035 /* cJSON.h */,
-				5DF641361B70C668005B4035 /* defines.h */,
-				5DF641371B70C668005B4035 /* HMAC_SHA1.cpp */,
-				5DF641381B70C668005B4035 /* HMAC_SHA1.h */,
-				5DF641391B70C668005B4035 /* listener.h */,
-				5DF6413A1B70C668005B4035 /* requests.cpp */,
-				5DF6413B1B70C668005B4035 /* requests.h */,
-				5DF6413C1B70C668005B4035 /* SHA1.cpp */,
-				5DF6413D1B70C668005B4035 /* SHA1.h */,
-				5DF6413E1B70C668005B4035 /* socket.cpp */,
-				5DF6413F1B70C668005B4035 /* socket.h */,
-				5DF641401B70C668005B4035 /* udpsocket.cpp */,
-				5DF641411B70C668005B4035 /* udpsocket.h */,
-				5DF641421B70C668005B4035 /* urlencode.cpp */,
-				5DF641431B70C668005B4035 /* urlencode.h */,
-				5DF641441B70C668005B4035 /* utilities.cpp */,
-				5DF641451B70C668005B4035 /* utilities.h */,
+				5DC5BA1E1C744D1D00AF73F6 /* appwarp.cpp */,
+				5DC5BA1F1C744D1D00AF73F6 /* appwarp.h */,
+				5DC5BA201C744D1D00AF73F6 /* appwarp_extended.cpp */,
+				5DC5BA211C744D1D00AF73F6 /* base64.cpp */,
+				5DC5BA221C744D1D00AF73F6 /* base64.h */,
+				5DC5BA231C744D1D00AF73F6 /* cJSON.c */,
+				5DC5BA241C744D1D00AF73F6 /* cJSON.h */,
+				5DC5BA251C744D1D00AF73F6 /* defines.h */,
+				5DC5BA261C744D1D00AF73F6 /* HMAC_SHA1.cpp */,
+				5DC5BA271C744D1D00AF73F6 /* HMAC_SHA1.h */,
+				5DC5BA281C744D1D00AF73F6 /* listener.h */,
+				5DC5BA291C744D1D00AF73F6 /* requests.cpp */,
+				5DC5BA2A1C744D1D00AF73F6 /* requests.h */,
+				5DC5BA2B1C744D1D00AF73F6 /* SHA1.cpp */,
+				5DC5BA2C1C744D1D00AF73F6 /* SHA1.h */,
+				5DC5BA2D1C744D1D00AF73F6 /* socket.cpp */,
+				5DC5BA2E1C744D1D00AF73F6 /* socket.h */,
+				5DC5BA2F1C744D1D00AF73F6 /* udpsocket.cpp */,
+				5DC5BA301C744D1D00AF73F6 /* udpsocket.h */,
+				5DC5BA311C744D1D00AF73F6 /* urlencode.cpp */,
+				5DC5BA321C744D1D00AF73F6 /* urlencode.h */,
+				5DC5BA331C744D1D00AF73F6 /* utilities.cpp */,
+				5DC5BA341C744D1D00AF73F6 /* utilities.h */,
 			);
 			name = AppWarpX;
-			path = ../../V_1.10.1/AppWarpX;
+			path = ../../V_1.10.2/AppWarpX;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -578,24 +578,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5DF6414E1B70C668005B4035 /* udpsocket.cpp in Sources */,
+				5DC5BA3D1C744D1D00AF73F6 /* udpsocket.cpp in Sources */,
 				5DBC2DDA1AAAFF8A00878AD9 /* StartGameLayer.cpp in Sources */,
-				5DF6414D1B70C668005B4035 /* socket.cpp in Sources */,
+				5DC5BA3C1C744D1D00AF73F6 /* socket.cpp in Sources */,
 				46880B8819C43A87006E1F66 /* AppDelegate.cpp in Sources */,
-				5DF6414B1B70C668005B4035 /* requests.cpp in Sources */,
+				5DC5BA3A1C744D1D00AF73F6 /* requests.cpp in Sources */,
 				5DBC2DD81AAAFF8A00878AD9 /* HelloWorldScene.cpp in Sources */,
-				5DF6414F1B70C668005B4035 /* urlencode.cpp in Sources */,
-				5DF6414A1B70C668005B4035 /* HMAC_SHA1.cpp in Sources */,
+				5DC5BA3E1C744D1D00AF73F6 /* urlencode.cpp in Sources */,
+				5DC5BA391C744D1D00AF73F6 /* HMAC_SHA1.cpp in Sources */,
 				5DBC2DD91AAAFF8A00878AD9 /* Player.cpp in Sources */,
-				5DF641471B70C668005B4035 /* appwarp_extended.cpp in Sources */,
+				5DC5BA361C744D1D00AF73F6 /* appwarp_extended.cpp in Sources */,
 				503AE10017EB989F00D1A890 /* AppController.mm in Sources */,
 				503AE10217EB989F00D1A890 /* RootViewController.mm in Sources */,
-				5DF641501B70C668005B4035 /* utilities.cpp in Sources */,
-				5DF641491B70C668005B4035 /* cJSON.c in Sources */,
-				5DF6414C1B70C668005B4035 /* SHA1.cpp in Sources */,
+				5DC5BA3F1C744D1D00AF73F6 /* utilities.cpp in Sources */,
+				5DC5BA381C744D1D00AF73F6 /* cJSON.c in Sources */,
+				5DC5BA3B1C744D1D00AF73F6 /* SHA1.cpp in Sources */,
 				503AE10117EB989F00D1A890 /* main.m in Sources */,
-				5DF641481B70C668005B4035 /* base64.cpp in Sources */,
-				5DF641461B70C668005B4035 /* appwarp.cpp in Sources */,
+				5DC5BA371C744D1D00AF73F6 /* base64.cpp in Sources */,
+				5DC5BA351C744D1D00AF73F6 /* appwarp.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -630,6 +630,7 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COMPRESS_PNG_FILES = NO;
+				ENABLE_BITCODE = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -666,6 +667,7 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COMPRESS_PNG_FILES = NO;
+				ENABLE_BITCODE = NO;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = ios/Prefix.pch;
