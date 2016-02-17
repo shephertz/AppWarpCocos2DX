@@ -3,7 +3,7 @@
 Visit [AppWarp Cocos2DX home page](http://appwarp.shephertz.com/game-development-center/cocos2dx-game-developers-home/) to learn about AppWarp features and documentation.
 
 **IMPORTANT**
-The instructions below assume you have already Cocos2DX environment already setup for iOS and Android development. To help set up your development for Cocos2DX, you can read this [Cocos2DX getting started guide](http://www.raywenderlich.com/33750/cocos2d-x-tutorial-for-ios-and-android-getting-started).
+The instructions below assume you have already setup Cocos2DX environment for iOS and Android development. To help set up your development for Cocos2DX, you can read this [Cocos2DX getting started guide](http://www.raywenderlich.com/33750/cocos2d-x-tutorial-for-ios-and-android-getting-started).
 
 The steps below describe the integration points of AppWarpX in your Cococs2DX application. 
 
@@ -51,6 +51,8 @@ __The Header Search path should look like this__
 
 * Edit proj.android\jni\Android.mk file
 
+* Add $(call import-module,curl/prebuilt/android) to Android.mk file if you are using cocos V3.X or above for enabling cURL support.
+
 Add AppWarp source c and cpp files so that they can also be built. After adding the AppWarp source files, your android.mk file should be as follows:
 
 ```
@@ -68,6 +70,12 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
                    ../../AppWarpX/udpsocket.cpp \
                    ../../AppWarpX/urlencode.cpp \
                    ../../AppWarpX/utilities.cpp
+```
+Add AppWarp source file folder so that it can be detected by Compiler. For Example :
+
+```
+	LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../Classes \
+			    		$(LOCAL_PATH)/../../AppWarpX
 ```
 
 * Build the native code
