@@ -612,7 +612,6 @@ namespace AppWarp
             return;
         }
         int len;
-        printf("\nBuilding UDP assoc_port request");
         byte * req = buildWarpRequest(RequestType::assoc_port, "", len, 2);
         if(result_success != _udpsocket->sockSend((char*)req, len))
         {
@@ -1737,6 +1736,23 @@ namespace AppWarp
 		_socket->sockSend((char*)req, len);
         
 		delete[] req;
+    }
+    
+    void Client::getGameStatus()
+    {
+        if((_state != ConnectionState::connected) || (_socket == NULL)){
+            if(_turnlistener != NULL)
+            {
+                _turnlistener->onGetGameStatusDone(ResultCode::connection_error,false);
+            }
+            return;
+        }
+        int len;
+        byte * req = buildWarpRequest(RequestType::game_status, NULL, 0, len);
+    
+        _socket->sockSend((char*)req, len);
+        
+        delete[] req;
     }
     
     void Client::getMoveHistory()

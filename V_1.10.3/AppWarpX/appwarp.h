@@ -500,6 +500,13 @@ namespace AppWarp
          */
         void stopGame();
         
+        /**
+         * Gets the status of turn based game i.e. the game is runing or not in a turn-based room. Result of the request is
+         * provided in the onGetGameStatusDone callback of the TurnBasedRoomListener.
+         *
+         */
+        void getGameStatus();
+        
         /*
          * Sends a move to the joined turn based room. Only allowed if its the sender's
          * turn.
@@ -540,6 +547,7 @@ namespace AppWarp
          * Get the Session ID
          */
         int getSessionID();
+        
         
         /*
          * Recover connection with SessionID and Username. This is helpful when app recovers
@@ -582,6 +590,7 @@ namespace AppWarp
 		void handleLobbyResponse(int,response *);
 		void handleRoomResponse(int, response *);
 		void handleZoneResponse(int, response *);
+        bool getGameStatus(byte* data, int len);
         void connectSocket();
         int lookup();
         void fireOnInitUDPDone(int res);

@@ -50,7 +50,6 @@ namespace AppWarp
                 printf("\nUDP Connect failed with sockd = %d",sockd);
                 return AppWarp::result_failure;
             }
-            printf("\nUDP Connect Success");
             fcntl(sockd, F_SETFL, O_NONBLOCK);
             
             memset((char*)&serv_name, 0, sizeof(serv_name));
@@ -68,7 +67,6 @@ namespace AppWarp
                 printf("\n Sending UDP assoc_port request failed");
                 return AppWarp::result_failure;
             }
-            printf("\n Sending UDP assoc_port request  success");
             return AppWarp::result_success;
 		}
         
@@ -82,7 +80,6 @@ namespace AppWarp
             int ret = (int)recvfrom(sockd, buf, 2048, 0, (struct sockaddr *)&serv_name, &addrlen);
             if(ret >= 0){
                 if(buf[0] == MessageType::response){
-                    printf("\n Received response......");
                     response* udpresponse = buildResponse((char*)buf, 0);
                     _callBack->udpresponse(udpresponse);
                     delete udpresponse;
