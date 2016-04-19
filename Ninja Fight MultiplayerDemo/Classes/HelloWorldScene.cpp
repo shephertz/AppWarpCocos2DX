@@ -129,7 +129,7 @@ void HelloWorld::startGame()
     player->isEnemy = false;
     addChild(player);
     
-    enemy = (Player*)CCSprite::create("Enemy.png");
+    enemy = (Player*)Sprite::create("Enemy.png");
     enemy->setPosition(Point(winSize.width-enemy->getContentSize().width/2, winSize.height/2));
     enemy->isEnemy = true;
     enemy->setOpacity(100);
@@ -373,7 +373,7 @@ void HelloWorld::connectToAppWarp(Ref* pSender)
     if (isFirstLaunch)
     {
         isFirstLaunch = !isFirstLaunch;
-        AppWarp::Client::initialize(APPWARP_APP_KEY,APPWARP_SECRET_KEY);//,"192.168.1.34");
+        AppWarp::Client::initialize(APPWARP_APP_KEY,APPWARP_SECRET_KEY);
         warpClientRef = AppWarp::Client::getInstance();
         //warpClientRef->setGeo("sgp");
         warpClientRef->setRecoveryAllowance(60);
@@ -399,10 +399,7 @@ void HelloWorld::onConnectDone(int res, int reasonCode)
         printf("\nonConnectDone .. SUCCESS..session=%d\n",AppWarp::AppWarpSessionID);
         AppWarp::Client *warpClientRef;
         warpClientRef = AppWarp::Client::getInstance();
-        //warpClientRef->joinRoom(ROOM_ID);
-        //std::map<std::string,std::string> properties;
-        //properties["level"]= "Beginner";
-        warpClientRef->createRoom("R1", "Rajeev", 4);
+        warpClientRef->joinRoomInUserRange(0, 1, true);
     }
     else if (res==AppWarp::ResultCode::auth_error)
     {
@@ -474,19 +471,20 @@ void HelloWorld::showReconnectingLayer(std::string message)
 
 void HelloWorld::onJoinRoomDone(AppWarp::room revent)
 {
+    AppWarp::Client *warpClientRef;
+    warpClientRef = AppWarp::Client::getInstance();
     if (revent.result==0)
     {
         printf("\nonJoinRoomDone .. SUCCESS\n");
-        AppWarp::Client *warpClientRef;
-        warpClientRef = AppWarp::Client::getInstance();
         warpClientRef->subscribeRoom(revent.roomId);
         startGame();
         removeStartGameLayer();
     }
     else
+    {
         printf("\nonJoinRoomDone .. FAILED\n");
-    
-    
+        warpClientRef->createRoom("TestRoom", "Shephertz", 2);
+    }
 }
 
 void HelloWorld::onSubscribeRoomDone(AppWarp::room revent)
@@ -548,71 +546,6 @@ void HelloWorld::onGetLiveRoomInfoDone(AppWarp::liveroom revent)
     }
 }
 
-std::string HelloWorld::getMessage()
-{
-    static int msgCode = 1;
-    
-    std::string msg = "";
-    switch (msgCode) {
-        case 1:
-            msg = "synchronizationComplete";
-            break;
-        case 2:
-            msg = "startMinigame|TheJumper";
-            break;
-        case 3:
-            msg = "initMaingame";
-            break;
-        case 4:
-            msg = "setServer|";
-            msg.append(userName);
-            break;
-        case 5:
-            msg = "restartMinigame";
-            break;
-        case 6:
-            msg = "synchronized";
-            break;
-        case 7:
-            msg = "state|Intro";
-            break;
-        case 8:
-            msg = "state|Countdown";
-            break;
-        case 9:
-            msg = "state|Game";
-            break;
-        case 10:
-            msg = "state|Outro";
-            break;
-        case 11:
-            msg = "gameTime|1.0f";
-            break;
-        case 12:
-            msg = "coin|instantiate|coinName|level|x";
-            break;
-        case 13:
-            msg = "addPoints|username|points";
-            break;
-        case 14:
-            msg = "setJumpForce|username|jumpForce";
-            break;
-        case 15:
-            msg = "setMaxCoinLevel|username|coinLevel";
-            break;
-        case 16:
-            msg = "coin|destroy|coinName| |";
-            msgCode = 0;
-            break;
-        default:
-            break;
-    }
-    
-    msgCode++;
-    
-    return msg;
-}
-
 void HelloWorld::onCreateRoomDone (AppWarp::room revent)
 {
     if (revent.result==0)
@@ -622,9 +555,6 @@ void HelloWorld::onCreateRoomDone (AppWarp::room revent)
     }
     else
         printf("\nonCreateRoomDone .. FAILED\n");
-
-    //printf("\nonCreateRoomDone = %d",revent.result);
-    //printf("\nRoomID = %s",revent.roomId.c_str());
 }
 
 
