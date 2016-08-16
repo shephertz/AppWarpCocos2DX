@@ -36,7 +36,36 @@ The steps below describe the integration points of AppWarpX in your Cococs2DX ap
 __The Header Search path should look like this__
 
 
-![AppWarp Cocos2dx iOS](https://raw.githubusercontent.com/shephertz/AppWarpDeveloper/master/Cocos2dX/SetCurlPath.png)
+![AppWarp Cocos2dx iOS](https://github.com/shephertz/AppWarpDeveloper/blob/master/App42/HeaderSearchPath.png?raw=true)
+
+You also need to add library search path as follows:
+
+    -Select your project under PROJECT heading and search for Library Search Path 
+    
+    -Double click on the value of Library Search Path
+    
+    -Click on "+" button on the bottom left cornor of the popup appeared 
+    
+    -Add this: "$(SRCROOT)/../cocos2d/external/curl/prebuilt/ios"
+    
+__The Library Search path should look like this__
+
+
+![AppWarp Cocos2dx iOS](https://github.com/shephertz/AppWarpDeveloper/blob/master/App42/LibrarySearchPath.png?raw=true)
+  
+Now select your project under Targets section and add $(inherited) to Library Search Path under build settings:
+
+__The Library Search path should look like this__
+
+
+![AppWarp Cocos2dx iOS](https://github.com/shephertz/AppWarpDeveloper/blob/master/App42/TargetLibSerachPath.png?raw=true)
+
+After that, add "-lcurl" to Other Linker Flags under build settings:
+
+__The Other Linker Flags should look like this__
+
+
+![AppWarp Cocos2dx iOS](https://github.com/shephertz/AppWarpDeveloper/blob/master/App42/LinkersFlag.png?raw=true)
 
 
 * Build
