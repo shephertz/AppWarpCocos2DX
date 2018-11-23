@@ -78,6 +78,10 @@ __The Other Linker Flags should look like this__
 
 ![AppWarp Cocos2dx iOS](https://raw.githubusercontent.com/shephertz/AppWarpDeveloper/master/Cocos2dX/68747470733a2f2f646c2e64726f70626f7875736572636f6e74656e742e636f6d2f752f36313038343335302f616e64726f69645f636f636f733264782e706e67.png)
 
+* download ![cocos2d-x 3.17](https://github.com/cocos2d/cocos2d-x) and install it
+
+* copy cocos2d folder to NinjaFightMultiplayerDemo/cocos2d
+
 * Edit proj.android\jni\Android.mk file
 
 * Add $(call import-module,curl/prebuilt/android) to Android.mk file if you are using cocos V3.X or above for enabling cURL support.
